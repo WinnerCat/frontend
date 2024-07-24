@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PolyGon from "../../img/Polygon.png";
 import Tag from "../../components/tag";
+import Header from "../../components/header";
 
 const Title = styled.span`
   color: #000;
@@ -114,36 +115,39 @@ function SavePost() {
   ];
 
   return (
-    <Container>
-      <Container80>
-        <Title>
-          <ColorTitle>버그퇴치 방법</ColorTitle>을<br></br>
-          한번 더 보고싶어요!
-        </Title>
-      </Container80>
-      <DropDownContainer>
-        <DropDownButton>
-          <Stack>
-            전체게시글
-            <img
-              src={PolyGon}
-              style={{ width: "1vw", height: "1vw", marginLeft: "0.35vw" }}
-            />
-          </Stack>
-        </DropDownButton>
-      </DropDownContainer>
-      {postData.map((post, index) => (
-        <Post key={index}>
-          <PostTitle>Index out of range</PostTitle>
-          <PostContainer>
-            {post.tags.map((tag, tagIndex) => (
-              <Tag key={tagIndex} name={tag.name} color={tag.color} />
-            ))}
-          </PostContainer>
-        </Post>
-      ))}
-      <Page>&lt; 2/5 &gt;</Page>
-    </Container>
+    <>
+      <Header></Header>
+      <Container>
+        <Container80>
+          <Title>
+            <ColorTitle>버그퇴치 방법</ColorTitle>을<br></br>
+            한번 더 보고싶어요!
+          </Title>
+        </Container80>
+        <DropDownContainer>
+          <DropDownButton>
+            <Stack>
+              전체게시글
+              <img
+                src={PolyGon}
+                style={{ width: "1vw", height: "1vw", marginLeft: "0.35vw" }}
+              />
+            </Stack>
+          </DropDownButton>
+        </DropDownContainer>
+        {postData.map((post, index) => (
+          <Post key={index}>
+            <PostTitle>Index out of range</PostTitle>
+            <PostContainer>
+              {post.tags.map((tag, tagIndex) => (
+                <Tag key={tagIndex} name={tag.name} color={tag.color} />
+              ))}
+            </PostContainer>
+          </Post>
+        ))}
+        <Page>&lt; 2/5 &gt;</Page>
+      </Container>
+    </>
   );
 }
 
