@@ -123,18 +123,40 @@ const RankingBox = styled(Box)`
   width: 320px;
 `;
 
-const PostsBox = styled(Box)`
+const RankingList = styled.div`
+  border: 2px solid #808080;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  max-height: 300px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ListItem = styled.div`
+  padding: 8px 0;
+  border-bottom: 1px solid #E0E0E0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const PostsBox = styled.div`
   background-color: #E8F0FF;
-  padding: 20px;
+  padding: 5vw 8vw;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  border-radius: 16px;
+  position: relative;
 `;
 
 const PostsContainer = styled.div`
   display: flex;
-  gap: 20px; 
+  gap: 20px;
   overflow-x: auto;
 `;
 
@@ -146,11 +168,15 @@ const PostItem = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-width: 200px;
   max-width: 24%;
+  height: 230px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 `;
 
-
-const Title = styled.h2`
+const PostTitle = styled.div`
+  text-align: start;
   font-family: 'Pretendard', sans-serif;
   font-weight: 400;
   font-size: 24px;
@@ -158,9 +184,20 @@ const Title = styled.h2`
   color: #808080;
 `;
 
-const PostTitle=styled.div`
- text-align: start; 
- font-family: 'Pretendard', sans-serif;
+const MorePostsLink = styled.a`
+  color: #808080;
+  text-decoration: none;
+  font-size: 14px;
+  position: absolute;
+  margin-top: 1vw;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const Title = styled.h2`
+  font-family: 'Pretendard', sans-serif;
   font-weight: 400;
   font-size: 24px;
   line-height: 28.64px;
@@ -192,31 +229,45 @@ const BugcatImage = styled.img`
   height: auto;
 `;
 
+const ChatBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 5vw;
+`;
+
+const ChatMessage = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UserMessage = styled.div`
+  background-color: #E8F0FF;
+  color: #000;
+  padding: 10px;
+  border-radius: 10px;
+  margin-left: 10px;
+  width: 600px;
+  height: 50px;
+`;
+
+const BotMessage = styled.div`
+  background-color: #6630FF;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 10px;
+  align-self: flex-end;
+  margin-right: 10px;
+  width: 600px;
+  height: 50px;
+`;
+
 const BugCount = ({ count }) => (
   <BugCountText>
     <Count>{count}</Count><Unit>마리</Unit>
   </BugCountText>
 );
-
-const RankingList = styled.div`
-  border: 2px solid #808080;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 20px;
-  max-height: 300px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ListItem = styled.div`
-  padding: 8px 0;
-  border-bottom: 1px solid #E0E0E0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
 
 const Mainpage = () => {
   const bugCount = 572;
@@ -265,12 +316,24 @@ const Mainpage = () => {
         <PostsBox>
           <PostTitle>weon님을 위해 0000 관련 게시글을 모아봤어요!</PostTitle>
           <PostsContainer>
-            <PostItem>게시글 1</PostItem>
-            <PostItem>게시글 2</PostItem>
-            <PostItem>게시글 3</PostItem>
-            <PostItem>게시글 4</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
           </PostsContainer>
         </PostsBox>
+        <MorePostsLink href="#">더 많은 게시글들 보고 싶어요</MorePostsLink>
+        <ChatBox>
+            <ChatMessage>
+                <UserMessage>아직도 시작 못하신함??ㅋㅋㅋㅠㅠ 버그 왜이래</UserMessage>
+            </ChatMessage>
+            <ChatMessage>
+                <BotMessage>하................이거 맞나?</BotMessage>
+            </ChatMessage>
+            <ChatMessage>
+                <BotMessage>프론트개발 하지마세요 진짜에요</BotMessage>
+            </ChatMessage>
+        </ChatBox>
       </Body>
     </Container>
   );
