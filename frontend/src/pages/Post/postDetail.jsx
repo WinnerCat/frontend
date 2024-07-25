@@ -73,6 +73,12 @@ const InputContainer = styled.input`
   border-radius: 0.8vw;
   border: 0.05vw solid #000;
   margin-bottom: 1.95vw;
+  color: var(--d-9-d-9-d-9, #000);
+  font-family: Inter;
+  font-size: 1vw;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 200%; /* 40px */
 `;
 
 const MenuContainer = styled.div`
@@ -129,7 +135,12 @@ function PostDetail() {
           <BackButton>&lt; 나의 작성글</BackButton>
           <TitleContainer>
             <TitleLogo>
-              <img src={Rectangle} alt="Logo" /> <span>Index out of range</span>
+              <img
+                src={Rectangle}
+                style={{ width: "3vw", height: "3vw", marginRight: "0.7vw" }}
+                alt="Logo"
+              />{" "}
+              <span>Index out of range</span>
             </TitleLogo>
             <SaveDelete>
               <MenuContainer>
