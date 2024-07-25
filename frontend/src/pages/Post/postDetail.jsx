@@ -66,7 +66,7 @@ const InputContainerTitle = styled.div`
   line-height: 175%; /* 42px */
 `;
 
-const InputContainer = styled.input`
+const InputContainer = styled.textarea`
   width: 100%;
   height: 13vw;
   flex-shrink: 0;
