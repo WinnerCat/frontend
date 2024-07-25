@@ -32,15 +32,15 @@ const Form = styled.form`
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: 20px;
-  width: 100%;
-display: flex;
+  margin: 2vw;
+  width: 90%;
+  display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Input = styled.input`
-  width: 80%;
+  width: 90%;
   padding: 1.5vw;
   border: 1px solid #ccc;
 `;
@@ -49,11 +49,11 @@ const Button = styled.button`
   background-color: #6603ff;
   color: white;
   border: none;
-  padding: 1.5vw;
-  border-radius: 15px;
+  padding: 1.3vw;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
-  width: 80%;
+  width: 87%;
   
   &:hover {
     background-color: #0056b3;
@@ -76,29 +76,6 @@ const Error = styled.p`
   font-size: 14px;
 `;
 
-const QuickLoginButton = styled.button`
-  border: none;
-  border-radius: 16px;
-  padding: 10px 20px;
-  margin-top: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  background-color: #f8f9fa;
-  color: #333;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    background-color: #e2e6ea;
-  }
-`;
-
-const QuickLoginText = styled.span`
-  margin-right: 10px;
-  font-weight: bold;
-`;
-
 const Footer = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -110,7 +87,6 @@ const Logo = styled.img`
   width: 25%;
   margin-bottom: 20px;
 `;
-
 
 const OrDivider = styled.div`
   margin: 1vw;
@@ -181,10 +157,10 @@ const Login = () => {
               <SecondaryButton>회원가입</SecondaryButton>
             </Footer>
             <OrDivider>
-            <div></div>-----간편로그인-----<div></div>
-            </OrDivider> 
+              <div></div>-----간편로그인-----<div></div>
+            </OrDivider>
             {/* <QuickLoginText>간편 로그인</QuickLoginText> */}
-            </Form>
+          </Form>
         </Container>
       </Body>
     </div>

@@ -7,13 +7,17 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 1vw 3vw;
   color: white;
   background-color: #6630FF;
 `;
 
+const LogoLink = styled.a`
+  width: 10%;
+`;
+
 const Logo = styled.img`
-  width: 15%;
+  width: 100%;
 `;
 
 const Nav = styled.nav`
@@ -25,10 +29,10 @@ const Nav = styled.nav`
 `;
 
 const NavItem = styled.a`
-  margin: 0 15px;
+  margin: 0 2vw;
   text-decoration: none;
   color: white;
-  font-size: 18px;
+  font-size: 1.2vw;
 
   &:hover {
     text-decoration: underline;
@@ -37,7 +41,6 @@ const NavItem = styled.a`
 
 const CatIcon = styled.div`
   position: relative;
-  font-size: 20px;
   cursor: pointer;
 `;
 
@@ -74,7 +77,9 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <Logo src={LogoImage} alt="버그냥이 로고" />
+      <LogoLink href="/">
+        <Logo src={LogoImage} alt="버그냥이 로고" />
+      </LogoLink>
       <Nav>
         <NavItem href="#">전체게시판</NavItem>
         <NavItem href="#">실시간 아우성</NavItem>
