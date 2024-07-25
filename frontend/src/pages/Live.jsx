@@ -1,0 +1,10 @@
+import styled from "styled-components";
+function Live() {
+  return (
+    <>
+      <h1>Live</h1>
+    </>
+  );
+}
+
+export default Live;
