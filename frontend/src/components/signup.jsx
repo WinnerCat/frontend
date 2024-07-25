@@ -54,9 +54,10 @@ const RequiredAsterisk = styled.span`
 `;
 
 const Input = styled.input`
-  width: 70%;
+  width: 80%;
   padding: 1.5vw;
   border: 1px solid #ccc;
+  border-radius: 4px;
   box-sizing: border-box;
 `;
 
@@ -71,7 +72,7 @@ const Button = styled.button`
   width: 80%;
   
   &:hover {
-    background-color: #6630ff;
+    background-color: #0056b3;
   }
 `;
 
@@ -177,7 +178,7 @@ const Signup = () => {
                   id="confirmPassword"
                   value={confirmPassword}
                   onChange={handleConfirmPasswordChange}
-                  placeholder="비밀번호를 한번 더 입력하세요."
+                  placeholder="비밀번호 확인"
                   required
                 />
               </FieldGroup>
