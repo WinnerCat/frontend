@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Union from "../img/Union.png";
+import Header from '../components/header';
 import SearchIconImg from "../img/searchicon.png";
 import BugCatImg from "../img/bugcat.png";
 
@@ -10,44 +10,6 @@ const Container = styled.div`
   min-height: 100vh;
 `;
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  color: white;
-  background-color: #6630FF;
-`;
-
-const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  margin-left: 40px;
-`;
-
-const Nav = styled.nav`
-  display: flex;
-  justify-content: center;
-  flex: 1;
-  gap: 3vw;
-  margin-right: 10vw;
-`;
-
-const NavItem = styled.a`
-  margin: 0 15px;
-  text-decoration: none;
-  color: white;
-  font-size: 18px;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const CatIcon = styled.div`
-  font-size: 24px;
-`;
-
 const Content = styled.div`
   display: flex;
   justify-content: center;
@@ -55,6 +17,11 @@ const Content = styled.div`
   padding: 50px;
   background-color: #D9D9D9;
   height: 180px;
+
+  @media (max-width: 768px) {
+    padding: 30px;
+    height: auto;
+  }
 `;
 
 const SearchContainer = styled.div`
@@ -79,6 +46,11 @@ const SearchInput = styled.input`
   &::placeholder {
     color: white;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 16px;
+  }
 `;
 
 const SearchIcon = styled.img`
@@ -92,15 +64,23 @@ const SearchIcon = styled.img`
 
 const Body = styled.div`
   flex: 1;
-  padding: 20px;
-  margin: 0 150px;
+  padding: 2vw;
+  margin: 5vw 10vw;
   color: black;
+
+  @media (max-width: 768px) {
+    margin: 2vw 5vw;
+  }
 `;
 
 const Section = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Box = styled.div`
@@ -113,57 +93,144 @@ const Box = styled.div`
 
 const BugBox = styled(Box)`
   margin-right: 10px;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 `;
 
 const RankingBox = styled(Box)`
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 10px;
-  width: 320px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
-const PostsBox = styled(Box)`
+const RankingList = styled.div`
+  width:80%;
+  border: 2px solid #808080;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ListItem = styled.div`
+  padding: 8px 0;
+  border-bottom: 1px solid #E0E0E0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const PostsBox = styled.div`
   background-color: #E8F0FF;
-  padding: 20px;
+  padding: 5vw 8vw;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  border-radius: 16px;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 2vw 4vw;
+  }
 `;
 
 const PostsContainer = styled.div`
   display: flex;
-  gap: 20px; 
+  gap: 20px;
   overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 20px;
+
+  @media (max-width: 768px) {
+    overflow-x: scroll;
+  }
 `;
 
 const PostItem = styled.div`
-  flex: 1;
+  flex: 0 0 24%;
   background-color: #FFFFFF;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
-  max-width: 24%;
+  height: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  scroll-snap-align: start;
+
+  @media (max-width: 768px) {
+    flex: 0 0 80%;
+  }
 `;
 
+const HighlightedText = styled.span`
+  color: #6630FF;
+  font-weight: bold;
+`;
+
+const HighlightedItem = styled.span`
+  background-color: #E0E0E0;
+  padding: 2px 4px;
+  border-radius: 4px;
+`;
+
+const PostTitle = styled.div`
+  text-align: start;
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #808080;
+`;
+
+const Myquestionhistory = styled.button`
+  background-color: #6630FF;
+  color: #FFF;
+  font-size: 20px;
+  padding: 2vw;
+  margin-top: 2vw;
+  border-radius: 10px;
+  width: 90%;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #4a25c1;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 18px;
+  }
+`;
+
+const MorePostsLink = styled.a`
+  color: #808080;
+  font-size: 14px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1vw;
+  text-decoration: underline;
+  width: 100%;
+`;
 
 const Title = styled.h2`
   font-family: 'Pretendard', sans-serif;
   font-weight: 400;
   font-size: 24px;
-  line-height: 28.64px;
-  color: #808080;
-`;
-
-const PostTitle=styled.div`
- text-align: start; 
- font-family: 'Pretendard', sans-serif;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 28.64px;
   color: #808080;
 `;
 
@@ -192,54 +259,67 @@ const BugcatImage = styled.img`
   height: auto;
 `;
 
+const ChatBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 5vw;
+`;
+
+const ChatMessage = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UserMessage = styled.div`
+  background-color: #E8F0FF;
+  color: #000;
+  padding: 10px;
+  border-radius: 10px;
+  margin-left: 10px;
+  width: 600px;
+  height: 50px;
+`;
+
+const BotMessage = styled.div`
+  background-color: #6630FF;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 10px;
+  align-self: flex-end;
+  margin-right: 10px;
+  width: 600px;
+  height: 50px;
+`;
+
 const BugCount = ({ count }) => (
   <BugCountText>
     <Count>{count}</Count><Unit>마리</Unit>
   </BugCountText>
 );
 
-const RankingList = styled.div`
-  border: 2px solid #808080;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 20px;
-  max-height: 300px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ListItem = styled.div`
-  padding: 8px 0;
-  border-bottom: 1px solid #E0E0E0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
 const Mainpage = () => {
   const bugCount = 572;
   const rankingItems = [
-    "버그 1",
-    "버그 2",
-    "버그 3",
-    "버그 4",
-    "버그 5"
+    "Spring 287마리",
+    "React 133마리",
+    "Spring 42마리",
+    "Spring 42마리"
   ];
+
+  const formatRankingItem = (item) => {
+    const parts = item.split(' ');
+    return (
+      <ListItem key={item}>
+        <HighlightedItem>{parts[0]}</HighlightedItem> {parts[1]}
+      </ListItem>
+    );
+  };
 
   return (
     <Container>
-      <Header>
-        <Logo>버그냥이ꗯ</Logo>
-        <Nav>
-          <NavItem href="#">전체게시판</NavItem>
-          <NavItem href="#">실시간 아우성</NavItem>
-          <NavItem href="#">저장게시판</NavItem>
-          <NavItem href="#">홈</NavItem>
-        </Nav>
-        <CatIcon><img src={Union} alt="Union" /></CatIcon>
-      </Header>
+      <Header/>
       <Content>
         <SearchContainer>
           <SearchInput type="text" placeholder="어떤 에러가 발생하였나요?" />
@@ -254,23 +334,38 @@ const Mainpage = () => {
             <BugcatImage src={BugCatImg} alt="오늘 잡은 버그 이미지" />
           </BugBox>
           <RankingBox>
-            <Title>오늘 버그 랭킹</Title>
+            <Title>오늘의 버그 랭킹</Title>
             <RankingList>
-              {rankingItems.map((item, index) => (
-                <ListItem key={index}>{item}</ListItem>
-              ))}
+              {rankingItems.map(formatRankingItem)}
             </RankingList>
+            <Myquestionhistory>나의 질문 내역보기</Myquestionhistory>
           </RankingBox>
         </Section>
         <PostsBox>
-          <PostTitle>weon님을 위해 0000 관련 게시글을 모아봤어요!</PostTitle>
+          <PostTitle><HighlightedText>weon</HighlightedText>님을 위해 <HighlightedText>Swift</HighlightedText> 관련 게시글을 모아봤어요!</PostTitle>
           <PostsContainer>
-            <PostItem>게시글 1</PostItem>
-            <PostItem>게시글 2</PostItem>
-            <PostItem>게시글 3</PostItem>
-            <PostItem>게시글 4</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
+            <PostItem>Index out of range</PostItem>
           </PostsContainer>
         </PostsBox>
+        <MorePostsLink href="#">더 많은 게시글들 보고 싶어요</MorePostsLink>
+        <ChatBox>
+          <ChatMessage>
+            <UserMessage>아직도 시작 못하신함??ㅋㅋㅋㅠㅠ 버그 왜이래</UserMessage>
+          </ChatMessage>
+          <ChatMessage>
+            <BotMessage>하................이거 맞나?</BotMessage>
+          </ChatMessage>
+          <ChatMessage>
+            <BotMessage>프론트개발 하지마세요 진짜에요</BotMessage>
+          </ChatMessage>
+        </ChatBox>
+        <MorePostsLink href="#">개발자들의 아우성 들으러가기</MorePostsLink>
       </Body>
     </Container>
   );
