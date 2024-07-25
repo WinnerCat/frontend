@@ -80,6 +80,41 @@ const TextArea = styled.textarea`
   resize: none;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CancleButton = styled.div`
+  width: 5.7vw;
+  height: 3.15vw;
+  flex-shrink: 0;
+  border-radius: 0.8vw;
+  background: var(--E8F0FF, #e8f0ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SaveButton = styled.div`
+  width: 5.7vw;
+  height: 3.15vw;
+  flex-shrink: 0;
+  border-radius: 0.8vw;
+  background: var(--6630FF, #6630ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1.5vw;
+`;
+
+const ButtonContainer1 = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10vw;
+`;
+
 function PostCreate() {
   const [tags, setTags] = useState([]);
 
@@ -105,6 +140,38 @@ function PostCreate() {
           <TextArea placeholder="내용을 작성 해주세요." />
           <InputContainerTitle>해결방법</InputContainerTitle>
           <TextArea placeholder="내용을 작성 해주세요." />
+          <ButtonContainer1>
+            <ButtonContainer>
+              <CancleButton>
+                <span
+                  style={{
+                    color: "#000",
+                    fontFamily: "Pretendard",
+                    fontSize: "1vw",
+                    fontStyle: "normal",
+                    fontWeight: "600",
+                    lineHeight: "175%",
+                  }}
+                >
+                  취소
+                </span>
+              </CancleButton>
+              <SaveButton>
+                <span
+                  style={{
+                    color: "#FFF",
+                    fontFamily: "Pretendard",
+                    fontSize: "1vw",
+                    fontStyle: "normal",
+                    fontWeight: "600",
+                    lineHeight: "175%",
+                  }}
+                >
+                  저장
+                </span>
+              </SaveButton>
+            </ButtonContainer>
+          </ButtonContainer1>
         </Container80>
       </Container>
     </>
