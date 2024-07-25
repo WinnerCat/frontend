@@ -1,23 +1,30 @@
-//header
-// src/components/header.jsx
 import React from 'react';
 import styled from 'styled-components';
 import Union from "../img/Union.png";
-import SearchIconImg from "../img/searchicon.png";
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   color: white;
   background-color: #6630FF;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
   margin-left: 40px;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
 `;
 
 const Nav = styled.nav`
@@ -26,6 +33,13 @@ const Nav = styled.nav`
   flex: 1;
   gap: 3vw;
   margin-right: 10vw;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const NavItem = styled.a`
