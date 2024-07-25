@@ -177,7 +177,7 @@ const Signup = () => {
                   id="confirmPassword"
                   value={confirmPassword}
                   onChange={handleConfirmPasswordChange}
-                  placeholder="비밀번호 확인"
+                  placeholder="비밀번호를 한번 더 입력하세요."
                   required
                 />
               </FieldGroup>
