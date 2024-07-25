@@ -7,6 +7,7 @@ import Mainpage from "./pages/Mainpage";
 import Question from "./pages/Questionpage";
 import Login from "./components/login";
 import Signup from "./components/signup";
+import PostDetail from "./pages/Post/postDetail";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/savePost" element={<SavePost />} />
         {/* <Route path="/postCreate" element={<PostCreate />} />
         <Route path="/live" element={<Live />} /> */}
+        <Route path="/postDetail" element={<PostDetail />} />
         <Route path="/" element={<Mainpage/>}/>
         <Route path="/question" element={<Question/>}/>
         <Route path="/login" element={<Login/>}/>
