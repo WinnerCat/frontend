@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import Header from '../components/header';
+import React from "react";
+import styled from "styled-components";
+import Header from "../components/header";
 import SearchIconImg from "../img/searchicon.png";
 import BugCatImg from "../img/bugcat.png";
 
@@ -15,7 +15,7 @@ const Content = styled.div`
   justify-content: center;
   align-items: flex-end;
   padding: 50px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   height: 180px;
 
   @media (max-width: 768px) {
@@ -41,7 +41,7 @@ const SearchInput = styled.input`
   padding-left: 30px;
   padding-right: 50px;
   color: white;
-  background-color: #6630FF;
+  background-color: #6630ff;
 
   &::placeholder {
     color: white;
@@ -85,7 +85,7 @@ const Section = styled.div`
 
 const Box = styled.div`
   flex: 1;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -114,7 +114,7 @@ const RankingBox = styled(Box)`
 `;
 
 const RankingList = styled.div`
-  width:80%;
+  width: 80%;
   border: 2px solid #808080;
   padding: 10px;
   border-radius: 10px;
@@ -125,7 +125,7 @@ const RankingList = styled.div`
 
 const ListItem = styled.div`
   padding: 8px 0;
-  border-bottom: 1px solid #E0E0E0;
+  border-bottom: 1px solid #e0e0e0;
 
   &:last-child {
     border-bottom: none;
@@ -133,7 +133,7 @@ const ListItem = styled.div`
 `;
 
 const PostsBox = styled.div`
-  background-color: #E8F0FF;
+  background-color: #e8f0ff;
   padding: 5vw 8vw;
   margin-top: 50px;
   display: flex;
@@ -161,7 +161,7 @@ const PostsContainer = styled.div`
 
 const PostItem = styled.div`
   flex: 0 0 24%;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -178,27 +178,27 @@ const PostItem = styled.div`
 `;
 
 const HighlightedText = styled.span`
-  color: #6630FF;
+  color: #6630ff;
   font-weight: bold;
 `;
 
 const HighlightedItem = styled.span`
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   padding: 2px 4px;
   border-radius: 4px;
 `;
 
 const PostTitle = styled.div`
   text-align: start;
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   font-weight: 400;
   font-size: 24px;
   color: #808080;
 `;
 
 const Myquestionhistory = styled.button`
-  background-color: #6630FF;
-  color: #FFF;
+  background-color: #6630ff;
+  color: #fff;
   font-size: 20px;
   padding: 2vw;
   margin-top: 2vw;
@@ -228,18 +228,18 @@ const MorePostsLink = styled.a`
 `;
 
 const Title = styled.h2`
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   font-weight: 400;
   font-size: 24px;
   color: #808080;
 `;
 
 const BugCountText = styled.div`
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   font-size: 96px;
   font-weight: 800;
   text-align: left;
-  color: #6630FF;
+  color: #6630ff;
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -247,7 +247,7 @@ const BugCountText = styled.div`
 `;
 
 const Count = styled.span`
-  color: #6630FF;
+  color: #6630ff;
 `;
 
 const Unit = styled.span`
@@ -261,9 +261,8 @@ const BugcatImage = styled.img`
 
 const ChatBox = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.5vw;
   margin-top: 5vw;
 `;
 
@@ -271,9 +270,24 @@ const ChatMessage = styled.div`
   display: flex;
   align-items: center;
 `;
+const ChatMessage1 = styled.div`
+  position: relative;
+  bottom: 1.5vw;
+  left: 27vw;
+`;
+const ChatMessage2 = styled.div`
+  position: relative;
+  bottom: 0.5vw;
+  left: 10vw;
+  display: flex;
+  align-items: center;
+`;
 
 const UserMessage = styled.div`
-  background-color: #E8F0FF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8f0ff;
   color: #000;
   padding: 10px;
   border-radius: 10px;
@@ -283,8 +297,11 @@ const UserMessage = styled.div`
 `;
 
 const BotMessage = styled.div`
-  background-color: #6630FF;
-  color: #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #6630ff;
+  color: #fff;
   padding: 10px;
   border-radius: 10px;
   align-self: flex-end;
@@ -295,7 +312,8 @@ const BotMessage = styled.div`
 
 const BugCount = ({ count }) => (
   <BugCountText>
-    <Count>{count}</Count><Unit>마리</Unit>
+    <Count>{count}</Count>
+    <Unit>마리</Unit>
   </BugCountText>
 );
 
@@ -305,11 +323,11 @@ const Mainpage = () => {
     "Spring 287마리",
     "React 133마리",
     "Spring 42마리",
-    "Spring 42마리"
+    "Spring 42마리",
   ];
 
   const formatRankingItem = (item) => {
-    const parts = item.split(' ');
+    const parts = item.split(" ");
     return (
       <ListItem key={item}>
         <HighlightedItem>{parts[0]}</HighlightedItem> {parts[1]}
@@ -319,7 +337,7 @@ const Mainpage = () => {
 
   return (
     <Container>
-      <Header/>
+      <Header />
       <Content>
         <SearchContainer>
           <SearchInput type="text" placeholder="어떤 에러가 발생하였나요?" />
@@ -335,14 +353,15 @@ const Mainpage = () => {
           </BugBox>
           <RankingBox>
             <Title>오늘의 버그 랭킹</Title>
-            <RankingList>
-              {rankingItems.map(formatRankingItem)}
-            </RankingList>
+            <RankingList>{rankingItems.map(formatRankingItem)}</RankingList>
             <Myquestionhistory>나의 질문 내역보기</Myquestionhistory>
           </RankingBox>
         </Section>
         <PostsBox>
-          <PostTitle><HighlightedText>weon</HighlightedText>님을 위해 <HighlightedText>Swift</HighlightedText> 관련 게시글을 모아봤어요!</PostTitle>
+          <PostTitle>
+            <HighlightedText>weon</HighlightedText>님을 위해{" "}
+            <HighlightedText>Swift</HighlightedText> 관련 게시글을 모아봤어요!
+          </PostTitle>
           <PostsContainer>
             <PostItem>Index out of range</PostItem>
             <PostItem>Index out of range</PostItem>
@@ -356,14 +375,16 @@ const Mainpage = () => {
         <MorePostsLink href="#">더 많은 게시글들 보고 싶어요</MorePostsLink>
         <ChatBox>
           <ChatMessage>
-            <UserMessage>아직도 시작 못하신함??ㅋㅋㅋㅠㅠ 버그 왜이래</UserMessage>
+            <UserMessage>
+              아직도 시작 못하신함??ㅋㅋㅋㅠㅠ 버그 왜이래
+            </UserMessage>
           </ChatMessage>
-          <ChatMessage>
+          <ChatMessage1>
             <BotMessage>하................이거 맞나?</BotMessage>
-          </ChatMessage>
-          <ChatMessage>
+          </ChatMessage1>
+          <ChatMessage2>
             <BotMessage>프론트개발 하지마세요 진짜에요</BotMessage>
-          </ChatMessage>
+          </ChatMessage2>
         </ChatBox>
         <MorePostsLink href="#">개발자들의 아우성 들으러가기</MorePostsLink>
       </Body>
