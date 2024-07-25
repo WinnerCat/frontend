@@ -33,29 +33,32 @@ const Form = styled.form`
 
 const FormGroup = styled.div`
   margin-bottom: 20px;
-  width: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vw;
+  margin-top:2vw;
 `;
 
 const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
   font-size: 14px;
   color: #333;
   position: relative;
+  width: 30%;
 `;
 
 const RequiredAsterisk = styled.span`
   color: #d9534f;
   position: absolute;
-  right: 2;
   top: 0;
   font-size: 18px;
   line-height: 1;
 `;
 
 const Input = styled.input`
-  width: 80%;
-  padding: 1.5vw;
+  width: 100%;
+  padding: 1vw 1.5vw;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -65,7 +68,8 @@ const Button = styled.button`
   background-color: #808080;
   color: white;
   border: none;
-  padding: 1.5vw;
+  padding: 1.3vw;
+  margin: 3vw 0 2vw 0;
   border-radius: 15px;
   cursor: pointer;
   font-size: 16px;
@@ -78,7 +82,7 @@ const Button = styled.button`
 
 const Error = styled.p`
   color: #d9534f;
-  margin-top: 10px;
+  margin-top: 5px;
   font-size: 14px;
 `;
 
@@ -89,9 +93,16 @@ const Logo = styled.img`
 
 const FieldGroup = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  width: 70%;
   align-items: center;
-  margin-bottom: 2vw;
+  gap: 2vw;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 70%;
 `;
 
 const Signup = () => {
@@ -99,35 +110,64 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [nicknameError, setNicknameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   const handleNicknameChange = (e) => {
-    setNickname(e.target.value);
+    const value = e.target.value;
+    setNickname(value);
+    if (value.length < 2 || value.length > 5) {
+      setNicknameError('닉네임은 2~5글자로 제한됩니다.');
+    } else {
+      setNicknameError('');
+    }
   };
 
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+    const value = e.target.value;
+    setEmail(value);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+      setEmailError('올바른 이메일 형식을 입력해 주세요.');
+    } else {
+      setEmailError('');
+    }
   };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    const value = e.target.value;
+    setPassword(value);
+    setPasswordError('');
   };
 
   const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
+    const value = e.target.value;
+    setConfirmPassword(value);
+    if (value !== password) {
+      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
+    } else {
+      setConfirmPasswordError('');
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (nickname === '' || email === '' || password === '' || confirmPassword === '') {
-      setError('모든 필드를 입력해 주세요.');
-    } else if (password !== confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setError('');
-      console.log('회원가입 시도:', { nickname, email, password });
+
+    if (!nickname || !email || !password || !confirmPassword) {
+      setNicknameError(!nickname ? '필수 입력 항목입니다!' : '');
+      setEmailError(!email ? '필수 입력 항목입니다!' : '');
+      setPasswordError(!password ? '필수 입력 항목입니다!' : '');
+      setConfirmPasswordError(!confirmPassword ? '필수 입력 항목입니다!' : '');
+      return;
     }
+
+    if (nicknameError || emailError || passwordError || confirmPasswordError) {
+      return;
+    }
+
+    console.log('회원가입 시도:', { nickname, email, password });
   };
 
   return (
@@ -140,50 +180,61 @@ const Signup = () => {
             <FormGroup>
               <FieldGroup>
                 <Label htmlFor="nickname">닉네임<RequiredAsterisk>*</RequiredAsterisk></Label>
-                <Input
-                  type="text"
-                  id="nickname"
-                  value={nickname}
-                  onChange={handleNicknameChange}
-                  placeholder="닉네임을 입력하세요."
-                  required
-                />
+                <InputGroup>
+                  <Input
+                    type="text"
+                    id="nickname"
+                    value={nickname}
+                    onChange={handleNicknameChange}
+                    placeholder="닉네임을 입력하세요."
+                    required
+                  />
+                  {nicknameError && <Error>{nicknameError}</Error>}
+                </InputGroup>
               </FieldGroup>
               <FieldGroup>
                 <Label htmlFor="email">이메일<RequiredAsterisk>*</RequiredAsterisk></Label>
-                <Input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={handleEmailChange}
-                  placeholder="이메일을 입력하세요."
-                  required
-                />
+                <InputGroup>
+                  <Input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    placeholder="이메일을 입력하세요."
+                    required
+                  />
+                  {emailError && <Error>{emailError}</Error>}
+                </InputGroup>
               </FieldGroup>
               <FieldGroup>
                 <Label htmlFor="password">비밀번호<RequiredAsterisk>*</RequiredAsterisk></Label>
-                <Input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  placeholder="비밀번호를 입력하세요."
-                  required
-                />
+                <InputGroup>
+                  <Input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    placeholder="비밀번호를 입력하세요."
+                    required
+                  />
+                  {passwordError && <Error>{passwordError}</Error>}
+                </InputGroup>
               </FieldGroup>
               <FieldGroup>
                 <Label htmlFor="confirmPassword">비밀번호 확인<RequiredAsterisk>*</RequiredAsterisk></Label>
-                <Input
-                  type="password"
-                  id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                  placeholder="비밀번호 확인"
-                  required
-                />
+                <InputGroup>
+                  <Input
+                    type="password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                    placeholder="비밀번호를 한번 더 입력하세요."
+                    required
+                  />
+                  {confirmPasswordError && <Error>{confirmPasswordError}</Error>}
+                </InputGroup>
               </FieldGroup>
             </FormGroup>
-            {error && <Error>{error}</Error>}
             <Button type="submit">회원가입</Button>
           </Form>
         </Container>
