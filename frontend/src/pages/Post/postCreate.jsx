@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/header";
 import Rectangle from "../../img/Rectangle.png";
-import Tag from "../../components/tag";
+import Modal from "../../components/modal";
 import TagDropdown from "../../components/tagDropdown";
+import SuccessModal from "../../components/successModal";
+import { useNavigate } from "react-router-dom";
 
 const Title = styled.span`
   color: #000;
@@ -95,6 +97,7 @@ const CancleButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const SaveButton = styled.div`
@@ -107,6 +110,7 @@ const SaveButton = styled.div`
   justify-content: center;
   align-items: center;
   margin-left: 1.5vw;
+  cursor: pointer;
 `;
 
 const ButtonContainer1 = styled.div`
@@ -116,8 +120,20 @@ const ButtonContainer1 = styled.div`
 `;
 
 function PostCreate() {
+  const navigate = useNavigate();
+
   const [tags, setTags] = useState([]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const openModal1 = () => setIsModalOpen1(true);
+  const closeModal1 = () => {
+    setIsModalOpen1(false);
+    navigate("/");
+  };
   return (
     <>
       <Header />
@@ -142,7 +158,7 @@ function PostCreate() {
           <TextArea placeholder="내용을 작성 해주세요." />
           <ButtonContainer1>
             <ButtonContainer>
-              <CancleButton>
+              <CancleButton onClick={openModal1}>
                 <span
                   style={{
                     color: "#000",
@@ -156,7 +172,7 @@ function PostCreate() {
                   취소
                 </span>
               </CancleButton>
-              <SaveButton>
+              <SaveButton onClick={openModal}>
                 <span
                   style={{
                     color: "#FFF",
@@ -170,6 +186,12 @@ function PostCreate() {
                   저장
                 </span>
               </SaveButton>
+              <SuccessModal isOpen={isModalOpen1} closeModal={closeModal1} />
+              <Modal
+                isOpen={isModalOpen}
+                closeModal={closeModal}
+                title="(대충 글을 적지않고 떠날건지 물어보는 내용)"
+              />
             </ButtonContainer>
           </ButtonContainer1>
         </Container80>
