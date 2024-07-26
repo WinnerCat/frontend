@@ -23,8 +23,11 @@ const ModalContainer = styled.div`
 function SuccessModal({ isOpen, closeModal }) {
   return (
     <>
-      <Container style={{ display: isOpen ? "block" : "none" }}>
-        <ModalContainer onClick={() => closeModal}>
+      <Container
+        style={{ display: isOpen ? "block" : "none" }}
+        onClick={closeModal}
+      >
+        <ModalContainer>
           <img src={success} />
         </ModalContainer>
       </Container>

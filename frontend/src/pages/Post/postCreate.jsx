@@ -158,7 +158,7 @@ function PostCreate() {
           <TextArea placeholder="내용을 작성 해주세요." />
           <ButtonContainer1>
             <ButtonContainer>
-              <CancleButton onClick={openModal1}>
+              <CancleButton onClick={openModal}>
                 <span
                   style={{
                     color: "#000",
@@ -172,7 +172,7 @@ function PostCreate() {
                   취소
                 </span>
               </CancleButton>
-              <SaveButton onClick={openModal}>
+              <SaveButton onClick={openModal1}>
                 <span
                   style={{
                     color: "#FFF",
