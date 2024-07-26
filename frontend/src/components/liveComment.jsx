@@ -8,9 +8,7 @@ const CommentContainer = styled.div`
 `;
 
 const Content = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 90%;
   font-family: Inter;
   font-size: 1.4vw;
   font-style: normal;
@@ -19,9 +17,6 @@ const Content = styled.div`
 `;
 
 const Time = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-family: Inter;
   font-size: 1vw;
   font-style: normal;

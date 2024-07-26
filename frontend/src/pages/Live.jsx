@@ -95,7 +95,10 @@ const F5Button = styled.div`
 
 function Live() {
   const lives = [
-    { content: "ios개발 하지마세요. 진지해요", time: "2분전" },
+    {
+      content: "ios개발 하지마세요. 진지해요.",
+      time: "2분전",
+    },
     { content: "안자는 사람? ㅋㅋ", time: "5분전" },
     { content: "진짜 오늘 너무 안된다", time: "11분전" },
     { content: "지금 비가 너무 많이와", time: "17분전" },
