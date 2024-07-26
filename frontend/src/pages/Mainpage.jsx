@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/header";
 import SearchIconImg from "../img/searchicon.png";
@@ -24,7 +25,7 @@ const Content = styled.div`
   }
 `;
 
-const SearchContainer = styled.div`
+const SearchContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -318,6 +319,8 @@ const BugCount = ({ count }) => (
 );
 
 const Mainpage = () => {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const bugCount = 572;
   const rankingItems = [
     "Spring 287마리",
@@ -335,12 +338,26 @@ const Mainpage = () => {
     );
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/question?query=${searchQuery}`);
+  };
+
   return (
     <Container>
       <Header />
       <Content>
-        <SearchContainer>
-          <SearchInput type="text" placeholder="어떤 에러가 발생하였나요?" />
+        <SearchContainer onSubmit={handleSearchSubmit}>
+          <SearchInput
+            type="text"
+            placeholder="어떤 에러가 발생하였나요?"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
           <SearchIcon src={SearchIconImg} alt="search icon" />
         </SearchContainer>
       </Content>
@@ -354,7 +371,7 @@ const Mainpage = () => {
           <RankingBox>
             <Title>오늘의 버그 랭킹</Title>
             <RankingList>{rankingItems.map(formatRankingItem)}</RankingList>
-            <Myquestionhistory>나의 질문 내역보기</Myquestionhistory>
+            <Myquestionhistory>내가 잡은 버그 목록</Myquestionhistory>
           </RankingBox>
         </Section>
         <PostsBox>

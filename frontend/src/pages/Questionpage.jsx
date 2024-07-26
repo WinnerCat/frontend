@@ -74,7 +74,6 @@ const ContentArea = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2vw;
   position: relative;
   background-color: white;
 `;
