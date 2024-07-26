@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '../components/header';
-import NoBugImage from '../img/no_bug.png'; 
+import NoBugImage from '../img/no_bug.png';
 import SearchIcon from '../img/search_icon.png';
-import Tag from '../components/tag'; //태그 새로 만들어야겟다..
+import Round from "../img/Round.png";
+import Done from "../img/done.png";
+import ConversationDetail from '../components/ConversationDetail'; 
 
 const PageContainer = styled.div`
   display: flex;
@@ -22,11 +24,18 @@ const Sidebar = styled.div`
   padding: 3vw;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const SidebarHeader = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2vw;
+`;
+
+const SidebarTitleContainer = styled.div`
+  display: flex;
   align-items: center;
   margin-bottom: 2vw;
 `;
@@ -36,7 +45,7 @@ const SidebarTitle = styled.div`
   font-weight: 800;
   font-size: 24px;
   color: #000000;
-  margin-bottom: 2vw;
+  margin-left: 1vw;
 `;
 
 const SidebarContent = styled.div`
@@ -45,6 +54,7 @@ const SidebarContent = styled.div`
   align-items: center;
   margin-bottom: 1vw;
   width: 100%;
+  cursor: pointer;
 `;
 
 const SidebarLabel = styled.div`
@@ -56,21 +66,6 @@ const SidebarTagList = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
-
-const SidebarButton = styled.button`
-  background-color: ${(props) => (props.active ? '#6630FF' : '#E0E0E0')};
-  color: ${(props) => (props.active ? 'white' : 'black')};
-  border: none;
-  padding: 1vw;
-  border-radius: 4px;
-  width: auto;
-  cursor: pointer;
-  font-size: 1vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
 `;
 
 const ContentArea = styled.div`
@@ -92,11 +87,12 @@ const NoBugFound = styled.div`
   color: #838383;
   text-align: center;
   img {
-    width: 150px;
+    width: 50%;
     margin-bottom: 1vw;
   }
   p {
-    font-size: 1.2vw;
+    font-size: 2vw;
+    color: #d9d9d9;
   }
 `;
 
@@ -106,9 +102,9 @@ const SearchBarContainer = styled.div`
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 2vw;
-  padding: 0.5vw 2vw;
+  padding: 0.3vw 2vw;
   position: absolute;
-  bottom: 2vw;
+  bottom: 3vw;
   left: 50%;
   transform: translateX(-50%);
 `;
@@ -129,47 +125,58 @@ const SearchButton = styled.button`
   padding: 0.5vw;
 `;
 
-const QuestionList = styled.div`
-  width: 70%;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 1vw;
+const AdditionalText = styled.p`
+  font-size: 0.9vw;
+  text-align: center;
+  border: none;
+  text-decoration: underline;
+  color: #808080;
+  position: absolute;
+  bottom: 0.5vw;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
-const QuestionItem = styled.div`
-  background: #f9f9f9;
-  border-radius: 4px;
-  padding: 1vw;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5vw;
-`;
+const Tag = ({ name, color, icon }) => {
+  const Container = styled.div`
+    display: flex;
+    align-items: center;
+    margin-left: 0.5vw;
+    padding: 0.3vw 0.7vw;
+    border-radius: 1.2vw;
+    background: ${color};
+    color: #fff;
+    font-family: Pretendard;
+    font-size: 1vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  `;
 
-const TagContainer = styled.div`
-  display: flex;
-  gap: 0.5vw;
-`;
+  const Icon = styled.img`
+    width: 0.45vw;
+    height: 0.45vw;
+    margin-left: 0.4vw;
+  `;
+
+  return (
+    <Container>
+      <span>{name}</span>
+      <Icon src={icon} />
+    </Container>
+  );
+};
 
 const QuestionPage = () => {
-  const [questions, setQuestions] = useState([]);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('해결중');
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
-  const handleStatusChange = (status) => {
-    setSelectedStatus(status);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (title && content) {
-      setQuestions([...questions, { title, content, status: selectedStatus }]);
-      setTitle('');
-      setContent('');
-    }
-  };
+  const questions = [
+    { title: '에러 제목 요약 1', content: '이것은 첫 번째 에러에 대한 대화 기록입니다.', status: '해결중' },
+    { title: '에러 제목 요약 2', content: '이것은 두 번째 에러에 대한 대화 기록입니다.', status: '해결중' },
+    { title: '에러 제목 요약 3', content: '이것은 세 번째 에러에 대한 대화 기록입니다.', status: '해결중' },
+    { title: '에러 제목 요약 4', content: '이것은 네 번째 에러에 대한 대화 기록입니다.', status: '해결완료' },
+    { title: '에러 제목 요약 5', content: '이것은 다섯 번째 에러에 대한 대화 기록입니다.', status: '해결완료' },
+  ];
 
   return (
     <PageContainer>
@@ -177,49 +184,47 @@ const QuestionPage = () => {
       <MainContent>
         <Sidebar>
           <SidebarHeader>
-            <SidebarTitle>Trouble</SidebarTitle>
-            <SidebarContent>
-              <SidebarLabel>에러 제목 요약</SidebarLabel>
-              <Tag name={selectedStatus} color={selectedStatus === '해결중' ? '#6630FF' : '#E0E0E0'} />
-            </SidebarContent>
-            <SidebarTagList>
-              {questions.map((question, index) => (
-                <SidebarContent key={index}>
-                  <SidebarLabel>{question.title}</SidebarLabel>
-                  <Tag name={question.status} color={question.status === '해결중' ? '#33C4FF' : '#FF5733'} />
-                </SidebarContent>
-              ))}
-            </SidebarTagList>
+            <SidebarTitleContainer>
+              <img src={Done} alt="Done" style={{ width: '24px', height: '24px' }} />
+              <SidebarTitle>Trouble</SidebarTitle>
+            </SidebarTitleContainer>
           </SidebarHeader>
+          <SidebarTagList>
+            {questions.map((question, index) => (
+              <SidebarContent 
+                key={index} 
+                onClick={() => setSelectedQuestion(question)}
+              >
+                <SidebarLabel>{question.title}</SidebarLabel>
+                <Tag 
+                  name={question.status} 
+                  color={question.status === '해결중' ? '#6630FF' : '#808080'} 
+                  icon={question.status === '해결중' ? Round : Done}
+                />
+              </SidebarContent>
+            ))}
+          </SidebarTagList>
         </Sidebar>
         <ContentArea>
-          {questions.length === 0 ? (
+          {selectedQuestion ? (
+            <ConversationDetail
+              title={selectedQuestion.title}
+              content={selectedQuestion.content}
+              close={() => setSelectedQuestion(null)}
+            />
+          ) : (
             <NoBugFound>
               <img src={NoBugImage} alt="No bugs found" />
               <p>아무런 버그도 발견되지 않았어요</p>
             </NoBugFound>
-          ) : (
-            <QuestionList>
-              {questions.map((question, index) => (
-                <QuestionItem key={index}>
-                  <h2>{question.title}</h2>
-                  <p>{question.content}</p>
-                  <TagContainer>
-                    <Tag name={question.status} color={question.status === '해결중' ? '#33C4FF' : '#FF5733'} />
-                  </TagContainer>
-                </QuestionItem>
-              ))}
-            </QuestionList>
           )}
           <SearchBarContainer>
-            <SearchInput
-              type="text"
-              placeholder="어떤 에러가 발생 하였나요?"
-            />
+            <SearchInput type="text" placeholder="어떤 에러가 발생 하였나요?" />
             <SearchButton>
               <img src={SearchIcon} alt="Search" />
             </SearchButton>
           </SearchBarContainer>
+          <AdditionalText>답변 외 방법으로 해결하였습니다.</AdditionalText>
         </ContentArea>
       </MainContent>
     </PageContainer>
