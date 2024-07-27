@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import Header from '../components/header';
 import LogoImage from "../img/logo.png";
 
@@ -114,7 +115,7 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (email === '' || password === '') {
@@ -122,6 +123,30 @@ const Login = () => {
     } else {
       setError('');
       console.log('로그인 시도:', { email, password });
+      
+      const payload = {
+        email,
+        password,
+      };
+
+      try {
+        const response = await axios.post('http://bugnyang.shop:8080/login', payload);
+        console.log('로그인 성공:', response.data);
+
+        if (response.data.isSuccess) {
+          const token = response.data.result;
+
+          localStorage.setItem('token', token);
+          localStorage.setItem('email', email); 
+          localStorage.setItem('logined', 'true');
+
+        } else {
+          setError('로그인에 실패했습니다. 다시 시도해 주세요.');
+        }
+      } catch (error) {
+        console.error('로그인 실패:', error);
+        setError('로그인에 실패했습니다. 다시 시도해 주세요.');
+      }
     }
   };
 
