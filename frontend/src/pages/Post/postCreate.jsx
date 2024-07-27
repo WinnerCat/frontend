@@ -163,7 +163,7 @@ function PostCreate() {
         },
         body: JSON.stringify({
           title: title,
-          tag: ["swift"],
+          tag: tags.map((tag) => tag.name),
           cause: cause,
           solution: solution,
         }),
@@ -173,8 +173,9 @@ function PostCreate() {
       console.log(data);
 
       if (response.status === 200) {
-        alert("게시글 등록 성공");
-        navigate("/");
+        openModal1();
+      } else {
+        alert("오류발생");
       }
     } catch (error) {
       alert("에러발생");
@@ -235,7 +236,6 @@ function PostCreate() {
               <SaveButton
                 onClick={() => {
                   handleCreate();
-                  openModal1();
                 }}
               >
                 <span
