@@ -153,13 +153,15 @@ function PostCreate() {
 
   //통신코드
 
+  const token = localStorage.getItem("token");
+
   const handleCreate = async () => {
     try {
       const response = await fetch(`${Config.baseURL}/api/article`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InF3ZXIxMjM0QG5hdmVyLmNvbSIsImVtYWlsIjoicXdlcjEyMzRAbmF2ZXIuY29tIiwicm9sZSI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MjIwNzAyMzEsImV4cCI6MTcyMjE1NjYzMX0.ZLq8w1_tmTfsrTte7w0REYRA4xO2qJ4tyHTJDQBYXGI`,
+          Authorization: token,
         },
         body: JSON.stringify({
           title: title,
