@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
 import LogoImage from "../img/logo.png";
 
@@ -105,6 +107,42 @@ const InputGroup = styled.div`
   width: 70%;
 `;
 
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 2vw;
+  border-radius: 8px;
+  text-align: center;
+  width: 400px;
+  max-width: 80%;
+`;
+
+const ModalButton = styled.button`
+  background-color: #808080;
+  color: white;
+  border: none;
+  padding: 1.3vw;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 1vw;
+  
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
 const Signup = () => {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -114,6 +152,9 @@ const Signup = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [error, setError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate(); // useNavigate hook
 
   const handleNicknameChange = (e) => {
     const value = e.target.value;
@@ -152,7 +193,7 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!nickname || !email || !password || !confirmPassword) {
@@ -167,7 +208,53 @@ const Signup = () => {
       return;
     }
 
-    console.log('회원가입 시도:', { nickname, email, password });
+    const payload = {
+      email,
+      nickname,
+      password,
+      role: "ROLE_ADMIN",
+      username: email,
+    };
+
+    try {
+      const response = await axios.post('http://bugnyang.shop:8080/join', payload);
+      console.log('회원가입 성공:', response.data);
+
+      if (response.data.isSuccess) {
+        // Automatically login after successful signup
+        const loginPayload = {
+          email,
+          password,
+        };
+
+        const loginResponse = await axios.post('http://bugnyang.shop:8080/login', loginPayload);
+        console.log('로그인 성공:', loginResponse.data);
+
+        if (loginResponse.data.isSuccess) {
+          const token = loginResponse.data.result;
+
+          // Save token, email, and login status to localStorage
+          localStorage.setItem('token', token);
+          localStorage.setItem('nickname', email);
+          localStorage.setItem('logined', 'true');
+
+          // Show welcome modal after successful login
+          setIsModalOpen(true);
+        } else {
+          setError('로그인에 실패했습니다. 다시 시도해 주세요.');
+        }
+      } else {
+        setError('회원가입에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      console.error('회원가입 또는 로그인 실패:', error);
+      setError('회원가입 또는 로그인에 실패했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate('/'); // Navigate to main page
   };
 
   return (
@@ -235,10 +322,21 @@ const Signup = () => {
                 </InputGroup>
               </FieldGroup>
             </FormGroup>
+            {error && <Error>{error}</Error>}
             <Button type="submit">회원가입</Button>
           </Form>
         </Container>
       </Body>
+
+      {isModalOpen && (
+        <Modal>
+          <ModalContent>
+            <h2>회원가입이 완료되었습니다!</h2>
+            <p>환영합니다!</p>
+            <ModalButton onClick={closeModal}>닫기</ModalButton>
+          </ModalContent>
+        </Modal>
+      )}
     </div>
   );
 };
