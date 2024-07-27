@@ -6,6 +6,7 @@ import Modal from "../../components/modal";
 import TagDropdown from "../../components/tagDropdown";
 import SuccessModal from "../../components/successModal";
 import { useNavigate } from "react-router-dom";
+import Config from "../../config/config";
 
 const Title = styled.span`
   color: #000;
@@ -134,6 +135,56 @@ function PostCreate() {
     setIsModalOpen1(false);
     navigate("/");
   };
+
+  const [title, setTitle] = useState("");
+  const [cause, setCause] = useState("");
+  const [solution, setSolution] = useState("");
+
+  const handleTitleChange = (value) => {
+    setTitle(value);
+  };
+
+  const handleCauseChange = (value) => {
+    setCause(value);
+  };
+  const handleSolutionChange = (value) => {
+    setSolution(value);
+  };
+
+  //통신코드
+
+  const token = localStorage.getItem("token");
+
+  const handleCreate = async () => {
+    try {
+      const response = await fetch(`${Config.baseURL}/api/article`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          title: title,
+          tag: tags.map((tag) => tag.name),
+          cause: cause,
+          solution: solution,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (response.status === 200) {
+        openModal1();
+      } else {
+        alert("오류발생");
+      }
+    } catch (error) {
+      alert("에러발생");
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -149,13 +200,25 @@ function PostCreate() {
             />
           </Title>
           <InputContainerTitle>제목</InputContainerTitle>
-          <Input placeholder="제목을 작성 해주세요." />
+          <Input
+            placeholder="제목을 작성 해주세요."
+            value={title}
+            onChange={(e) => handleTitleChange(e.target.value)}
+          />
           <InputContainerTitle>태그</InputContainerTitle>
           <TagDropdown tags={tags} setTags={setTags} />
           <InputContainerTitle>원인</InputContainerTitle>
-          <TextArea placeholder="내용을 작성 해주세요." />
+          <TextArea
+            placeholder="내용을 작성 해주세요."
+            value={cause}
+            onChange={(e) => handleCauseChange(e.target.value)}
+          />
           <InputContainerTitle>해결방법</InputContainerTitle>
-          <TextArea placeholder="내용을 작성 해주세요." />
+          <TextArea
+            placeholder="내용을 작성 해주세요."
+            value={solution}
+            onChange={(e) => handleSolutionChange(e.target.value)}
+          />
           <ButtonContainer1>
             <ButtonContainer>
               <CancleButton onClick={openModal}>
@@ -172,7 +235,11 @@ function PostCreate() {
                   취소
                 </span>
               </CancleButton>
-              <SaveButton onClick={openModal1}>
+              <SaveButton
+                onClick={() => {
+                  handleCreate();
+                }}
+              >
                 <span
                   style={{
                     color: "#FFF",
