@@ -88,6 +88,14 @@ const Page = styled.div`
   line-height: normal;
 `;
 
+const PageButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1vw;
+  margin: 0 0.5vw;
+`;
+
 const PostTitle = styled.div`
   color: #000;
   font-family: Pretendard;
@@ -100,13 +108,15 @@ const PostTitle = styled.div`
 function AllPost() {
   const token = localStorage.getItem("token");
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${Config.baseURL}/api/article/all?page=0&size=5`,
+          `${Config.baseURL}/api/article/all?page=${currentPage}&size=5`,
           {
             method: "GET",
             headers: {
@@ -121,6 +131,7 @@ function AllPost() {
 
         if (response.status === 200) {
           setData(data.result.articlePreviewList);
+          setTotalPages(data.result.totalPages);
         } else {
           alert("데이터를 불러오는데 실패했습니다.");
         }
@@ -131,7 +142,19 @@ function AllPost() {
     };
 
     fetchData();
-  }, [token]);
+  }, [token, currentPage]);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <>
@@ -164,7 +187,18 @@ function AllPost() {
             </PostContainer>
           </Post>
         ))}
-        <Page>&lt; 2/5 &gt;</Page>
+        <Page>
+          <PageButton onClick={handlePreviousPage} disabled={currentPage === 0}>
+            &lt;
+          </PageButton>
+          {currentPage + 1}/{totalPages}
+          <PageButton
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages - 1}
+          >
+            &gt;
+          </PageButton>
+        </Page>
       </Container>
     </>
   );
