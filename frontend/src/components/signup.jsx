@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
 import LogoImage from "../img/logo.png";
+import CheckIcon from "../img/check-icon.png";
+import CharacterImage from "../img/bugcat.png";
+import { useNavigate } from 'react-router-dom';
 
 const Body = styled.div`
   display: flex;
@@ -40,7 +42,7 @@ const FormGroup = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2vw;
-  margin-top:2vw;
+  margin-top: 2vw;
 `;
 
 const Label = styled.label`
@@ -120,27 +122,40 @@ const Modal = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background: white;
-  padding: 2vw;
-  border-radius: 8px;
+  background: #6200EA;
+  padding: 3vw;
+  border-radius: 10%;
   text-align: center;
-  width: 400px;
+  width: 500px;
   max-width: 80%;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
 const ModalButton = styled.button`
-  background-color: #808080;
-  color: white;
+  background-color: white;
+  color: #6200EA;
   border: none;
-  padding: 1.3vw;
-  border-radius: 15px;
+  width: 80%;
+  padding: 1.3vw 3vw;
+  border-radius: 20px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 1vw;
+  margin-top: 2vw;
   
   &:hover {
-    background-color: #0056b3;
+    background-color: #d3d3d3;
   }
+`;
+
+const CheckIconImage = styled.img`
+  width: 15%;
+  margin-bottom: 20px;
+`;
+
+const CharacterImageStyled = styled.img`
+  width: 70%;
+  margin-top: 20px;
 `;
 
 const Signup = () => {
@@ -154,7 +169,7 @@ const Signup = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate(); // useNavigate hook
+  const navigate = useNavigate();
 
   const handleNicknameChange = (e) => {
     const value = e.target.value;
@@ -254,7 +269,7 @@ const Signup = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    navigate('/'); // Navigate to main page
+    navigate('/');
   };
 
   return (
@@ -331,9 +346,11 @@ const Signup = () => {
       {isModalOpen && (
         <Modal>
           <ModalContent>
-            <h2>회원가입이 완료되었습니다!</h2>
-            <p>환영합니다!</p>
-            <ModalButton onClick={closeModal}>닫기</ModalButton>
+            <CheckIconImage src={CheckIcon} alt="체크 아이콘" />
+            <h2>회원가입 완료!</h2>
+            <p>버그냥이와 함께 지금부터 개발을 시작해보세요!</p>
+            <CharacterImageStyled src={CharacterImage} alt="캐릭터 이미지" />
+            <ModalButton onClick={closeModal}>버그 찾아보러 가기</ModalButton>
           </ModalContent>
         </Modal>
       )}

@@ -15,14 +15,9 @@ const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 50px;
+  padding: 2vw;
   background-color: #d9d9d9;
-  height: 180px;
-
-  @media (max-width: 768px) {
-    padding: 30px;
-    height: auto;
-  }
+  height: 20vh;
 `;
 
 const SearchContainer = styled.form`
@@ -33,14 +28,12 @@ const SearchContainer = styled.form`
 `;
 
 const SearchInput = styled.input`
-  padding: 10px;
-  font-size: 20px;
+  font-size: 1.3vw;
   border: none;
   border-radius: 50px;
-  width: 500px;
-  height: 30px;
-  padding-left: 30px;
-  padding-right: 50px;
+  width: 40vw;
+  height: 3vh;
+  padding: 1vw 3vw;
   color: white;
   background-color: #6630ff;
 
@@ -87,46 +80,33 @@ const Section = styled.div`
 const Box = styled.div`
   flex: 1;
   background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
   text-align: center;
 `;
 
 const BugBox = styled(Box)`
-  margin-right: 10px;
 
-  @media (max-width: 768px) {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
 `;
 
 const RankingBox = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 10px;
   width: 100%;
+`;
 
-  @media (max-width: 768px) {
-    margin-left: 0;
-    width: 100%;
-  }
+const RankingItem =styled.div`
+  border: 2px solid #808080;
+  border-radius: 1vw;
+  width: 70%;
 `;
 
 const RankingList = styled.div`
-  width: 80%;
-  border: 2px solid #808080;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
 `;
 
 const ListItem = styled.div`
   padding: 8px 0;
-  border-bottom: 1px solid #e0e0e0;
 
   &:last-child {
     border-bottom: none;
@@ -237,7 +217,7 @@ const Title = styled.h2`
 
 const BugCountText = styled.div`
   font-family: "Pretendard", sans-serif;
-  font-size: 96px;
+  font-size: 5vw;
   font-weight: 800;
   text-align: left;
   color: #6630ff;
@@ -369,8 +349,9 @@ const Mainpage = () => {
             <BugcatImage src={BugCatImg} alt="오늘 잡은 버그 이미지" />
           </BugBox>
           <RankingBox>
+            <RankingItem>
             <Title>오늘의 버그 랭킹</Title>
-            <RankingList>{rankingItems.map(formatRankingItem)}</RankingList>
+            <RankingList>{rankingItems.map(formatRankingItem)}</RankingList></RankingItem>
             <Myquestionhistory>내가 잡은 버그 목록</Myquestionhistory>
           </RankingBox>
         </Section>

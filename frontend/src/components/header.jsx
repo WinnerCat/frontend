@@ -7,7 +7,7 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1vw 3vw;
+  padding: 0.7vw 3vw;
   color: white;
   background-color: #6630FF;
 `;
@@ -24,7 +24,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: center;
   flex: 1;
-  gap: 3vw;
+  gap: 1vw;
   margin-right: 10vw;
 `;
 
@@ -62,6 +62,7 @@ const DropdownItem = styled.a`
   color: #333;
   text-decoration: none;
   white-space: nowrap;
+  border-bottom: 1px solid #e0e0e0;
 
   &:hover {
     background-color: #f0f0f0;
@@ -81,10 +82,11 @@ const Header = () => {
         <Logo src={LogoImage} alt="버그냥이 로고" />
       </LogoLink>
       <Nav>
-        <NavItem href="#">전체게시판</NavItem>
-        <NavItem href="#">실시간 아우성</NavItem>
-        <NavItem href="#">저장게시판</NavItem>
         <NavItem href="#">홈</NavItem>
+        <NavItem href="#">전체 게시판</NavItem>
+        <NavItem href="#">저장게시판</NavItem>
+        <NavItem href="#">실시간 아우성</NavItem>
+        <NavItem href="#">질문 내역</NavItem>
       </Nav>
       <CatIcon onClick={toggleDropdown}>
         <img src={Union} alt="Union" />
