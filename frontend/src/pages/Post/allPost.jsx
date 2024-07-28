@@ -2,6 +2,8 @@ import styled from "styled-components";
 import PolyGon from "../../img/Polygon.png";
 import Tag from "../../components/tag";
 import Header from "../../components/header";
+import { useState, useEffect } from "react";
+import Config from "../../config/config";
 
 const Title = styled.span`
   color: #000;
@@ -96,23 +98,40 @@ const PostTitle = styled.div`
 `;
 
 function AllPost() {
-  const postData = [
-    { tags: [{ name: "Swift", color: "#6630ff" }] },
-    {
-      tags: [
-        { name: "Swift", color: "#6630ff" },
-        { name: "Ios", color: "#FF3F3F" },
-      ],
-    },
-    { tags: [{ name: "Java", color: "#00A775" }] },
-    { tags: [{ name: "Swift", color: "#6630ff" }] },
-    {
-      tags: [
-        { name: "Java", color: "#00A775" },
-        { name: "Ios", color: "#FF3F3F" },
-      ],
-    },
-  ];
+  const token = localStorage.getItem("token");
+  const [data, setData] = useState([]);
+  console.log(data);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${Config.baseURL}/api/article/all?page=0&size=5`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log(data);
+
+        if (response.status === 200) {
+          setData(data.result.articlePreviewList);
+        } else {
+          alert("데이터를 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        alert("에러 발생");
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [token]);
 
   return (
     <>
@@ -135,12 +154,12 @@ function AllPost() {
             </Stack>
           </DropDownButton>
         </DropDownContainer>
-        {postData.map((post, index) => (
+        {data.map((article, index) => (
           <Post key={index}>
-            <PostTitle>Index out of range</PostTitle>
+            <PostTitle>{article.title}</PostTitle>
             <PostContainer>
-              {post.tags.map((tag, tagIndex) => (
-                <Tag key={tagIndex} name={tag.name} color={tag.color} />
+              {article.tagList.map((tag, tagIndex) => (
+                <Tag key={tagIndex} name={tag.tagName} color={tag.colorCode} />
               ))}
             </PostContainer>
           </Post>
