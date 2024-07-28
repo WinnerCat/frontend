@@ -53,9 +53,9 @@ const TagList = styled.div`
 function TagDropdown({ tags, setTags }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const availableTags = [
-    { name: "Swift", color: "#6630ff" },
+    { name: "swift", color: "#6630ff" },
     { name: "Ios", color: "#FF3F3F" },
-    { name: "Java", color: "#00A775" },
+    { name: "java", color: "#00A775" },
   ];
 
   const handleTagSelect = (tag) => {
