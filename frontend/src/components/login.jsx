@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import Header from '../components/header';
@@ -86,7 +87,6 @@ const Footer = styled.div`
 
 const Logo = styled.img`
   width: 25%;
-  margin-bottom: 20px;
 `;
 
 const OrDivider = styled.div`
@@ -106,6 +106,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -138,8 +139,10 @@ const Login = () => {
 
           localStorage.setItem('token', token);
           localStorage.setItem('email', email); 
-          localStorage.setItem('logined', 'true');
+          localStorage.setItem('isLogined', 'true');
 
+          // Navigate to home after successful login
+          navigate('/');
         } else {
           setError('로그인에 실패했습니다. 다시 시도해 주세요.');
         }
@@ -179,7 +182,7 @@ const Login = () => {
             <Button type="submit">이메일로 로그인</Button>
             <Footer>
               <SecondaryButton>아이디/비밀번호 찾기</SecondaryButton>
-              <SecondaryButton>회원가입</SecondaryButton>
+              <SecondaryButton onClick={() => navigate('/signup')}>회원가입</SecondaryButton>
             </Footer>
             <OrDivider>
               <div></div>-----간편로그인-----<div></div>

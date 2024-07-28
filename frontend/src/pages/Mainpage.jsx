@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/header";
@@ -15,14 +15,9 @@ const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 50px;
+  padding: 2vw;
   background-color: #d9d9d9;
-  height: 180px;
-
-  @media (max-width: 768px) {
-    padding: 30px;
-    height: auto;
-  }
+  height: 20vh;
 `;
 
 const SearchContainer = styled.form`
@@ -33,14 +28,12 @@ const SearchContainer = styled.form`
 `;
 
 const SearchInput = styled.input`
-  padding: 10px;
-  font-size: 20px;
+  font-size: 1.3vw;
   border: none;
   border-radius: 50px;
-  width: 500px;
-  height: 30px;
-  padding-left: 30px;
-  padding-right: 50px;
+  width: 40vw;
+  height: 3vh;
+  padding: 1vw 3vw;
   color: white;
   background-color: #6630ff;
 
@@ -87,50 +80,42 @@ const Section = styled.div`
 const Box = styled.div`
   flex: 1;
   background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
   text-align: center;
 `;
 
-const BugBox = styled(Box)`
-  margin-right: 10px;
-
-  @media (max-width: 768px) {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-`;
+const BugBox = styled(Box)``;
 
 const RankingBox = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 10px;
   width: 100%;
+`;
 
-  @media (max-width: 768px) {
-    margin-left: 0;
-    width: 100%;
-  }
+const RankingItem = styled.div`
+  border: 2px solid #808080;
+  border-radius: 1vw;
+  width: 70%;
 `;
 
 const RankingList = styled.div`
-  width: 80%;
-  border: 2px solid #808080;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2vw;
+  margin-bottom: 1vw;
 `;
 
-const ListItem = styled.div`
-  padding: 8px 0;
-  border-bottom: 1px solid #e0e0e0;
+const RankLanguage = styled.div`
+  display: inline-block;
+  border: none;
+  background-color: #d9d9d9;
+  border-radius: 0.5vw;
+  padding: 0.2vw 1vw;
+`;
 
-  &:last-child {
-    border-bottom: none;
-  }
+const RankCount = styled.span`
+  color: #808080;
 `;
 
 const PostsBox = styled.div`
@@ -151,9 +136,8 @@ const PostsBox = styled.div`
 const PostsContainer = styled.div`
   display: flex;
   gap: 20px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 20px;
+  overflow-x: hidden;
+  position: relative;
 
   @media (max-width: 768px) {
     overflow-x: scroll;
@@ -171,7 +155,6 @@ const PostItem = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  scroll-snap-align: start;
 
   @media (max-width: 768px) {
     flex: 0 0 80%;
@@ -181,12 +164,6 @@ const PostItem = styled.div`
 const HighlightedText = styled.span`
   color: #6630ff;
   font-weight: bold;
-`;
-
-const HighlightedItem = styled.span`
-  background-color: #e0e0e0;
-  padding: 2px 4px;
-  border-radius: 4px;
 `;
 
 const PostTitle = styled.div`
@@ -200,21 +177,17 @@ const PostTitle = styled.div`
 const Myquestionhistory = styled.button`
   background-color: #6630ff;
   color: #fff;
-  font-size: 20px;
-  padding: 2vw;
+  font-size: 1.8vw;
+  font-weight: bold;
+  padding: 1.5vw;
   margin-top: 2vw;
   border-radius: 10px;
-  width: 90%;
+  width: 70%;
   border: none;
   cursor: pointer;
 
   &:hover {
     background-color: #4a25c1;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 18px;
   }
 `;
 
@@ -231,13 +204,13 @@ const MorePostsLink = styled.a`
 const Title = styled.h2`
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 2vw;
   color: #808080;
 `;
 
 const BugCountText = styled.div`
   font-family: "Pretendard", sans-serif;
-  font-size: 96px;
+  font-size: 5vw;
   font-weight: 800;
   text-align: left;
   color: #6630ff;
@@ -271,11 +244,13 @@ const ChatMessage = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const ChatMessage1 = styled.div`
   position: relative;
   bottom: 1.5vw;
   left: 27vw;
 `;
+
 const ChatMessage2 = styled.div`
   position: relative;
   bottom: 0.5vw;
@@ -318,25 +293,37 @@ const BugCount = ({ count }) => (
   </BugCountText>
 );
 
+const ScrollButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #6630ff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1;
+
+  &:hover {
+    background-color: #4a25c1;
+  }
+`;
+
+const LeftButton = styled(ScrollButton)`
+  left: -15px;
+`;
+
+const RightButton = styled(ScrollButton)`
+  right: -15px;
+`;
+
 const Mainpage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const bugCount = 572;
-  const rankingItems = [
-    "Spring 287마리",
-    "React 133마리",
-    "Spring 42마리",
-    "Spring 42마리",
-  ];
-
-  const formatRankingItem = (item) => {
-    const parts = item.split(" ");
-    return (
-      <ListItem key={item}>
-        <HighlightedItem>{parts[0]}</HighlightedItem> {parts[1]}
-      </ListItem>
-    );
-  };
+  const postsRef = useRef();
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -345,6 +332,14 @@ const Mainpage = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     navigate(`/question?query=${searchQuery}`);
+  };
+
+  const scrollLeft = () => {
+    postsRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+  };
+
+  const scrollRight = () => {
+    postsRef.current.scrollBy({ left: 300, behavior: 'smooth' });
   };
 
   return (
@@ -369,8 +364,25 @@ const Mainpage = () => {
             <BugcatImage src={BugCatImg} alt="오늘 잡은 버그 이미지" />
           </BugBox>
           <RankingBox>
-            <Title>오늘의 버그 랭킹</Title>
-            <RankingList>{rankingItems.map(formatRankingItem)}</RankingList>
+            <RankingItem>
+              <Title>오늘의 버그 랭킹</Title>
+              <RankingList>
+                <RankLanguage>Spring</RankLanguage>
+                <RankCount>287마리</RankCount>
+              </RankingList>
+              <RankingList>
+                <RankLanguage>Spring</RankLanguage>
+                <RankCount>287마리</RankCount>
+              </RankingList>
+              <RankingList>
+                <RankLanguage>Spring</RankLanguage>
+                <RankCount>287마리</RankCount>
+              </RankingList>
+              <RankingList>
+                <RankLanguage>Spring</RankLanguage>
+                <RankCount>287마리</RankCount>
+              </RankingList>
+            </RankingItem>
             <Myquestionhistory>내가 잡은 버그 목록</Myquestionhistory>
           </RankingBox>
         </Section>
@@ -379,7 +391,7 @@ const Mainpage = () => {
             <HighlightedText>weon</HighlightedText>님을 위해{" "}
             <HighlightedText>Swift</HighlightedText> 관련 게시글을 모아봤어요!
           </PostTitle>
-          <PostsContainer>
+          <PostsContainer ref={postsRef}>
             <PostItem>Index out of range</PostItem>
             <PostItem>Index out of range</PostItem>
             <PostItem>Index out of range</PostItem>
@@ -388,6 +400,8 @@ const Mainpage = () => {
             <PostItem>Index out of range</PostItem>
             <PostItem>Index out of range</PostItem>
           </PostsContainer>
+          <LeftButton onClick={scrollLeft}>{"<"}</LeftButton>
+          <RightButton onClick={scrollRight}>{">"}</RightButton>
         </PostsBox>
         <MorePostsLink href="#">더 많은 게시글들 보고 싶어요</MorePostsLink>
         <ChatBox>
