@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/header";
 import Rectangle from "../../img/Rectangle.png";
 import Update from "../../img/update.png";
 import Save from "../../img/Frame.png";
 import Tag from "../../components/tag";
+import { useParams } from "react-router-dom";
+import Config from "../../config/config";
 
 const Container = styled.div`
   display: flex;
@@ -66,8 +68,8 @@ const InputContainerTitle = styled.div`
   line-height: 175%; /* 42px */
 `;
 
-const InputContainer = styled.textarea`
-  width: 100%;
+const InputContainer = styled.div`
+  width: 96.5%;
   height: 13vw;
   flex-shrink: 0;
   border-radius: 0.8vw;
@@ -75,10 +77,11 @@ const InputContainer = styled.textarea`
   margin-bottom: 1.95vw;
   color: var(--d-9-d-9-d-9, #000);
   font-family: Inter;
-  font-size: 1vw;
+  font-size: 1.2vw;
   font-style: normal;
   font-weight: 400;
   line-height: 200%; /* 40px */
+  padding: 1.2vw;
 `;
 
 const MenuContainer = styled.div`
@@ -121,11 +124,46 @@ const Divider = styled.div`
 `;
 
 function PostDetail() {
+  const token = localStorage.getItem("token");
+  const { articleId } = useParams();
+
   const [menuVisible, setMenuVisible] = useState(false);
+  const [data, setData] = useState([]);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${Config.baseURL}/api/article/detail/${articleId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log(data);
+
+        if (response.status === 200) {
+          setData(data.result);
+        } else {
+          alert("데이터를 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        alert("에러 발생");
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [token]);
 
   return (
     <>
@@ -140,7 +178,7 @@ function PostDetail() {
                 style={{ width: "3vw", height: "3vw", marginRight: "0.7vw" }}
                 alt="Logo"
               />{" "}
-              <span>Index out of range</span>
+              <span>{data.title}</span>
             </TitleLogo>
             <SaveDelete>
               <MenuContainer>
@@ -166,13 +204,17 @@ function PostDetail() {
             </SaveDelete>
           </TitleContainer>
           <TagContainer>
-            <Tag name="Swift" color="#6630ff" />
-            <Tag name="Swift" color="#ff3030" />
+            {data.tags &&
+              data.tags.map((tag, index) => (
+                <Tag name={tag.tagName} color={tag.colorCode} />
+              ))}
           </TagContainer>
           <InputContainerTitle>원인</InputContainerTitle>
-          <InputContainer></InputContainer>
+          <InputContainer>{data.cause}</InputContainer>
           <InputContainerTitle>해결방법</InputContainerTitle>
-          <InputContainer style={{ marginBottom: "5.3vw" }}></InputContainer>
+          <InputContainer style={{ marginBottom: "5.3vw" }}>
+            {data.solution}
+          </InputContainer>
         </Container80>
       </Container>
       <hr></hr>
