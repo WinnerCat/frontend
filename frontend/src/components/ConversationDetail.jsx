@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Modal from './adoptmodal';
 
@@ -23,9 +23,10 @@ const ChatContainer = styled.div`
   flex-direction: column;
 `;
 
+// 메시지 컨테이너
 const MessageContainer = styled.div`
   display: flex;
-  flex-direction: ${props => (props.isUser ? 'row' : 'row-reverse')};
+  flex-direction: ${props => (props.direction === 'row' ? 'row' : 'row-reverse')};
   align-items: flex-start;
   font-size: 1vw;
 `;
@@ -54,7 +55,7 @@ const QuestionBox = styled.div`
   }
 `;
 
-// 답변채택 버튼
+// 답변 채택 버튼
 const AcceptButton = styled.button`
   position: absolute;
   right: 10px;
@@ -97,7 +98,7 @@ const AnswerBox = styled.div`
 `;
 
 const QuestionMessage = ({ text }) => (
-  <MessageContainer isUser={false}>
+  <MessageContainer direction="row-reverse">
     <QuestionBox>
       {text}
     </QuestionBox>
@@ -105,7 +106,7 @@ const QuestionMessage = ({ text }) => (
 );
 
 const AnswerMessage = ({ text, onAccept }) => (
-  <MessageContainer isUser={true}>
+  <MessageContainer direction="row">
     <AnswerBox>
       {text}
       <AcceptButton onClick={onAccept}>답변채택</AcceptButton>
@@ -116,6 +117,31 @@ const AnswerMessage = ({ text, onAccept }) => (
 const ConversationDetail = ({ title, content, close }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [chatMessages, setChatMessages] = useState([]);
+
+  useEffect(() => {
+    // Fetch chat messages from localStorage when component mounts or title/content changes
+    const savedData = localStorage.getItem('conversationData');
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        // Structure chat messages with question and answers
+        const messages = [];
+        if (parsedData.question) {
+          messages.push({ text: parsedData.question.content, isUser: false }); // Question is not from user
+        }
+        if (parsedData.answers) {
+          messages.push(...parsedData.answers.map(answer => ({
+            text: answer.content,
+            isUser: true, // Assuming answers are from the user
+          })));
+        }
+        setChatMessages(messages);
+      } catch (error) {
+        console.error("Failed to parse conversation data from localStorage", error);
+      }
+    }
+  }, [title, content]); // Add title and content as dependencies
 
   const handleAcceptClick = (message) => {
     setSelectedMessage(message);
@@ -131,14 +157,9 @@ const ConversationDetail = ({ title, content, close }) => {
     setModalOpen(false);
   };
 
-  // 임시 데이터
-  const chatMessages = [
-    { isUser: false, text: "질문 내용isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다. isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다. isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다. isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다." },
-    { isUser: true, text: "답변 내용isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다. isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다. isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다. isTextViewEmptyRelay를 추가하여 contentTextView의 빈 상태를 관리하고, 뷰모델의 입력으로 전달하도록 수정했습니다. 이제 CreateNoticeVM은 isTextViewEmpty를 포함하여 createButton의 상태를 관리합니다." }
-  ];
-
   return (
     <DetailContainer>
+      <h1>{title}</h1>
       <ChatContainer>
         {chatMessages.map((message, index) => (
           message.isUser ? 

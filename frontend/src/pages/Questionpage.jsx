@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../components/header';
 import NoBugImage from '../img/no_bug.png';
 import SearchIcon from '../img/search_icon.png';
 import Round from "../img/Round.png";
 import Done from "../img/done.png";
-import ConversationDetail from '../components/ConversationDetail'; 
+import ConversationDetail from '../components/ConversationDetail';
 
 const PageContainer = styled.div`
   display: flex;
@@ -168,14 +168,90 @@ const Tag = ({ name, color, icon }) => {
 
 const QuestionPage = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [questions, setQuestions] = useState([]);
 
-  const questions = [
-    { title: '에러 제목 요약 1', content: '이것은 첫 번째 에러에 대한 대화 기록입니다.', status: '해결중' },
-    { title: '에러 제목 요약 2', content: '이것은 두 번째 에러에 대한 대화 기록입니다.', status: '해결중' },
-    { title: '에러 제목 요약 3', content: '이것은 세 번째 에러에 대한 대화 기록입니다.', status: '해결중' },
-    { title: '에러 제목 요약 4', content: '이것은 네 번째 에러에 대한 대화 기록입니다.', status: '해결완료' },
-    { title: '에러 제목 요약 5', content: '이것은 다섯 번째 에러에 대한 대화 기록입니다.', status: '해결완료' },
-  ];
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("토큰이 없습니다. 로그인을 해주세요.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://bugnyang.shop:8080/api/question-room", {
+          method: "GET",
+          headers: {
+            "Authorization": token,
+          },
+        });
+
+        const data = await response.json();
+        console.log("Fetched questions data:", data);
+
+        if (data.isSuccess) {
+          const fetchedQuestions = data.result.map((item) => ({
+            id: item.id,
+            title: item.roomName,
+            status: item.state === "PROGRESS" ? "해결중" : "해결완료",
+            questionRoomId: item.id,
+          }));
+
+          setQuestions(fetchedQuestions);
+        } else {
+          alert("에러가 발생했습니다. 다시 시도해주세요.");
+        }
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        alert("에러가 발생했습니다. 다시 시도해주세요.");
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  const handleQuestionClick = async (question) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("토큰이 없습니다. 로그인을 해주세요.");
+      return;
+    }
+  
+    console.log("Clicked question:", question);
+  
+    try {
+      const response = await fetch(`http://bugnyang.shop:8080/api/question-room/${question.questionRoomId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": token,
+        },
+      });
+  
+      const data = await response.json();
+      console.log("Fetched conversation data:", data);
+  
+      if (data.isSuccess) {
+        // Prepare data for localStorage
+        const conversationData = {
+          question: {
+            id: question.questionRoomId,
+            title: question.title,
+            content: JSON.parse(data.result.questionList[0].content).question,
+          },
+          answers: data.result.answerList || []
+        };
+  
+        localStorage.setItem('conversationData', JSON.stringify(conversationData));
+        setSelectedQuestion(question);
+      } else {
+        alert("대화 내용을 불러오는데 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error fetching conversation details:", error);
+      alert("대화 내용을 불러오는데 실패했습니다.");
+    }
+  };
+  
 
   return (
     <PageContainer>
@@ -192,7 +268,7 @@ const QuestionPage = () => {
             {questions.map((question, index) => (
               <SidebarContent 
                 key={index} 
-                onClick={() => setSelectedQuestion(question)}
+                onClick={() => handleQuestionClick(question)}
               >
                 <SidebarLabel>{question.title}</SidebarLabel>
                 <Tag 
@@ -231,4 +307,3 @@ const QuestionPage = () => {
 };
 
 export default QuestionPage;
-
