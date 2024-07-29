@@ -20,7 +20,7 @@ function App() {
         <Route path="/savePost" element={<SavePost />} />
         <Route path="/postCreate" element={<PostCreate />} />
         <Route path="/live" element={<Live />} />
-        <Route path="/postDetail" element={<PostDetail />} />
+        <Route path="/postDetail/:articleId" element={<PostDetail />} />
         <Route path="/" element={<Mainpage />} />
         <Route path="/question" element={<Question />} />
         <Route path="/login" element={<Login />} />
