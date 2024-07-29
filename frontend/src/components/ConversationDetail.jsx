@@ -120,20 +120,18 @@ const ConversationDetail = ({ title, content, close }) => {
   const [chatMessages, setChatMessages] = useState([]);
 
   useEffect(() => {
-    // Fetch chat messages from localStorage when component mounts or title/content changes
     const savedData = localStorage.getItem('conversationData');
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
-        // Structure chat messages with question and answers
         const messages = [];
         if (parsedData.question) {
-          messages.push({ text: parsedData.question.content, isUser: false }); // Question is not from user
+          messages.push({ text: parsedData.question.content, isUser: false });
         }
         if (parsedData.answers) {
           messages.push(...parsedData.answers.map(answer => ({
             text: answer.content,
-            isUser: true, // Assuming answers are from the user
+            isUser: true,
           })));
         }
         setChatMessages(messages);
@@ -141,7 +139,7 @@ const ConversationDetail = ({ title, content, close }) => {
         console.error("Failed to parse conversation data from localStorage", error);
       }
     }
-  }, [title, content]); // Add title and content as dependencies
+  }, [title, content]);
 
   const handleAcceptClick = (message) => {
     setSelectedMessage(message);

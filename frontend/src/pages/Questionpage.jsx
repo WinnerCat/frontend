@@ -231,7 +231,6 @@ const QuestionPage = () => {
       console.log("Fetched conversation data:", data);
   
       if (data.isSuccess) {
-        // Prepare data for localStorage
         const conversationData = {
           question: {
             id: question.questionRoomId,
