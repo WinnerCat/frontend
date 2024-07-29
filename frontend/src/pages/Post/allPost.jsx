@@ -4,6 +4,7 @@ import Tag from "../../components/tag";
 import Header from "../../components/header";
 import { useState, useEffect } from "react";
 import Config from "../../config/config";
+import { useNavigate } from "react-router-dom";
 
 const Title = styled.span`
   color: #000;
@@ -112,6 +113,8 @@ function AllPost() {
   const [totalPages, setTotalPages] = useState(1);
   console.log(data);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -178,7 +181,10 @@ function AllPost() {
           </DropDownButton>
         </DropDownContainer>
         {data.map((article, index) => (
-          <Post key={index}>
+          <Post
+            key={index}
+            onClick={() => navigate(`/postDetail/${article.articleId}`)}
+          >
             <PostTitle>{article.title}</PostTitle>
             <PostContainer>
               {article.tagList.map((tag, tagIndex) => (
