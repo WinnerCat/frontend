@@ -105,29 +105,67 @@ const PostTitle = styled.div`
   font-weight: 500;
   line-height: normal;
 `;
+const DropDownItem = styled.div`
+  padding: 0.8vw 1vw;
+  display: flex;
+  align-items: center;
+  color: #f0f0f0;
+  width: 100%;
+  height: 2vw;
+
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  font-size: 1.3vw;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: 0.05vw solid #f0f0f0;
+
+  &:hover {
+    background-color: #6630ff;
+    color: white;
+  }
+`;
+
+const DropDownContent = styled.div`
+  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+
+  position: relative;
+  right: 14vw;
+  top: 6.7vw;
+  border-radius: 1vw;
+  width: 17vw;
+  box-shadow: 0 0.4vw 0.8vw rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  overflow: hidden;
+`;
 
 function AllPost() {
   const token = localStorage.getItem("token");
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  console.log(data);
+  const [selectedTag, setSelectedTag] = useState("전체보기");
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
+  console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${Config.baseURL}/api/article/all?page=${currentPage}&size=5`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
-        );
+        // 전체보기 시 전체보기 API 태그 선택시 태그 API 사용
+        const url =
+          selectedTag === "전체보기"
+            ? `${Config.baseURL}/api/article/all?page=${currentPage}&size=5`
+            : `${Config.baseURL}/api/article/tag?tagName=${selectedTag}&page=${currentPage}&size=5`;
+
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
 
         const data = await response.json();
         console.log(data);
@@ -145,7 +183,7 @@ function AllPost() {
     };
 
     fetchData();
-  }, [token, currentPage]);
+  }, [token, currentPage, selectedTag]);
 
   const handlePreviousPage = () => {
     if (currentPage > 0) {
@@ -159,24 +197,43 @@ function AllPost() {
     }
   };
 
+  const handleTagChange = (tag) => {
+    setSelectedTag(tag);
+    setCurrentPage(0);
+  };
+
   return (
     <>
       <Header></Header>
       <Container>
         <Container80>
           <Title>
-            <ColorTitle>다른 개발자</ColorTitle>들의 <br></br>
-            버그퇴치 방법이 궁금하신가요?
+            정보 글을 <ColorTitle>작성</ColorTitle>하여 <br></br>
+            <ColorTitle>여러 개발자들</ColorTitle>과 소통해보세요!
           </Title>
         </Container80>
         <DropDownContainer>
-          <DropDownButton>
+          <DropDownButton onClick={() => setIsOpen(!isOpen)}>
             <Stack>
-              전체게시글
+              {selectedTag}
               <img
                 src={PolyGon}
                 style={{ width: "1vw", height: "1vw", marginLeft: "0.35vw" }}
               />
+              <DropDownContent isOpen={isOpen}>
+                <DropDownItem onClick={() => handleTagChange("전체보기")}>
+                  전체보기
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("ios")}>
+                  ios
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Swift")}>
+                  Swift
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Java")}>
+                  Java
+                </DropDownItem>
+              </DropDownContent>
             </Stack>
           </DropDownButton>
         </DropDownContainer>
