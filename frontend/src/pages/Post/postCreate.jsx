@@ -123,8 +123,6 @@ const ButtonContainer1 = styled.div`
 function PostCreate() {
   const navigate = useNavigate();
 
-  const [tags, setTags] = useState([]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -137,6 +135,7 @@ function PostCreate() {
   };
 
   const [title, setTitle] = useState("");
+  const [tags, setTags] = useState([]);
   const [cause, setCause] = useState("");
   const [solution, setSolution] = useState("");
 
@@ -165,7 +164,7 @@ function PostCreate() {
         },
         body: JSON.stringify({
           title: title,
-          tag: tags.map((tag) => tag.name),
+          tags: tags.map((tag) => tag.name),
           cause: cause,
           solution: solution,
         }),
@@ -173,6 +172,7 @@ function PostCreate() {
 
       const data = await response.json();
       console.log(data);
+      console.log(tags);
 
       if (response.status === 200) {
         openModal1();
