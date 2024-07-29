@@ -329,9 +329,29 @@ const Mainpage = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    navigate(`/question?query=${searchQuery}`);
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("토큰이 없습니다. 로그인을 해주세요.");
+      return;
+    }
+
+    const response = await fetch("http://bugnyang.shop:8080/api/question/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token,
+      },
+      body: JSON.stringify({ question: searchQuery }),
+    });
+
+    if (response.ok) {
+      navigate(`/question?query=${searchQuery}`);
+    } else {
+      alert("질문 등록에 실패했습니다.");
+    }
   };
 
   const scrollLeft = () => {

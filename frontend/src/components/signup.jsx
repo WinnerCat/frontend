@@ -236,7 +236,6 @@ const Signup = () => {
       console.log('회원가입 성공:', response.data);
 
       if (response.data.isSuccess) {
-        // Automatically login after successful signup
         const loginPayload = {
           email,
           password,
@@ -248,12 +247,9 @@ const Signup = () => {
         if (loginResponse.data.isSuccess) {
           const token = loginResponse.data.result;
 
-          // Save token, email, and login status to localStorage
           localStorage.setItem('token', token);
-          localStorage.setItem('nickname', email);
-          localStorage.setItem('logined', 'true');
+          localStorage.setItem('isLogined', 'true');
 
-          // Show welcome modal after successful login
           setIsModalOpen(true);
         } else {
           setError('로그인에 실패했습니다. 다시 시도해 주세요.');
