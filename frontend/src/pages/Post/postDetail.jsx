@@ -5,8 +5,9 @@ import Rectangle from "../../img/Rectangle.png";
 import Update from "../../img/update.png";
 import Save from "../../img/Frame.png";
 import Tag from "../../components/tag";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Config from "../../config/config";
+import SaveTrue from "../../img/Frame1.png";
 
 const Container = styled.div`
   display: flex;
@@ -126,12 +127,69 @@ const Divider = styled.div`
 function PostDetail() {
   const token = localStorage.getItem("token");
   const { articleId } = useParams();
+  const navigate = useNavigate();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [data, setData] = useState([]);
+  const [scrap, setScrap] = useState(false);
+  console.log(scrap);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
+  };
+
+  // 스크랩
+  const handleScrap = async () => {
+    try {
+      const response = await fetch(`${Config.baseURL}/api/scrap/${articleId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+
+      const scrapData = await response.json();
+      console.log(scrapData);
+
+      if (response.status === 200) {
+        setScrap(true);
+        if (scrap === false) alert("스크랩에 성공하였습니다.");
+      } else {
+        alert("오류발생");
+      }
+    } catch (error) {
+      alert("에러발생");
+      console.log(error);
+    }
+  };
+  // 언스크랩
+  const handleUnScrap = async () => {
+    try {
+      const response = await fetch(
+        `${Config.baseURL}/api/scrap/cancel/${articleId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      const scrapData = await response.json();
+      console.log(scrapData);
+
+      if (response.status === 200) {
+        setScrap(false);
+        if (scrap === true) alert("스크랩을 취소합니다.");
+      } else {
+        alert("오류발생");
+      }
+    } catch (error) {
+      alert("에러발생");
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -153,6 +211,7 @@ function PostDetail() {
 
         if (response.status === 200) {
           setData(data.result);
+          setScrap(data.result.isScrapped);
         } else {
           alert("데이터를 불러오는데 실패했습니다.");
         }
@@ -163,14 +222,14 @@ function PostDetail() {
     };
 
     fetchData();
-  }, [token]);
+  }, [token, articleId, scrap]);
 
   return (
     <>
       <Header></Header>
       <Container>
         <Container80>
-          <BackButton>&lt; 나의 작성글</BackButton>
+          <BackButton>&lt; 내 게시글</BackButton>
           <TitleContainer>
             <TitleLogo>
               <img
@@ -196,17 +255,27 @@ function PostDetail() {
                   </Menu>
                 )}
               </MenuContainer>
-              <img
-                src={Save}
-                style={{ width: "2.4vw", height: "2.4vw" }}
-                alt="Save"
-              />
+              {data.isScrapped === true ? (
+                <img
+                  src={SaveTrue}
+                  style={{ width: "2.4vw", height: "2.4vw" }}
+                  alt="Save"
+                  onClick={handleUnScrap}
+                />
+              ) : (
+                <img
+                  src={Save}
+                  style={{ width: "2.4vw", height: "2.4vw" }}
+                  alt="Save"
+                  onClick={handleScrap}
+                />
+              )}
             </SaveDelete>
           </TitleContainer>
           <TagContainer>
             {data.tags &&
               data.tags.map((tag, index) => (
-                <Tag name={tag.tagName} color={tag.colorCode} />
+                <Tag key={index} name={tag.tagName} color={tag.colorCode} />
               ))}
           </TagContainer>
           <InputContainerTitle>원인</InputContainerTitle>

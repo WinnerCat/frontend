@@ -111,9 +111,9 @@ function AllPost() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  console.log(data);
 
   const navigate = useNavigate();
+  console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {

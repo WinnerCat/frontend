@@ -2,6 +2,9 @@ import styled from "styled-components";
 import PolyGon from "../../img/Polygon.png";
 import Tag from "../../components/tag";
 import Header from "../../components/header";
+import { useState, useEffect } from "react";
+import Config from "../../config/config";
+import { useNavigate } from "react-router-dom";
 
 const Title = styled.span`
   color: #000;
@@ -86,6 +89,14 @@ const Page = styled.div`
   line-height: normal;
 `;
 
+const PageButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1vw;
+  margin: 0 0.5vw;
+`;
+
 const PostTitle = styled.div`
   color: #000;
   font-family: Pretendard;
@@ -96,23 +107,57 @@ const PostTitle = styled.div`
 `;
 
 function SavePost() {
-  const postData = [
-    { tags: [{ name: "Swift", color: "#6630ff" }] },
-    {
-      tags: [
-        { name: "Swift", color: "#6630ff" },
-        { name: "Ios", color: "#FF3F3F" },
-      ],
-    },
-    { tags: [{ name: "Java", color: "#00A775" }] },
-    { tags: [{ name: "Swift", color: "#6630ff" }] },
-    {
-      tags: [
-        { name: "Java", color: "#00A775" },
-        { name: "Ios", color: "#FF3F3F" },
-      ],
-    },
-  ];
+  const token = localStorage.getItem("token");
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const navigate = useNavigate();
+  console.log(data);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${Config.baseURL}/api/scrap/mine?page=${currentPage}&size=5`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log(data);
+
+        if (response.status === 200) {
+          setData(data.result.scrapPreviewList);
+          setTotalPages(data.result.totalPages);
+        } else {
+          alert("데이터를 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        alert("에러 발생");
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [token, currentPage]);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <>
@@ -120,8 +165,8 @@ function SavePost() {
       <Container>
         <Container80>
           <Title>
-            <ColorTitle>버그퇴치 방법</ColorTitle>을<br></br>
-            한번 더 보고싶어요!
+            <ColorTitle>다른 개발자</ColorTitle>들의 <br></br>
+            버그퇴치 방법이 궁금하신가요?
           </Title>
         </Container80>
         <DropDownContainer>
@@ -135,17 +180,31 @@ function SavePost() {
             </Stack>
           </DropDownButton>
         </DropDownContainer>
-        {postData.map((post, index) => (
-          <Post key={index}>
-            <PostTitle>Index out of range</PostTitle>
+        {data.map((article, index) => (
+          <Post
+            key={index}
+            onClick={() => navigate(`/postDetail/${article.articleId}`)}
+          >
+            <PostTitle>{article.title}</PostTitle>
             <PostContainer>
-              {post.tags.map((tag, tagIndex) => (
-                <Tag key={tagIndex} name={tag.name} color={tag.color} />
+              {article.tags.map((tag, tagIndex) => (
+                <Tag key={tagIndex} name={tag.tagName} color={tag.colorCode} />
               ))}
             </PostContainer>
           </Post>
         ))}
-        <Page>&lt; 2/5 &gt;</Page>
+        <Page>
+          <PageButton onClick={handlePreviousPage} disabled={currentPage === 0}>
+            &lt;
+          </PageButton>
+          {currentPage + 1}/{totalPages}
+          <PageButton
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages - 1}
+          >
+            &gt;
+          </PageButton>
+        </Page>
       </Container>
     </>
   );
