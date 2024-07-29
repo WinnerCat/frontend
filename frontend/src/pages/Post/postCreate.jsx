@@ -164,7 +164,7 @@ function PostCreate() {
         },
         body: JSON.stringify({
           title: title,
-          tag: tags.map((tag) => tag.name),
+          tags: tags.map((tag) => tag.name),
           cause: cause,
           solution: solution,
         }),
@@ -172,6 +172,7 @@ function PostCreate() {
 
       const data = await response.json();
       console.log(data);
+      console.log(tags);
 
       if (response.status === 200) {
         openModal1();
