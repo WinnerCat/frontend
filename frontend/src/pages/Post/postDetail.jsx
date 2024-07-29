@@ -229,7 +229,7 @@ function PostDetail() {
       <Header></Header>
       <Container>
         <Container80>
-          <BackButton>&lt; 내 게시글</BackButton>
+          <BackButton onClick={() => navigate(-1)}>&lt; 뒤로가기</BackButton>
           <TitleContainer>
             <TitleLogo>
               <img

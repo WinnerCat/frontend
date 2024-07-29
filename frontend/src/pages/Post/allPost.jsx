@@ -165,8 +165,8 @@ function AllPost() {
       <Container>
         <Container80>
           <Title>
-            <ColorTitle>다른 개발자</ColorTitle>들의 <br></br>
-            버그퇴치 방법이 궁금하신가요?
+            정보 글을 <ColorTitle>작성</ColorTitle>하여 <br></br>
+            <ColorTitle>여러 개발자들</ColorTitle>과 소통해보세요!
           </Title>
         </Container80>
         <DropDownContainer>

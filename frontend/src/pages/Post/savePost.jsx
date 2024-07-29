@@ -165,8 +165,8 @@ function SavePost() {
       <Container>
         <Container80>
           <Title>
-            <ColorTitle>다른 개발자</ColorTitle>들의 <br></br>
-            버그퇴치 방법이 궁금하신가요?
+            <ColorTitle>버그퇴치 방법</ColorTitle>을 <br></br>
+            한번 더 보고싶어요!
           </Title>
         </Container80>
         <DropDownContainer>
