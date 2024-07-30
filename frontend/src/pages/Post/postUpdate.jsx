@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "../../components/header";
 import Rectangle from "../../img/Rectangle.png";
 import Modal from "../../components/modal";
 import TagDropdown from "../../components/tagDropdown";
 import SuccessModal from "../../components/successModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Config from "../../config/config";
+import Tag from "../../components/tag";
 
 const Title = styled.span`
   color: #000;
@@ -65,6 +66,12 @@ const Input = styled.input`
   font-weight: 400;
   line-height: 200%; /* 40px */
 `;
+const TagContainer = styled.div`
+  position: relative;
+  display: flex;
+  gap: 0.5vw;
+  bottom: 5.3vw;
+`;
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -120,19 +127,9 @@ const ButtonContainer1 = styled.div`
   margin-bottom: 10vw;
 `;
 
-function PostCreate() {
+function PostUpdate() {
   const navigate = useNavigate();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const [isModalOpen1, setIsModalOpen1] = useState(false);
-  const openModal1 = () => setIsModalOpen1(true);
-  const closeModal1 = () => {
-    setIsModalOpen1(false);
-    navigate("/");
-  };
+  const { articleId } = useParams();
 
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState([]);
@@ -154,28 +151,30 @@ function PostCreate() {
 
   const token = localStorage.getItem("token");
 
-  const handleCreate = async () => {
+  const handleUpdate = async () => {
     try {
-      const response = await fetch(`${Config.baseURL}/api/article`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          title: title,
-          tags: tags.map((tag) => tag.tagName),
-          cause: cause,
-          solution: solution,
-        }),
-      });
+      const response = await fetch(
+        `${Config.baseURL}/api/article/${articleId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            title: title,
+            tags: tags.map((tag) => tag.tagName),
+            cause: cause,
+            solution: solution,
+          }),
+        }
+      );
 
       const data = await response.json();
       console.log(data);
       console.log(tags);
 
       if (response.status === 200) {
-        openModal1();
       } else {
         alert("오류발생");
       }
@@ -184,6 +183,40 @@ function PostCreate() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${Config.baseURL}/api/article/detail/${articleId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log(data);
+
+        if (response.status === 200) {
+          setTitle(data.result.title);
+          setTags(...tags, data.result.tags);
+          setCause(data.result.cause);
+          setSolution(data.result.solution);
+        } else {
+          alert("데이터를 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        alert("에러 발생");
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [token]);
 
   return (
     <>
@@ -207,6 +240,12 @@ function PostCreate() {
           />
           <InputContainerTitle>태그</InputContainerTitle>
           <TagDropdown tags={tags} setTags={setTags} />
+          <TagContainer>
+            {tags &&
+              tags.map((tag, index) => (
+                <Tag key={index} tagName={tag.tagName} color={tag.colorCode} />
+              ))}
+          </TagContainer>
           <InputContainerTitle>원인</InputContainerTitle>
           <TextArea
             placeholder="내용을 작성 해주세요."
@@ -221,7 +260,7 @@ function PostCreate() {
           />
           <ButtonContainer1>
             <ButtonContainer>
-              <CancleButton onClick={openModal}>
+              <CancleButton>
                 <span
                   style={{
                     color: "#000",
@@ -237,7 +276,8 @@ function PostCreate() {
               </CancleButton>
               <SaveButton
                 onClick={() => {
-                  handleCreate();
+                  handleUpdate();
+                  navigate(`/postDetail/${articleId}`);
                 }}
               >
                 <span
@@ -250,15 +290,11 @@ function PostCreate() {
                     lineHeight: "175%",
                   }}
                 >
-                  저장
+                  수정
                 </span>
               </SaveButton>
-              <SuccessModal isOpen={isModalOpen1} closeModal={closeModal1} />
-              <Modal
-                isOpen={isModalOpen}
-                closeModal={closeModal}
-                title="(대충 글을 적지않고 떠날건지 물어보는 내용)"
-              />
+              <SuccessModal />
+              <Modal title="(대충 글을 적지않고 떠날건지 물어보는 내용)" />
             </ButtonContainer>
           </ButtonContainer1>
         </Container80>
@@ -267,4 +303,4 @@ function PostCreate() {
   );
 }
 
-export default PostCreate;
+export default PostUpdate;

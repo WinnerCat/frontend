@@ -10,6 +10,7 @@ import Signup from "./components/signup";
 import PostDetail from "./pages/Post/postDetail";
 import Live from "./pages/Live";
 import PostCreate from "./pages/Post/postCreate";
+import PostUpdate from "./pages/Post/postUpdate";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/allPost" element={<AllPost />} />
         <Route path="/savePost" element={<SavePost />} />
         <Route path="/postCreate" element={<PostCreate />} />
+        <Route path="/postUpdate/:articleId" element={<PostUpdate />} />
         <Route path="/live" element={<Live />} />
         <Route path="/postDetail/:articleId" element={<PostDetail />} />
         <Route path="/" element={<Mainpage />} />

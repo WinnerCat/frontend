@@ -134,6 +134,8 @@ function PostDetail() {
   const [scrap, setScrap] = useState(false);
   console.log(scrap);
 
+  const email = localStorage.getItem("email");
+
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
@@ -191,7 +193,6 @@ function PostDetail() {
       console.log(error);
     }
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -240,21 +241,29 @@ function PostDetail() {
               <span>{data.title}</span>
             </TitleLogo>
             <SaveDelete>
-              <MenuContainer>
-                <img
-                  src={Update}
-                  style={{ width: "2.4vw", height: "2.4vw", cursor: "pointer" }}
-                  onClick={toggleMenu}
-                  alt="Update"
-                />
-                {menuVisible && (
-                  <Menu>
-                    <MenuItem>수정하기</MenuItem>
-                    <Divider />
-                    <MenuItem>삭제하기</MenuItem>
-                  </Menu>
-                )}
-              </MenuContainer>
+              {data.email === email && (
+                <MenuContainer>
+                  <img
+                    src={Update}
+                    style={{
+                      width: "2.4vw",
+                      height: "2.4vw",
+                      cursor: "pointer",
+                    }}
+                    onClick={toggleMenu}
+                    alt="Update"
+                  />
+                  {menuVisible && (
+                    <Menu>
+                      <MenuItem onClick={navigate(`/postUpdate/${articleId}`)}>
+                        수정하기
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem>삭제하기</MenuItem>
+                    </Menu>
+                  )}
+                </MenuContainer>
+              )}
               {data.isScrapped === true ? (
                 <img
                   src={SaveTrue}
@@ -275,7 +284,7 @@ function PostDetail() {
           <TagContainer>
             {data.tags &&
               data.tags.map((tag, index) => (
-                <Tag key={index} name={tag.tagName} color={tag.colorCode} />
+                <Tag key={index} tagName={tag.tagName} color={tag.colorCode} />
               ))}
           </TagContainer>
           <InputContainerTitle>원인</InputContainerTitle>

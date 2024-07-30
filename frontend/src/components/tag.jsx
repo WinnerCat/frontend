@@ -18,7 +18,7 @@ const Container = styled.div`
   margin-left: 0.5vw;
 `;
 
-function Tag({ name, color }) {
+function Tag({ tagName, color }) {
   return (
     <>
       <Container style={{ background: color }}>
@@ -30,7 +30,7 @@ function Tag({ name, color }) {
             marginRight: "0.4vw",
           }}
         ></img>
-        <span>{name}</span>
+        <span>{tagName}</span>
       </Container>
     </>
   );

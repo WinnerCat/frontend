@@ -188,7 +188,11 @@ function MyPost() {
             <PostTitle>{article.title}</PostTitle>
             <PostContainer>
               {article.tagList.map((tag, tagIndex) => (
-                <Tag key={tagIndex} name={tag.tagName} color={tag.colorCode} />
+                <Tag
+                  key={tagIndex}
+                  tagName={tag.tagName}
+                  color={tag.colorCode}
+                />
               ))}
             </PostContainer>
           </Post>
