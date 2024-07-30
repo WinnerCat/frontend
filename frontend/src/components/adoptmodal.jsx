@@ -1,6 +1,6 @@
-//답변을 채택할까요? 모달창
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Checkimg from '../img/Check.png';
 
 const ModalOverlay = styled.div`
@@ -66,26 +66,33 @@ const ModalButton = styled.button`
   }
 `;
 
-const AdoptModal = ({ message, description, onClose, onConfirm }) => {
-    const handleOverlayClick = (e) => {
-      if (e.target === e.currentTarget) {
-        onClose();
-      }
-    };
-  
-    return (
-      <ModalOverlay onClick={handleOverlayClick}>
-        <ModalContent>
-          <ModalIcon src={Checkimg} alt="check icon" />
-          <ModalText>{message}</ModalText>
-          <ModalDescription>{description}</ModalDescription>
-          <ModalButtonContainer>
-            <ModalButton onClick={onClose}>취소</ModalButton>
-            <ModalButton primary onClick={onConfirm}>확인</ModalButton>
-          </ModalButtonContainer>
-        </ModalContent>
-      </ModalOverlay>
-    );
+const AdoptModal = ({ message, description, onClose, onConfirm, articleId }) => {
+  const navigate = useNavigate();
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
   };
+
+  const handleConfirm = () => {
+    onConfirm();
+    navigate(`/postDetail/${articleId}`);
+  };
+
+  return (
+    <ModalOverlay onClick={handleOverlayClick}>
+      <ModalContent>
+        <ModalIcon src={Checkimg} alt="check icon" />
+        <ModalText>{message}</ModalText>
+        <ModalDescription>{description}</ModalDescription>
+        <ModalButtonContainer>
+          <ModalButton onClick={onClose}>취소</ModalButton>
+          <ModalButton primary onClick={handleConfirm}>확인</ModalButton>
+        </ModalButtonContainer>
+      </ModalContent>
+    </ModalOverlay>
+  );
+};
 
 export default AdoptModal;

@@ -35,6 +35,7 @@ const NavItem = styled.a`
   text-decoration: none;
   color: white;
   font-size: 1.2vw;
+  font-weight: 800;
   cursor: pointer;
 
   &:hover {
