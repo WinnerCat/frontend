@@ -6,6 +6,7 @@ import SearchIcon from '../img/search_icon.png';
 import Round from "../img/Round.png";
 import Done from "../img/done.png";
 import ConversationDetail from '../components/ConversationDetail';
+import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const MainContent = styled.main`
 const Sidebar = styled.div`
   width: 15%;
   background-color: #f5f5f5;
-  padding: 3vw;
+  padding: 1vw 2vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -60,6 +61,10 @@ const SidebarContent = styled.div`
 const SidebarLabel = styled.div`
   font-size: 1.2vw;
   color: #000000;
+  width: 9.5vw;
+  white-space: nowrap;          /* 한 줄로 표시 */
+  overflow: hidden;             /* 넘치는 내용 숨기기 */
+  text-overflow: ellipsis;      /* 줄임표(...) 표시 */
 `;
 
 const SidebarTagList = styled.div`
@@ -70,10 +75,6 @@ const SidebarTagList = styled.div`
 
 const ContentArea = styled.div`
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   position: relative;
   background-color: white;
 `;
@@ -86,7 +87,7 @@ const NoBugFound = styled.div`
   color: #838383;
   text-align: center;
   img {
-    width: 50%;
+    width: 10%;
     margin-bottom: 1vw;
   }
   p {
@@ -134,6 +135,7 @@ const AdditionalText = styled.p`
   bottom: 0.5vw;
   left: 50%;
   transform: translateX(-50%);
+  cursor: pointer;
 `;
 
 const Tag = ({ name, color, icon }) => {
@@ -167,6 +169,7 @@ const Tag = ({ name, color, icon }) => {
 };
 
 const QuestionPage = () => {
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 얻기
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [questions, setQuestions] = useState([]);
 
@@ -250,7 +253,10 @@ const QuestionPage = () => {
       alert("대화 내용을 불러오는데 실패했습니다.");
     }
   };
-  
+
+  const handleAdditionalTextClick = () => {
+    navigate('/postCreate');
+  };
 
   return (
     <PageContainer>
@@ -285,6 +291,7 @@ const QuestionPage = () => {
               title={selectedQuestion.title}
               content={selectedQuestion.content}
               close={() => setSelectedQuestion(null)}
+              articleId={selectedQuestion.id}
             />
           ) : (
             <NoBugFound>
@@ -298,7 +305,7 @@ const QuestionPage = () => {
               <img src={SearchIcon} alt="Search" />
             </SearchButton>
           </SearchBarContainer>
-          <AdditionalText>답변 외 방법으로 해결하였습니다.</AdditionalText>
+          <AdditionalText onClick={handleAdditionalTextClick}>답변 외 방법으로 해결하였습니다.</AdditionalText>
         </ContentArea>
       </MainContent>
     </PageContainer>
