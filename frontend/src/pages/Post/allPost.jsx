@@ -270,5 +270,5 @@ function AllPost() {
     </>
   );
 }
-
+//푸쉬
 export default AllPost;
