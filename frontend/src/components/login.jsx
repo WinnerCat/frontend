@@ -132,7 +132,7 @@ const Login = () => {
 
       try {
         const response = await axios.post(
-          "https://bugnyang.shop:8080/login",
+          "https://bugnyang.shop/login",
           payload
         );
         console.log("로그인 성공:", response.data);
