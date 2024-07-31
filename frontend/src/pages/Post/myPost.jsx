@@ -74,6 +74,7 @@ const Post = styled.div`
   align-items: center;
   padding: 1.6vw;
   margin-bottom: 1.1vw;
+  cursor: pointer;
 `;
 
 const PostContainer = styled.div`
@@ -105,12 +106,48 @@ const PostTitle = styled.div`
   font-weight: 500;
   line-height: normal;
 `;
+const DropDownItem = styled.div`
+  padding: 0.8vw 1vw;
+  display: flex;
+  align-items: center;
+  color: #f0f0f0;
+  width: 100%;
+  height: 2vw;
+
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  font-size: 1.3vw;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: 0.05vw solid #f0f0f0;
+
+  &:hover {
+    background-color: #6630ff;
+    color: white;
+  }
+`;
+
+const DropDownContent = styled.div`
+  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+
+  position: relative;
+  right: 14vw;
+  top: 6.7vw;
+  border-radius: 1vw;
+  width: 17vw;
+  box-shadow: 0 0.4vw 0.8vw rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  overflow: hidden;
+`;
 
 function MyPost() {
   const token = localStorage.getItem("token");
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedTag, setSelectedTag] = useState("전체보기");
+  const [isOpen, setIsOpen] = useState(false);
+
   console.log(data);
 
   const navigate = useNavigate();
@@ -158,6 +195,10 @@ function MyPost() {
       setCurrentPage(currentPage + 1);
     }
   };
+  const handleTagChange = (tag) => {
+    setSelectedTag(tag);
+    setCurrentPage(0);
+  };
 
   return (
     <>
@@ -170,13 +211,27 @@ function MyPost() {
           </Title>
         </Container80>
         <DropDownContainer>
-          <DropDownButton>
+          <DropDownButton onClick={() => setIsOpen(!isOpen)}>
             <Stack>
-              전체게시글
+              {selectedTag}
               <img
                 src={PolyGon}
                 style={{ width: "1vw", height: "1vw", marginLeft: "0.35vw" }}
               />
+              <DropDownContent isOpen={isOpen}>
+                <DropDownItem onClick={() => handleTagChange("전체보기")}>
+                  전체보기
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("ios")}>
+                  ios
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Swift")}>
+                  Swift
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Java")}>
+                  Java
+                </DropDownItem>
+              </DropDownContent>
             </Stack>
           </DropDownButton>
         </DropDownContainer>

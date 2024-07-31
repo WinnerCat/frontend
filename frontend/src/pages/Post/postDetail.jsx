@@ -57,7 +57,7 @@ const SaveDelete = styled.div`
 const TagContainer = styled.div`
   display: flex;
   gap: 0.5vw;
-  margin-bottom: 6.9vw;
+  margin-bottom: 3vw;
 `;
 
 const InputContainerTitle = styled.div`
@@ -193,6 +193,40 @@ function PostDetail() {
       console.log(error);
     }
   };
+
+  //삭제 API
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `${Config.baseURL}/api/article/${articleId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+      } else {
+        alert("오류발생");
+      }
+    } catch (error) {
+      alert("에러발생");
+      console.log(error);
+    }
+  };
+
+  //삭제확인
+  const onDeleteCheck = () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      handleDelete();
+      navigate(-1);
+      alert("삭제완료");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -255,11 +289,13 @@ function PostDetail() {
                   />
                   {menuVisible && (
                     <Menu>
-                      <MenuItem onClick={navigate(`/postUpdate/${articleId}`)}>
+                      <MenuItem
+                        onClick={() => navigate(`/postUpdate/${articleId}`)}
+                      >
                         수정하기
                       </MenuItem>
                       <Divider />
-                      <MenuItem>삭제하기</MenuItem>
+                      <MenuItem onClick={onDeleteCheck}>삭제하기</MenuItem>
                     </Menu>
                   )}
                 </MenuContainer>
