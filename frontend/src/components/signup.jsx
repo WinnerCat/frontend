@@ -232,10 +232,7 @@ const Signup = () => {
     };
 
     try {
-      const response = await axios.post(
-        "https://bugnyang.shop:8080/join",
-        payload
-      );
+      const response = await axios.post("https://bugnyang.shop/join", payload);
       console.log("회원가입 성공:", response.data);
 
       if (response.data.isSuccess) {
