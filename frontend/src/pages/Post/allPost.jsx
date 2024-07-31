@@ -74,6 +74,7 @@ const Post = styled.div`
   align-items: center;
   padding: 1.6vw;
   margin-bottom: 1.1vw;
+  cursor: pointer;
 `;
 
 const PostContainer = styled.div`
@@ -245,7 +246,11 @@ function AllPost() {
             <PostTitle>{article.title}</PostTitle>
             <PostContainer>
               {article.tagList.map((tag, tagIndex) => (
-                <Tag key={tagIndex} name={tag.tagName} color={tag.colorCode} />
+                <Tag
+                  key={tagIndex}
+                  tagName={tag.tagName}
+                  color={tag.colorCode}
+                />
               ))}
             </PostContainer>
           </Post>
@@ -266,5 +271,5 @@ function AllPost() {
     </>
   );
 }
-
+//푸쉬
 export default AllPost;

@@ -57,7 +57,7 @@ const SaveDelete = styled.div`
 const TagContainer = styled.div`
   display: flex;
   gap: 0.5vw;
-  margin-bottom: 6.9vw;
+  margin-bottom: 3vw;
 `;
 
 const InputContainerTitle = styled.div`
@@ -134,6 +134,8 @@ function PostDetail() {
   const [scrap, setScrap] = useState(false);
   console.log(scrap);
 
+  const email = localStorage.getItem("email");
+
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
@@ -192,6 +194,39 @@ function PostDetail() {
     }
   };
 
+  //삭제 API
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `${Config.baseURL}/api/article/${articleId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+      } else {
+        alert("오류발생");
+      }
+    } catch (error) {
+      alert("에러발생");
+      console.log(error);
+    }
+  };
+
+  //삭제확인
+  const onDeleteCheck = () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      handleDelete();
+      navigate(-1);
+      alert("삭제완료");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -240,21 +275,31 @@ function PostDetail() {
               <span>{data.title}</span>
             </TitleLogo>
             <SaveDelete>
-              <MenuContainer>
-                <img
-                  src={Update}
-                  style={{ width: "2.4vw", height: "2.4vw", cursor: "pointer" }}
-                  onClick={toggleMenu}
-                  alt="Update"
-                />
-                {menuVisible && (
-                  <Menu>
-                    <MenuItem>수정하기</MenuItem>
-                    <Divider />
-                    <MenuItem>삭제하기</MenuItem>
-                  </Menu>
-                )}
-              </MenuContainer>
+              {data.email === email && (
+                <MenuContainer>
+                  <img
+                    src={Update}
+                    style={{
+                      width: "2.4vw",
+                      height: "2.4vw",
+                      cursor: "pointer",
+                    }}
+                    onClick={toggleMenu}
+                    alt="Update"
+                  />
+                  {menuVisible && (
+                    <Menu>
+                      <MenuItem
+                        onClick={() => navigate(`/postUpdate/${articleId}`)}
+                      >
+                        수정하기
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem onClick={onDeleteCheck}>삭제하기</MenuItem>
+                    </Menu>
+                  )}
+                </MenuContainer>
+              )}
               {data.isScrapped === true ? (
                 <img
                   src={SaveTrue}
@@ -275,7 +320,7 @@ function PostDetail() {
           <TagContainer>
             {data.tags &&
               data.tags.map((tag, index) => (
-                <Tag key={index} name={tag.tagName} color={tag.colorCode} />
+                <Tag key={index} tagName={tag.tagName} color={tag.colorCode} />
               ))}
           </TagContainer>
           <InputContainerTitle>원인</InputContainerTitle>

@@ -53,13 +53,13 @@ const TagList = styled.div`
 function TagDropdown({ tags, setTags }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const availableTags = [
-    { name: "swift", color: "#6630ff" },
-    { name: "Ios", color: "#FF3F3F" },
-    { name: "java", color: "#00A775" },
+    { tagName: "swift", color: "#6630ff" },
+    { tagName: "Ios", color: "#FF3F3F" },
+    { tagName: "java", color: "#00A775" },
   ];
 
   const handleTagSelect = (tag) => {
-    const isTagSelected = tags.some((t) => t.name === tag.name);
+    const isTagSelected = tags.some((t) => t.tagName === tag.tagName);
     if (!isTagSelected && tags.length < 5) {
       setTags([...tags, tag]);
       setShowDropdown(false);
@@ -77,7 +77,7 @@ function TagDropdown({ tags, setTags }) {
         <DropDownMenu show={showDropdown}>
           {availableTags.map((tag, index) => (
             <DropDownItem key={index} onClick={() => handleTagSelect(tag)}>
-              {tag.name}
+              {tag.tagName}
             </DropDownItem>
           ))}
         </DropDownMenu>
@@ -86,11 +86,11 @@ function TagDropdown({ tags, setTags }) {
         {tags.map((tag, index) => (
           <Tag
             key={index}
-            name={tag.name}
+            tagName={tag.tagName}
             color={tag.color}
             onClick={() => {
               //드롭다운 제거(구현보류)
-              setTags(tags.filter((t) => t.name !== tag.name));
+              setTags(tags.filter((t) => t.tagName !== tag.tagName));
             }}
           ></Tag>
         ))}
