@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import axios from 'axios';
-import Header from '../components/header';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import axios from "axios";
+import Header from "../components/header";
 import LogoImage from "../img/logo.png";
 
 const Body = styled.div`
@@ -56,7 +56,7 @@ const Button = styled.button`
   cursor: pointer;
   font-size: 16px;
   width: 87%;
-  
+
   &:hover {
     background-color: #0056b3;
   }
@@ -103,9 +103,9 @@ const OrDivider = styled.div`
 `;
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
@@ -118,36 +118,39 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (email === '' || password === '') {
-      setError('이메일과 비밀번호를 모두 입력해 주세요.');
+
+    if (email === "" || password === "") {
+      setError("이메일과 비밀번호를 모두 입력해 주세요.");
     } else {
-      setError('');
-      console.log('로그인 시도:', { email, password });
-      
+      setError("");
+      console.log("로그인 시도:", { email, password });
+
       const payload = {
         email,
         password,
       };
 
       try {
-        const response = await axios.post('http://bugnyang.shop:8080/login', payload);
-        console.log('로그인 성공:', response.data);
+        const response = await axios.post(
+          "https://bugnyang.shop:8080/login",
+          payload
+        );
+        console.log("로그인 성공:", response.data);
 
         if (response.data.isSuccess) {
           const token = response.data.result;
 
-          localStorage.setItem('token', token);
-          localStorage.setItem('email', email); 
-          localStorage.setItem('isLogined', 'true');
+          localStorage.setItem("token", token);
+          localStorage.setItem("email", email);
+          localStorage.setItem("isLogined", "true");
 
-          navigate('/');
+          navigate("/");
         } else {
-          setError('로그인에 실패했습니다. 다시 시도해 주세요.');
+          setError("로그인에 실패했습니다. 다시 시도해 주세요.");
         }
       } catch (error) {
-        console.error('로그인 실패:', error);
-        setError('로그인에 실패했습니다. 다시 시도해 주세요.');
+        console.error("로그인 실패:", error);
+        setError("로그인에 실패했습니다. 다시 시도해 주세요.");
       }
     }
   };
@@ -181,7 +184,9 @@ const Login = () => {
             <Button type="submit">이메일로 로그인</Button>
             <Footer>
               <SecondaryButton>아이디/비밀번호 찾기</SecondaryButton>
-              <SecondaryButton onClick={() => navigate('/signup')}>회원가입</SecondaryButton>
+              <SecondaryButton onClick={() => navigate("/signup")}>
+                회원가입
+              </SecondaryButton>
             </Footer>
             <OrDivider>
               <div></div>-----간편로그인-----<div></div>

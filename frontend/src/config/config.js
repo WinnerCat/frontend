@@ -1,5 +1,5 @@
 const Config = {
-  baseURL: "http://bugnyang.shop:8080",
+  baseURL: "https://bugnyang.shop:8080",
   headers: {
     "Content-Type": "application/json",
   },

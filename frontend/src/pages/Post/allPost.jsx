@@ -74,6 +74,7 @@ const Post = styled.div`
   align-items: center;
   padding: 1.6vw;
   margin-bottom: 1.1vw;
+  cursor: pointer;
 `;
 
 const PostContainer = styled.div`

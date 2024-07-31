@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-import Header from '../components/header';
+import React, { useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import Header from "../components/header";
 import LogoImage from "../img/logo.png";
 import CheckIcon from "../img/check-icon.png";
 import CharacterImage from "../img/bugcat.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Body = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ const Button = styled.button`
   cursor: pointer;
   font-size: 16px;
   width: 80%;
-  
+
   &:hover {
     background-color: #0056b3;
   }
@@ -122,7 +122,7 @@ const Modal = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background: #6200EA;
+  background: #6200ea;
   padding: 3vw;
   border-radius: 10%;
   text-align: center;
@@ -134,7 +134,7 @@ const ModalContent = styled.div`
 
 const ModalButton = styled.button`
   background-color: white;
-  color: #6200EA;
+  color: #6200ea;
   border: none;
   width: 80%;
   padding: 1.3vw 3vw;
@@ -142,7 +142,7 @@ const ModalButton = styled.button`
   cursor: pointer;
   font-size: 16px;
   margin-top: 2vw;
-  
+
   &:hover {
     background-color: #d3d3d3;
   }
@@ -159,15 +159,15 @@ const CharacterImageStyled = styled.img`
 `;
 
 const Signup = () => {
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [nicknameError, setNicknameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [error, setError] = useState('');
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [nicknameError, setNicknameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -175,9 +175,9 @@ const Signup = () => {
     const value = e.target.value;
     setNickname(value);
     if (value.length < 2 || value.length > 5) {
-      setNicknameError('닉네임은 2~5글자로 제한됩니다.');
+      setNicknameError("닉네임은 2~5글자로 제한됩니다.");
     } else {
-      setNicknameError('');
+      setNicknameError("");
     }
   };
 
@@ -186,25 +186,25 @@ const Signup = () => {
     setEmail(value);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
-      setEmailError('올바른 이메일 형식을 입력해 주세요.');
+      setEmailError("올바른 이메일 형식을 입력해 주세요.");
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
-    setPasswordError('');
+    setPasswordError("");
   };
 
   const handleConfirmPasswordChange = (e) => {
     const value = e.target.value;
     setConfirmPassword(value);
     if (value !== password) {
-      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
+      setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
     } else {
-      setConfirmPasswordError('');
+      setConfirmPasswordError("");
     }
   };
 
@@ -212,10 +212,10 @@ const Signup = () => {
     e.preventDefault();
 
     if (!nickname || !email || !password || !confirmPassword) {
-      setNicknameError(!nickname ? '필수 입력 항목입니다!' : '');
-      setEmailError(!email ? '필수 입력 항목입니다!' : '');
-      setPasswordError(!password ? '필수 입력 항목입니다!' : '');
-      setConfirmPasswordError(!confirmPassword ? '필수 입력 항목입니다!' : '');
+      setNicknameError(!nickname ? "필수 입력 항목입니다!" : "");
+      setEmailError(!email ? "필수 입력 항목입니다!" : "");
+      setPasswordError(!password ? "필수 입력 항목입니다!" : "");
+      setConfirmPasswordError(!confirmPassword ? "필수 입력 항목입니다!" : "");
       return;
     }
 
@@ -232,8 +232,11 @@ const Signup = () => {
     };
 
     try {
-      const response = await axios.post('http://bugnyang.shop:8080/join', payload);
-      console.log('회원가입 성공:', response.data);
+      const response = await axios.post(
+        "https://bugnyang.shop:8080/join",
+        payload
+      );
+      console.log("회원가입 성공:", response.data);
 
       if (response.data.isSuccess) {
         const loginPayload = {
@@ -241,31 +244,34 @@ const Signup = () => {
           password,
         };
 
-        const loginResponse = await axios.post('http://bugnyang.shop:8080/login', loginPayload);
-        console.log('로그인 성공:', loginResponse.data);
+        const loginResponse = await axios.post(
+          "http://bugnyang.shop:8080/login",
+          loginPayload
+        );
+        console.log("로그인 성공:", loginResponse.data);
 
         if (loginResponse.data.isSuccess) {
           const token = loginResponse.data.result;
 
-          localStorage.setItem('token', token);
-          localStorage.setItem('isLogined', 'true');
+          localStorage.setItem("token", token);
+          localStorage.setItem("isLogined", "true");
 
           setIsModalOpen(true);
         } else {
-          setError('로그인에 실패했습니다. 다시 시도해 주세요.');
+          setError("로그인에 실패했습니다. 다시 시도해 주세요.");
         }
       } else {
-        setError('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        setError("회원가입에 실패했습니다. 다시 시도해 주세요.");
       }
     } catch (error) {
-      console.error('회원가입 또는 로그인 실패:', error);
-      setError('회원가입 또는 로그인에 실패했습니다. 다시 시도해 주세요.');
+      console.error("회원가입 또는 로그인 실패:", error);
+      setError("회원가입 또는 로그인에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -277,7 +283,9 @@ const Signup = () => {
             <Logo src={LogoImage} alt="버그냥이 로고" />
             <FormGroup>
               <FieldGroup>
-                <Label htmlFor="nickname">닉네임<RequiredAsterisk>*</RequiredAsterisk></Label>
+                <Label htmlFor="nickname">
+                  닉네임<RequiredAsterisk>*</RequiredAsterisk>
+                </Label>
                 <InputGroup>
                   <Input
                     type="text"
@@ -291,7 +299,9 @@ const Signup = () => {
                 </InputGroup>
               </FieldGroup>
               <FieldGroup>
-                <Label htmlFor="email">이메일<RequiredAsterisk>*</RequiredAsterisk></Label>
+                <Label htmlFor="email">
+                  이메일<RequiredAsterisk>*</RequiredAsterisk>
+                </Label>
                 <InputGroup>
                   <Input
                     type="email"
@@ -305,7 +315,9 @@ const Signup = () => {
                 </InputGroup>
               </FieldGroup>
               <FieldGroup>
-                <Label htmlFor="password">비밀번호<RequiredAsterisk>*</RequiredAsterisk></Label>
+                <Label htmlFor="password">
+                  비밀번호<RequiredAsterisk>*</RequiredAsterisk>
+                </Label>
                 <InputGroup>
                   <Input
                     type="password"
@@ -319,7 +331,9 @@ const Signup = () => {
                 </InputGroup>
               </FieldGroup>
               <FieldGroup>
-                <Label htmlFor="confirmPassword">비밀번호 확인<RequiredAsterisk>*</RequiredAsterisk></Label>
+                <Label htmlFor="confirmPassword">
+                  비밀번호 확인<RequiredAsterisk>*</RequiredAsterisk>
+                </Label>
                 <InputGroup>
                   <Input
                     type="password"
@@ -329,7 +343,9 @@ const Signup = () => {
                     placeholder="비밀번호를 한번 더 입력하세요."
                     required
                   />
-                  {confirmPasswordError && <Error>{confirmPasswordError}</Error>}
+                  {confirmPasswordError && (
+                    <Error>{confirmPasswordError}</Error>
+                  )}
                 </InputGroup>
               </FieldGroup>
             </FormGroup>

@@ -260,7 +260,11 @@ function PostUpdate() {
           />
           <ButtonContainer1>
             <ButtonContainer>
-              <CancleButton>
+              <CancleButton
+                onClick={() => {
+                  navigate(`/postDetail/${articleId}`);
+                }}
+              >
                 <span
                   style={{
                     color: "#000",
