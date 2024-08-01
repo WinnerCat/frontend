@@ -182,7 +182,7 @@ const QuestionPage = () => {
       }
 
       try {
-        const response = await fetch("http://bugnyang.shop:8080/api/question-room", {
+        const response = await fetch("https://bugnyang.shop/api/question-room", {
           method: "GET",
           headers: {
             "Authorization": token,
@@ -223,7 +223,7 @@ const QuestionPage = () => {
     console.log("Clicked question:", question);
   
     try {
-      const response = await fetch(`http://bugnyang.shop:8080/api/question-room/${question.questionRoomId}`, {
+      const response = await fetch(`https://bugnyang.shop/api/question-room/${question.questionRoomId}`, {
         method: "GET",
         headers: {
           "Authorization": token,

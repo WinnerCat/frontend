@@ -338,7 +338,7 @@ const Mainpage = () => {
       return;
     }
 
-    const response = await fetch("http://bugnyang.shop:8080/api/question/new", {
+    const response = await fetch("https://bugnyang.shop/api/question/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
