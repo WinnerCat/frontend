@@ -242,7 +242,7 @@ const Signup = () => {
         };
 
         const loginResponse = await axios.post(
-          "http://bugnyang.shop:8080/login",
+          "https://bugnyang.shop/login",
           loginPayload
         );
         console.log("로그인 성공:", loginResponse.data);
