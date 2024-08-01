@@ -96,7 +96,7 @@ const NoBugFound = styled.div`
   }
 `;
 
-const SearchBarContainer = styled.div`
+const SearchBarContainer = styled.form`
   width: 70%;
   display: flex;
   align-items: center;
@@ -169,9 +169,10 @@ const Tag = ({ name, color, icon }) => {
 };
 
 const QuestionPage = () => {
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 얻기
+  const navigate = useNavigate();
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -193,12 +194,14 @@ const QuestionPage = () => {
         console.log("Fetched questions data:", data);
 
         if (data.isSuccess) {
-          const fetchedQuestions = data.result.map((item) => ({
-            id: item.id,
-            title: item.roomName,
-            status: item.state === "PROGRESS" ? "해결중" : "해결완료",
-            questionRoomId: item.id,
-          }));
+          const fetchedQuestions = data.result
+            .map((item) => ({
+              id: item.id,
+              title: item.roomName,
+              status: item.state === "PROGRESS" ? "해결중" : "해결완료",
+              questionRoomId: item.id,
+            }))
+            .sort((a, b) => b.id - a.id); // id 기준 내림차순 정렬
 
           setQuestions(fetchedQuestions);
         } else {
@@ -230,15 +233,34 @@ const QuestionPage = () => {
         },
       });
   
-      const data = await response.json();
+      const textResponse = await response.text();
+      let data;
+      try {
+        data = JSON.parse(textResponse);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+        console.error("Received response:", textResponse);
+        alert("서버에서 잘못된 응답을 받았습니다.");
+        return;
+      }
+  
       console.log("Fetched conversation data:", data);
   
       if (data.isSuccess) {
+        let questionContent;
+        try {
+          questionContent = JSON.parse(data.result.questionList[0].content).question;
+        } catch (error) {
+          console.error("Error parsing question content JSON:", error);
+          console.error("Received question content:", data.result.questionList[0].content);
+          questionContent = data.result.questionList[0].content;
+        }
+  
         const conversationData = {
           question: {
             id: question.questionRoomId,
             title: question.title,
-            content: JSON.parse(data.result.questionList[0].content).question,
+            content: questionContent,
           },
           answers: data.result.answerList || []
         };
@@ -256,6 +278,15 @@ const QuestionPage = () => {
 
   const handleAdditionalTextClick = () => {
     navigate('/postCreate');
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search?query=${searchQuery}`);
   };
 
   return (
@@ -299,9 +330,14 @@ const QuestionPage = () => {
               <p>아무런 버그도 발견되지 않았어요</p>
             </NoBugFound>
           )}
-          <SearchBarContainer>
-            <SearchInput type="text" placeholder="어떤 에러가 발생 하였나요?" />
-            <SearchButton>
+          <SearchBarContainer onSubmit={handleSearchSubmit}>
+            <SearchInput 
+              type="text" 
+              placeholder="어떤 에러가 발생 하였나요?" 
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <SearchButton type="submit">
               <img src={SearchIcon} alt="Search" />
             </SearchButton>
           </SearchBarContainer>

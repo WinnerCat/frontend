@@ -34,11 +34,11 @@ const SearchInput = styled.input`
   width: 40vw;
   height: 3vh;
   padding: 1vw 3vw;
-  color: white;
-  background-color: #6630ff;
+  color: black;
+  background-color: white;
 
   &::placeholder {
-    color: white;
+    color: #808080;
   }
 
   @media (max-width: 768px) {
@@ -54,6 +54,7 @@ const SearchIcon = styled.img`
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
+  cursor: pointer;
 `;
 
 const Body = styled.div`
@@ -103,7 +104,7 @@ const RankingList = styled.div`
   flex-direction: row;
   justify-content: center;
   gap: 2vw;
-  margin-bottom: 1vw;
+  margin-bottom: 1.5vw;
 `;
 
 const RankLanguage = styled.div`
@@ -177,11 +178,11 @@ const PostTitle = styled.div`
 const Myquestionhistory = styled.button`
   background-color: #6630ff;
   color: #fff;
-  font-size: 1.8vw;
+  font-size: 1.7vw;
   font-weight: bold;
   padding: 1.5vw;
   margin-top: 2vw;
-  border-radius: 10px;
+  border-radius: 1.2vw;
   width: 70%;
   border: none;
   cursor: pointer;
@@ -229,7 +230,7 @@ const Unit = styled.span`
 `;
 
 const BugcatImage = styled.img`
-  max-width: 100%;
+  width: 40%;
   height: auto;
 `;
 
@@ -297,12 +298,12 @@ const ScrollButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #6630ff;
-  color: white;
+  background-color: #ffffff;
+  color: #6630ff;
   border: none;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 3vw;
+  height: 3vw;
   cursor: pointer;
   z-index: 1;
 
@@ -331,7 +332,7 @@ const Mainpage = () => {
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("토큰이 없습니다. 로그인을 해주세요.");
@@ -342,9 +343,9 @@ const Mainpage = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": token,
+        Authorization: token,
       },
-      body: JSON.stringify({ question: searchQuery }),
+      body: searchQuery,
     });
 
     if (response.ok) {
@@ -355,11 +356,11 @@ const Mainpage = () => {
   };
 
   const scrollLeft = () => {
-    postsRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    postsRef.current.scrollBy({ left: -300, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    postsRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    postsRef.current.scrollBy({ left: 300, behavior: "smooth" });
   };
 
   return (
@@ -373,7 +374,7 @@ const Mainpage = () => {
             value={searchQuery}
             onChange={handleSearchChange}
           />
-          <SearchIcon src={SearchIconImg} alt="search icon" />
+          <SearchIcon src={SearchIconImg} alt="search icon" onClick={handleSearchSubmit} />
         </SearchContainer>
       </Content>
       <Body>
@@ -420,8 +421,8 @@ const Mainpage = () => {
             <PostItem>Index out of range</PostItem>
             <PostItem>Index out of range</PostItem>
           </PostsContainer>
-          <LeftButton onClick={scrollLeft}>{"<"}</LeftButton>
-          <RightButton onClick={scrollRight}>{">"}</RightButton>
+          <LeftButton onClick={scrollLeft}>{"◁"}</LeftButton>
+          <RightButton onClick={scrollRight}>{"▷"}</RightButton>
         </PostsBox>
         <MorePostsLink href="#">더 많은 게시글들 보고 싶어요</MorePostsLink>
         <ChatBox>
