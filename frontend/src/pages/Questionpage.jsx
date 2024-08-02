@@ -62,9 +62,9 @@ const SidebarLabel = styled.div`
   font-size: 1.2vw;
   color: #000000;
   width: 9.5vw;
-  white-space: nowrap;          /* 한 줄로 표시 */
-  overflow: hidden;             /* 넘치는 내용 숨기기 */
-  text-overflow: ellipsis;      /* 줄임표(...) 표시 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SidebarTagList = styled.div`
@@ -204,6 +204,11 @@ const QuestionPage = () => {
             .sort((a, b) => b.id - a.id); // id 기준 내림차순 정렬
 
           setQuestions(fetchedQuestions);
+
+          // 페이지 렌더링 시 가장 최신 질문 자동 선택
+          if (fetchedQuestions.length > 0) {
+            handleQuestionClick(fetchedQuestions[0]);
+          }
         } else {
           alert("에러가 발생했습니다. 다시 시도해주세요.");
         }
@@ -217,6 +222,7 @@ const QuestionPage = () => {
   }, []);
 
   const handleQuestionClick = async (question) => {
+    localStorage.setItem("questionRoomId", question.questionRoomId);
     const token = localStorage.getItem("token");
     if (!token) {
       alert("토큰이 없습니다. 로그인을 해주세요.");
@@ -246,23 +252,38 @@ const QuestionPage = () => {
   
       console.log("Fetched conversation data:", data);
   
+      // if (data.isSuccess) {
+      //   let questionContent;
+      //   try {
+      //     questionContent = JSON.parse(data.result.questionList[0].content).question;
+      //   } catch (error) {
+      //     console.error("Error parsing question content JSON:", error);
+      //     console.error("Received question content:", data.result.questionList[0].content);
+      //     questionContent = data.result.questionList[0].content;
+      //   }
+  
+      //   const conversationData = {
+      //     question: {
+      //       id: question.questionRoomId,
+      //       title: question.title,
+      //       content: questionContent,
+      //     },
+      //     answers: data.result.answerList || []
+      //   };
+  
+      //   localStorage.setItem('conversationData', JSON.stringify(conversationData));
+      //   setSelectedQuestion(question);
       if (data.isSuccess) {
-        let questionContent;
-        try {
-          questionContent = JSON.parse(data.result.questionList[0].content).question;
-        } catch (error) {
-          console.error("Error parsing question content JSON:", error);
-          console.error("Received question content:", data.result.questionList[0].content);
-          questionContent = data.result.questionList[0].content;
-        }
+        const questionContentList = data.result.questionList.map(q => q.content);
+        const answerList = data.result.answerList.map(answer => ({
+          id: answer.answerId,
+          content: answer.content,
+          createdAt: answer.createdAt
+        }));
   
         const conversationData = {
-          question: {
-            id: question.questionRoomId,
-            title: question.title,
-            content: questionContent,
-          },
-          answers: data.result.answerList || []
+          questionList: questionContentList,
+          answerList: answerList
         };
   
         localStorage.setItem('conversationData', JSON.stringify(conversationData));
@@ -284,9 +305,48 @@ const QuestionPage = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    navigate(`/search?query=${searchQuery}`);
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("토큰이 없습니다. 로그인을 해주세요.");
+      return;
+    }
+
+    const questionRoomId = localStorage.getItem("questionRoomId"); // 기본값 설정
+
+    const requestData = {
+      questionRoomId,
+      question: searchQuery
+    };
+
+    try {
+      console.log("requestData:", requestData);
+
+      const response = await fetch("https://bugnyang.shop/api/question", {
+        method: "POST",
+        headers: {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      const data = await response.json();
+      console.log("Search POST response:", data);
+
+      if (data.isSuccess) {
+        // alert("질문이 성공적으로 전송되었습니다.");
+        console.log("질문이 성공적으로 전송되었습니다.");
+        // 원하는 후속 작업을 여기에 추가
+      } else {
+        alert("질문 전송에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("Error submitting question:", error);
+      alert("질문 전송 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -330,17 +390,17 @@ const QuestionPage = () => {
               <p>아무런 버그도 발견되지 않았어요</p>
             </NoBugFound>
           )}
-          <SearchBarContainer onSubmit={handleSearchSubmit}>
-            <SearchInput 
-              type="text" 
-              placeholder="어떤 에러가 발생 하였나요?" 
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-            <SearchButton type="submit">
-              <img src={SearchIcon} alt="Search" />
-            </SearchButton>
-          </SearchBarContainer>
+          <SearchBarContainer>
+          <SearchInput 
+            type="text" 
+            placeholder="어떤 에러가 발생 하였나요?" 
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <SearchButton type="button" onClick={handleSearchSubmit}>
+            <img src={SearchIcon} alt="Search" />
+          </SearchButton>
+        </SearchBarContainer>
           <AdditionalText onClick={handleAdditionalTextClick}>답변 외 방법으로 해결하였습니다.</AdditionalText>
         </ContentArea>
       </MainContent>

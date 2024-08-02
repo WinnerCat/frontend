@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import Modal from './adoptmodal';
 import MarkdownMessage from './MarkdownMessage';
 
@@ -14,7 +13,6 @@ const DetailContainer = styled.div`
   margin: 0 auto;
 `;
 
-// 채팅
 const ChatContainer = styled.div`
   width: 100%;
   max-height: 65vh;
@@ -24,7 +22,6 @@ const ChatContainer = styled.div`
   flex-direction: column;
 `;
 
-// 메시지 컨테이너
 const MessageContainer = styled.div`
   display: flex;
   flex-direction: ${props => (props.direction === 'row' ? 'row' : 'row-reverse')};
@@ -33,7 +30,6 @@ const MessageContainer = styled.div`
   max-width: 100%;
 `;
 
-// 질문 메시지
 const QuestionBox = styled.div`
   max-width: 70%;
   padding: 0.5vw 1vw;
@@ -56,7 +52,6 @@ const QuestionBox = styled.div`
   }
 `;
 
-// 답변 채택 버튼
 const AcceptButton = styled.button`
   position: absolute;
   right: 10px;
@@ -74,9 +69,7 @@ const AcceptButton = styled.button`
   }
 `;
 
-// 답변 메시지
 const AnswerBox = styled.div`
-  //max-width: 70%;
   border-radius: 1vw;
   background-color: #6630ff;
   color: #ffffff;
@@ -114,7 +107,7 @@ const AnswerMessage = ({ text, onAccept }) => (
   </MessageContainer>
 );
 
-const ConversationDetail = ({ title, content, articleId, close }) => {
+const ConversationDetail = ({ title, articleId, close }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
@@ -125,21 +118,24 @@ const ConversationDetail = ({ title, content, articleId, close }) => {
       try {
         const parsedData = JSON.parse(savedData);
         const messages = [];
-        if (parsedData.question) {
-          messages.push({ text: parsedData.question.content, isUser: false });
-        }
-        if (parsedData.answers) {
-          messages.push(...parsedData.answers.map(answer => ({
-            text: answer.content,
-            isUser: true,
-          })));
-        }
+
+        // 질문과 답변을 구분하여 배열에 추가
+        parsedData.questionList.forEach((question, index) => {
+          messages.push({ text: question, isUser: false });
+          if (index < parsedData.answerList.length) {
+            messages.push({
+              text: parsedData.answerList[index].content,
+              isUser: true,
+            });
+          }
+        });
+
         setChatMessages(messages);
       } catch (error) {
         console.error("Failed to parse conversation data from localStorage", error);
       }
     }
-  }, [title, content]);
+  }, [title]);
 
   const handleAcceptClick = (message) => {
     setSelectedMessage(message);
