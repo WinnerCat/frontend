@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Header from "../components/header";
 import SearchIconImg from "../img/searchicon.png";
 import BugCatImg from "../img/bugcat.png";
+import LoginModal from '../components/Loginmodal'; 
 
 const Container = styled.div`
   display: flex;
@@ -200,6 +201,7 @@ const MorePostsLink = styled.a`
   margin-top: 1vw;
   text-decoration: underline;
   width: 100%;
+  cursor: pointer;
 `;
 
 const Title = styled.h2`
@@ -323,8 +325,20 @@ const RightButton = styled(ScrollButton)`
 const Mainpage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const bugCount = 572;
   const postsRef = useRef();
+
+  const checkLogin = async () => {
+    console.log(localStorage.getItem('isLogined'));
+    if (localStorage.getItem('isLogined') === 'true') {
+      return true;
+    }else {return false};
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -332,20 +346,19 @@ const Mainpage = () => {
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("토큰이 없습니다. 로그인을 해주세요.");
+    const isLoggedIn = await checkLogin();
+    console.log("Search Submit Clicked. Logged In:", isLoggedIn);
+    if (!isLoggedIn) {
+      setIsModalOpen(true);
       return;
     }
-
     const response = await fetch("https://bugnyang.shop/api/question/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: localStorage.getItem("token"),
       },
-      body: searchQuery,
+      body: JSON.stringify({ query: searchQuery }),
     });
 
     if (response.ok) {
@@ -355,11 +368,53 @@ const Mainpage = () => {
     }
   };
 
+  const handleSearchClick = async (e) => {
+    e.preventDefault();
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleSavePostClick = async (e) => {
+    e.preventDefault();
+    const isLoggedIn = await checkLogin();
+    if (isLoggedIn) {
+      navigate("/savePost");
+    }else{
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleMorePostsClick = async (e) => {
+    e.preventDefault();
+    const isLoggedIn = await checkLogin();
+    console.log("More Posts Clicked. Logged In:", isLoggedIn);
+    if (isLoggedIn) {
+      navigate("/allPost");
+    }else{
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleLiveClick = async (e) => {
+    e.preventDefault();
+    const isLoggedIn = await checkLogin();
+    console.log("More Posts Clicked. Logged In:", isLoggedIn);
+    if (isLoggedIn) {
+      navigate("/live");
+    }else{
+      setIsModalOpen(true);
+    }
+  };
+
   const scrollLeft = () => {
+    console.log("Scroll Left Clicked");
     postsRef.current.scrollBy({ left: -300, behavior: "smooth" });
   };
 
   const scrollRight = () => {
+    console.log("Scroll Right Clicked");
     postsRef.current.scrollBy({ left: 300, behavior: "smooth" });
   };
 
@@ -373,6 +428,7 @@ const Mainpage = () => {
             placeholder="어떤 에러가 발생하였나요?"
             value={searchQuery}
             onChange={handleSearchChange}
+            onClick={handleSearchClick}
           />
           <SearchIcon src={SearchIconImg} alt="search icon" onClick={handleSearchSubmit} />
         </SearchContainer>
@@ -391,20 +447,9 @@ const Mainpage = () => {
                 <RankLanguage>Spring</RankLanguage>
                 <RankCount>287마리</RankCount>
               </RankingList>
-              <RankingList>
-                <RankLanguage>Spring</RankLanguage>
-                <RankCount>287마리</RankCount>
-              </RankingList>
-              <RankingList>
-                <RankLanguage>Spring</RankLanguage>
-                <RankCount>287마리</RankCount>
-              </RankingList>
-              <RankingList>
-                <RankLanguage>Spring</RankLanguage>
-                <RankCount>287마리</RankCount>
-              </RankingList>
+
             </RankingItem>
-            <Myquestionhistory>내가 잡은 버그 목록</Myquestionhistory>
+            <Myquestionhistory onClick={handleSavePostClick}>내가 잡은 버그 목록</Myquestionhistory>
           </RankingBox>
         </Section>
         <PostsBox>
@@ -424,7 +469,7 @@ const Mainpage = () => {
           <LeftButton onClick={scrollLeft}>{"◁"}</LeftButton>
           <RightButton onClick={scrollRight}>{"▷"}</RightButton>
         </PostsBox>
-        <MorePostsLink href="#">더 많은 게시글들 보고 싶어요</MorePostsLink>
+        <MorePostsLink href="#" onClick={handleMorePostsClick}>더 많은 게시글들 보고 싶어요</MorePostsLink>
         <ChatBox>
           <ChatMessage>
             <UserMessage>
@@ -438,8 +483,11 @@ const Mainpage = () => {
             <BotMessage>프론트개발 하지마세요 진짜에요</BotMessage>
           </ChatMessage2>
         </ChatBox>
-        <MorePostsLink href="#">개발자들의 아우성 들으러가기</MorePostsLink>
+        <MorePostsLink href="#" onClick={handleLiveClick}>개발자들의 아우성 들으러가기</MorePostsLink>
       </Body>
+      {isModalOpen && (
+        <LoginModal isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+      )}
     </Container>
   );
 };
