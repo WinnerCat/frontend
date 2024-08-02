@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/header";
@@ -102,7 +102,7 @@ const RankingItem = styled.div`
 
 const RankingList = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   gap: 2vw;
   margin-bottom: 1.5vw;
@@ -326,24 +326,75 @@ const Mainpage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const bugCount = 572;
-  const postsRef = useRef();
+  const [bugCount, setBugCount] = useState(0);
+  const [top5Articles, setTop5Articles] = useState([]);
+  const [posts, setPosts] = useState([]); // 게시글 데이터 상태 변수
+  const [page, setPage] = useState(0); // 현재 페이지 상태 변수
+  const [size, setSize] = useState(5); // 한 페이지에 표시할 게시글 수 상태 변수
+  const postsRef = useRef(); // 게시글 컨테이너 참조
 
+  // 컴포넌트 마운트 시 API 호출 및 데이터 가져오기
+  useEffect(() => {
+    const fetchBugData = async () => {
+      try {
+        const response = await fetch("https://bugnyang.shop/api/article/today-error", {
+          method: "GET",
+        });
+        const data = await response.json();
+        if (data.isSuccess) {
+          setBugCount(data.result.totalCount);
+          setTop5Articles(data.result.top5Articles);
+        } else {
+          console.error("Failed to fetch bug count:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching bug count:", error);
+      }
+    };
+
+    const fetchPosts = async () => {
+      try {
+        const tagName = "Swift"; // 동적으로 처리 가능한 부분
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(`https://bugnyang.shop/api/article/recommend?tagName=${tagName}&page=${page}&size=${size}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", // 요청 데이터 형식
+            "Authorization": `${token}`, // Authorization 헤더에 토큰 추가
+          },
+        });
+        const data = await response.json();
+        if (data.isSuccess) {
+          setPosts(data.result.articlePreviewList); // 게시글 데이터 업데이트
+        } else {
+          console.error("Failed to fetch posts:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchBugData();
+    fetchPosts(); // 컴포넌트 마운트 시 API 호출
+  }, [page, size]); // 페이지나 사이즈가 변경될 때마다 호출
+
+  // 로그인 상태 체크 함수
   const checkLogin = async () => {
     console.log(localStorage.getItem('isLogined'));
     if (localStorage.getItem('isLogined') === 'true') {
       return true;
-    }else {return false};
+    } else {
+      return false;
+    }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
+  // 검색 입력값 변화
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
+  // 검색 제출
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     const isLoggedIn = await checkLogin();
@@ -358,7 +409,7 @@ const Mainpage = () => {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
-      body: JSON.stringify({ query: searchQuery }),
+      body: searchQuery,
     });
 
     if (response.ok) {
@@ -368,6 +419,7 @@ const Mainpage = () => {
     }
   };
 
+  // 검색 아이콘 클릭
   const handleSearchClick = async (e) => {
     e.preventDefault();
     const isLoggedIn = await checkLogin();
@@ -376,43 +428,48 @@ const Mainpage = () => {
     }
   };
 
+  // 내가 잡은 버그 목록 버튼 클릭
   const handleSavePostClick = async (e) => {
     e.preventDefault();
     const isLoggedIn = await checkLogin();
     if (isLoggedIn) {
       navigate("/savePost");
-    }else{
+    } else {
       setIsModalOpen(true);
     }
   };
 
+  // 더 많은 게시글 링크 클릭
   const handleMorePostsClick = async (e) => {
     e.preventDefault();
     const isLoggedIn = await checkLogin();
     console.log("More Posts Clicked. Logged In:", isLoggedIn);
     if (isLoggedIn) {
       navigate("/allPost");
-    }else{
+    } else {
       setIsModalOpen(true);
     }
   };
 
+  // 개발자들의 아우성 페이지 클릭
   const handleLiveClick = async (e) => {
     e.preventDefault();
     const isLoggedIn = await checkLogin();
-    console.log("More Posts Clicked. Logged In:", isLoggedIn);
+    console.log("Live Clicked. Logged In:", isLoggedIn);
     if (isLoggedIn) {
       navigate("/live");
-    }else{
+    } else {
       setIsModalOpen(true);
     }
   };
 
+  // 게시글 왼쪽으로 스크롤
   const scrollLeft = () => {
     console.log("Scroll Left Clicked");
     postsRef.current.scrollBy({ left: -300, behavior: "smooth" });
   };
 
+  // 게시글 오른쪽으로 스크롤
   const scrollRight = () => {
     console.log("Scroll Right Clicked");
     postsRef.current.scrollBy({ left: 300, behavior: "smooth" });
@@ -443,11 +500,16 @@ const Mainpage = () => {
           <RankingBox>
             <RankingItem>
               <Title>오늘의 버그 랭킹</Title>
-              <RankingList>
-                <RankLanguage>Spring</RankLanguage>
-                <RankCount>287마리</RankCount>
-              </RankingList>
-
+              {top5Articles.length > 0 && (
+                <RankingList>
+                  {top5Articles.map((article, index) => (
+                    <div key={index}>
+                      <RankLanguage>{article.tagName}</RankLanguage>
+                      <RankCount>{article.count}마리</RankCount>
+                    </div>
+                  ))}
+                </RankingList>
+              )}
             </RankingItem>
             <Myquestionhistory onClick={handleSavePostClick}>내가 잡은 버그 목록</Myquestionhistory>
           </RankingBox>
@@ -458,13 +520,14 @@ const Mainpage = () => {
             <HighlightedText>Swift</HighlightedText> 관련 게시글을 모아봤어요!
           </PostTitle>
           <PostsContainer ref={postsRef}>
-            <PostItem>Index out of range</PostItem>
-            <PostItem>Index out of range</PostItem>
-            <PostItem>Index out of range</PostItem>
-            <PostItem>Index out of range</PostItem>
-            <PostItem>Index out of range</PostItem>
-            <PostItem>Index out of range</PostItem>
-            <PostItem>Index out of range</PostItem>
+            {posts.map(post => (
+              <PostItem key={post.articleId}>
+                <div>
+                  <h3>{post.title}</h3>
+                  <p>{post.cause}</p>
+                </div>
+              </PostItem>
+            ))}
           </PostsContainer>
           <LeftButton onClick={scrollLeft}>{"◁"}</LeftButton>
           <RightButton onClick={scrollRight}>{"▷"}</RightButton>
