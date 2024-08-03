@@ -66,6 +66,7 @@ const Input = styled.input`
   font-weight: 400;
   line-height: 200%; /* 40px */
 `;
+
 const TagContainer = styled.div`
   position: relative;
   display: flex;
@@ -132,6 +133,7 @@ function PostUpdate() {
   const { articleId } = useParams();
 
   const [title, setTitle] = useState("");
+  const [answer, setAnswer] = useState("");
   const [tags, setTags] = useState([]);
   const [cause, setCause] = useState("");
   const [solution, setSolution] = useState("");
@@ -143,11 +145,10 @@ function PostUpdate() {
   const handleCauseChange = (value) => {
     setCause(value);
   };
+
   const handleSolutionChange = (value) => {
     setSolution(value);
   };
-
-  //통신코드
 
   const token = localStorage.getItem("token");
 
@@ -175,6 +176,7 @@ function PostUpdate() {
       console.log(tags);
 
       if (response.status === 200) {
+        alert("수정이 완료되었습니다.");
       } else {
         alert("오류발생");
       }
@@ -184,39 +186,53 @@ function PostUpdate() {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${Config.baseURL}/api/article/detail/${articleId}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: token,
+  //           },
+  //         }
+  //       );
+
+  //       const data = await response.json();
+  //       console.log(data);
+
+  //       if (response.status === 200) {
+  //         setTitle(data.result.title);
+  //         setTags(data.result.tags);
+  //         setCause(data.result.cause);
+  //         setSolution(data.result.solution);
+  //       } else {
+  //         alert("데이터를 불러오는데 실패했습니다.");
+  //       }
+  //     } catch (error) {
+  //       alert("에러 발생");
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [token, articleId]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${Config.baseURL}/api/article/detail/${articleId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
-        );
-
-        const data = await response.json();
-        console.log(data);
-
-        if (response.status === 200) {
-          setTitle(data.result.title);
-          setTags(...tags, data.result.tags);
-          setCause(data.result.cause);
-          setSolution(data.result.solution);
-        } else {
-          alert("데이터를 불러오는데 실패했습니다.");
-        }
-      } catch (error) {
-        alert("에러 발생");
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, [token]);
+    // 로컬스토리지에서 제목,해결방안을 읽어오고 상태를 설정한 뒤 로컬스토리지에서 삭제
+    const savedTitle = localStorage.getItem("title");
+    const savedAnswer = localStorage.getItem("answer");
+    if (savedTitle) {
+      setTitle(savedTitle);
+      localStorage.removeItem("title");
+    }
+    if (savedAnswer) {
+      setAnswer(savedAnswer);
+      localStorage.removeItem("answer");
+    }
+  }, []);
 
   return (
     <>
@@ -225,7 +241,7 @@ function PostUpdate() {
         <Container80>
           <Title>
             <ColorTitle>버그냥이 </ColorTitle>덕분에
-            <br></br>
+            <br />
             이런 부분을 <ColorTitle>해결</ColorTitle>했어요!
             <img
               src={Rectangle}
@@ -255,7 +271,7 @@ function PostUpdate() {
           <InputContainerTitle>해결방법</InputContainerTitle>
           <TextArea
             placeholder="내용을 작성 해주세요."
-            value={solution}
+            value={answer}
             onChange={(e) => handleSolutionChange(e.target.value)}
           />
           <ButtonContainer1>

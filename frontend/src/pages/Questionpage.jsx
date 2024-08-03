@@ -11,6 +11,7 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow: hidden;
 `;
 
 const MainContent = styled.main`
@@ -21,7 +22,7 @@ const MainContent = styled.main`
 const Sidebar = styled.div`
   width: 15%;
   background-color: #f5f5f5;
-  padding: 1vw 2vw;
+  padding: 1vw 1vw 1vw 2vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,13 +38,13 @@ const SidebarHeader = styled.div`
 const SidebarTitleContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 2vw;
+  margin-top: 2vw;
 `;
 
 const SidebarTitle = styled.div`
   font-family: "Pretendard", sans-serif;
-  font-weight: 800;
-  font-size: 24px;
+  font-weight: 500;
+  font-size: 2vw;
   color: #000000;
   margin-left: 1vw;
 `;
@@ -60,7 +61,7 @@ const SidebarContent = styled.div`
 const SidebarLabel = styled.div`
   font-size: 1.2vw;
   color: #000000;
-  width: 9.5vw;
+  width: 9vw;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -70,6 +71,8 @@ const SidebarTagList = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
 `;
 
 const ContentArea = styled.div`
@@ -95,32 +98,19 @@ const NoBugFound = styled.div`
   }
 `;
 
-const AdditionalText = styled.p`
-  font-size: 0.9vw;
-  text-align: center;
-  border: none;
-  text-decoration: underline;
-  color: #808080;
-  position: absolute;
-  bottom: 0.5vw;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: pointer;
-`;
-
 const Tag = ({ name, color, icon }) => {
   const Container = styled.div`
     display: flex;
     align-items: center;
+    width: 3.5vw;
     margin-left: 0.5vw;
-    padding: 0.3vw 0.7vw;
+    padding: 0.3vw 0.5vw;
     border-radius: 1.2vw;
     background: ${color};
     color: #fff;
     font-family: Pretendard;
     font-size: 1vw;
     font-style: normal;
-    font-weight: 400;
     line-height: normal;
   `;
 
@@ -258,11 +248,6 @@ const QuestionPage = () => {
     }
   };
 
-  const handleAdditionalTextClick = () => {
-    console.log("추가 텍스트 클릭됨");
-    navigate("/postCreate");
-  };
-
   return (
     <PageContainer>
       <Header />
@@ -308,10 +293,6 @@ const QuestionPage = () => {
               <p>아무런 버그도 발견되지 않았어요</p>
             </NoBugFound>
           )}
-          
-          <AdditionalText onClick={handleAdditionalTextClick}>
-            답변 외 방법으로 해결하였습니다.
-          </AdditionalText>
         </ContentArea>
       </MainContent>
     </PageContainer>

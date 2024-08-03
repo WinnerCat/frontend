@@ -251,6 +251,7 @@ const Signup = () => {
           const token = loginResponse.data.result;
 
           localStorage.setItem("token", token);
+          localStorage.setItem("email", email);
           localStorage.setItem("isLogined", "true");
 
           setIsModalOpen(true);

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Modal from './adoptmodal';
 import MarkdownMessage from './MarkdownMessage';
 import SearchIcon from "../img/search_icon.png";
-import {BeatLoader} from 'react-spinners';
+import { BeatLoader } from 'react-spinners';
+import { useNavigate } from "react-router-dom";
 
 const DetailContainer = styled.div`
   display: flex;
@@ -19,22 +20,20 @@ const ChatContainer = styled.div`
   width: 100%;
   max-height: 65vh;
   overflow-y: auto;
-  padding: 1vw;
+  padding: 2vw;
   display: flex;
   flex-direction: column;
 `;
 
 const SearchBarContainer = styled.form`
-  width: 70%;
+  width: 100%;
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 2vw;
   padding: 0.3vw 2vw;
-  position: absolute;
-  bottom: 3vw;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin-top: 2vw;
 `;
 
 const SearchInput = styled.input`
@@ -51,6 +50,9 @@ const SearchButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 0.5vw;
+  img {
+    width: 1.5vw;
+  }
 `;
 
 const MessageContainer = styled.div`
@@ -70,7 +72,7 @@ const QuestionBox = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   line-height: 1.8;
-  margin-top:2vw;
+  margin-top: 2vw;
 `;
 
 const AcceptButton = styled.button`
@@ -100,17 +102,25 @@ const AnswerBox = styled.div`
   line-height: 1.8;
 `;
 
-
 const LoadingMessage = styled.div`
   border-radius: 1vw;
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #6630ff;
   box-shadow: none;
   position: relative;
   margin-top: 1vw;
   padding: 1vw;
   line-height: 1.8;
   text-align: center;
+`;
+
+const AdditionalText = styled.p`
+  font-size: 0.9vw;
+  text-align: center;
+  border: none;
+  text-decoration: underline;
+  color: #808080;
+  position: relative;
+  cursor: pointer;
 `;
 
 const QuestionMessage = ({ text }) => (
@@ -131,57 +141,124 @@ const AnswerMessage = ({ text, onAccept }) => (
 );
 
 const ConversationDetail = ({ title, articleId, close }) => {
+  const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalData, setModalData] = useState({ id: null, question: '', answer: '' }); // 추가된 상태 변수
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    console.log("컴포넌트가 마운트되었습니다.");
-
+    // 컴포넌트가 마운트될 때 대화 데이터 로드
     const savedData = localStorage.getItem('conversationData');
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
         const messages = [];
 
-        // 질문과 답변을 구분하여 배열에 추가
         parsedData.questionList.forEach((question, index) => {
           messages.push({ text: question, isUser: false });
           if (index < parsedData.answerList.length) {
             messages.push({
               text: parsedData.answerList[index].content,
               isUser: true,
+              id: parsedData.answerList[index].id // 답변 ID 추가
             });
           }
         });
 
         setChatMessages(messages);
-        console.log("대화 데이터를 불러왔습니다:", messages);
       } catch (error) {
         console.error("로컬 스토리지에서 대화 데이터를 파싱하는 데 실패했습니다:", error);
       }
     }
-
-    return () => {
-      console.log("컴포넌트가 언마운트되었습니다.");
-    };
   }, [title]);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
 
   const handleAcceptClick = (message) => {
     console.log("답변 채택 클릭:", message);
+    
+    // 로컬 스토리지에서 대화 데이터 가져오기
+    const savedData = localStorage.getItem('conversationData');
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        const { questionList, answerList } = parsedData;
+  
+        // 선택된 답변의 ID를 찾기
+        const answer = answerList.find(answer => answer.content === message.text);
+        
+        if (answer) {
+          // 선택된 답변의 질문 인덱스 찾기
+          const index = answerList.indexOf(answer);
+          const question = questionList[index];
+          
+          setModalData({
+            id: answer.id,
+            question: question,
+            answer: answer.content
+          });
+        } else {
+          console.log("답변을 찾을 수 없습니다.");
+        }
+        
+      } catch (error) {
+        console.error("로컬 스토리지에서 대화 데이터를 파싱하는 데 실패했습니다:", error);
+      }
+    } else {
+      console.log("로컬 스토리지에 대화 데이터가 없습니다.");
+    }
+
     setSelectedMessage(message);
     setModalOpen(true);
   };
 
-  const handleConfirm = () => {
-    console.log("답변 채택됨:", selectedMessage);
-    setModalOpen(false);
+  const handleConfirm = async () => {
+    if (!selectedMessage) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("토큰이 없습니다. 로그인을 해주세요.");
+      return;
+    }
+
+    const questionRoomId = localStorage.getItem("questionRoomId");
+    const answerId = selectedMessage.id;
+
+    const requestData = {
+      questionRoomId,
+      answerId
+    };
+
+    try {
+      const response = await fetch("https://bugnyang.shop/api/question-room/adopt", {
+        method: "PATCH",
+        headers: {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      const data = await response.json();
+      console.log("채택 응답:", data);
+      
+    } catch (error) {
+      console.error("답변 채택 중 오류 발생:", error);
+      alert("답변 채택 중 오류가 발생했습니다.");
+    } finally {
+      setModalOpen(false);
+    }
   };
 
   const handleCloseModal = () => {
-    console.log("모달 닫힘");
     setModalOpen(false);
   };
 
@@ -195,27 +272,21 @@ const ConversationDetail = ({ title, articleId, close }) => {
     const token = localStorage.getItem("token");
     if (!token) {
       alert("토큰이 없습니다. 로그인을 해주세요.");
-      console.log("토큰이 없습니다. 로그인을 해주세요.");
       return;
     }
   
-    const questionRoomId = localStorage.getItem("questionRoomId"); // 기본값 설정
+    const questionRoomId = localStorage.getItem("questionRoomId");
   
     const requestData = {
       questionRoomId,
       question: searchQuery
     };
   
-    // UI에 질문 추가
     setChatMessages([...chatMessages, { text: searchQuery, isUser: false }]);
-    // 검색어 초기화
     setSearchQuery("");
-    // 로딩 상태 활성화
     setIsLoading(true);
 
     try {
-      console.log("질문 요청 데이터:", requestData);
-  
       const response = await fetch("https://bugnyang.shop/api/question", {
         method: "POST",
         headers: {
@@ -226,42 +297,37 @@ const ConversationDetail = ({ title, articleId, close }) => {
       });
   
       const data = await response.json();
-      console.log("질문 POST 응답:", data);
   
-      // 데이터 구조에 맞춰 조건문 수정
       if (data.isSuccess && data.result && data.result.answer) {
-        console.log("질문이 성공적으로 전송되었습니다.");
-  
-        // 로컬 스토리지 업데이트
         const savedData = localStorage.getItem('conversationData');
         let updatedData = { questionList: [], answerList: [] };
         if (savedData) {
           updatedData = JSON.parse(savedData);
         }
         updatedData.questionList.push(searchQuery);
-        updatedData.answerList.push({ content: data.result.answer });
+        updatedData.answerList.push({ id: data.result.id, content: data.result.answer });
         localStorage.setItem('conversationData', JSON.stringify(updatedData));
   
-        // UI에 답변 추가
-        setChatMessages([...chatMessages, { text: searchQuery, isUser: false }, { text: data.result.answer, isUser: true }]);
+        setChatMessages([...chatMessages, { text: searchQuery, isUser: false }, { text: data.result.answer, isUser: true, id: data.result.id }]);
       } else {
         alert("질문 전송에 실패했습니다. 다시 시도해주세요.");
-        console.log("질문 전송에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (error) {
       console.error("질문 제출 중 오류 발생:", error);
       alert("질문 전송 중 오류가 발생했습니다.");
-    }finally {
-      // 로딩 상태 해제
+    } finally {
       setIsLoading(false);
     }
-  
+  };
+
+  const handleAdditionalTextClick = () => {
+    navigate("/postCreate");
   };
 
   return (
     <DetailContainer>
-      <h1>{title}</h1>
-      <ChatContainer>
+      <h1 style={{ fontSize: '2vw' }}>{title}</h1>
+      <ChatContainer ref={chatContainerRef}>
         {chatMessages.map((message, index) => (
           message.isUser ? 
             <AnswerMessage key={index} text={message.text} onAccept={() => handleAcceptClick(message)} /> : 
@@ -269,9 +335,7 @@ const ConversationDetail = ({ title, articleId, close }) => {
         ))}
         {isLoading && (
           <LoadingMessage>
-            <BeatLoader 
-                color='#6630ff'
-            />
+            <BeatLoader color='#ffffff' />
           </LoadingMessage>
         )}
       </ChatContainer>
@@ -286,10 +350,17 @@ const ConversationDetail = ({ title, articleId, close }) => {
           <img src={SearchIcon} alt="Search" />
         </SearchButton>
       </SearchBarContainer>
-      {isModalOpen && (
+      <AdditionalText onClick={handleAdditionalTextClick}>
+        답변 외 방법으로 해결하였습니다.
+      </AdditionalText>
+      {isModalOpen && selectedMessage && (
         <Modal
-          message="답변을 채택할까요?"
-          description="버그냥이 덕분에 골치 아픈 버그를 해결했어요!"
+          title={title}        // 제목 추가
+          id={modalData.id}            // ID
+          question={modalData.question} // 질문
+          answer={modalData.answer}     // 답변
+          message="답변을 채택할까요?"   // 메시지
+          description={`버그냥이 덕분에 골치 아픈 버그를 해결했어요!`} // 설명
           onClose={handleCloseModal}
           onConfirm={handleConfirm}
           articleId={articleId}
