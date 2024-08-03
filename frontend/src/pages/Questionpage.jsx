@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Header from '../components/header';
-import NoBugImage from '../img/no_bug.png';
-import SearchIcon from '../img/search_icon.png';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import Header from "../components/header";
+import NoBugImage from "../img/no_bug.png";
 import Round from "../img/Round.png";
 import Done from "../img/done.png";
-import ConversationDetail from '../components/ConversationDetail';
-import { useNavigate } from 'react-router-dom';
+import ConversationDetail from "../components/ConversationDetail";
+import { useNavigate } from "react-router-dom";
 
 const PageContainer = styled.div`
   display: flex;
@@ -96,35 +95,6 @@ const NoBugFound = styled.div`
   }
 `;
 
-const SearchBarContainer = styled.form`
-  width: 70%;
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 2vw;
-  padding: 0.3vw 2vw;
-  position: absolute;
-  bottom: 3vw;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
-const SearchInput = styled.input`
-  border: none;
-  flex: 1;
-  padding: 0.5vw;
-  border-radius: 16px;
-  outline: none;
-  font-size: 1vw;
-`;
-
-const SearchButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5vw;
-`;
-
 const AdditionalText = styled.p`
   font-size: 0.9vw;
   text-align: center;
@@ -172,7 +142,6 @@ const QuestionPage = () => {
   const navigate = useNavigate();
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [questions, setQuestions] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -183,15 +152,20 @@ const QuestionPage = () => {
       }
 
       try {
-        const response = await fetch("https://bugnyang.shop/api/question-room", {
-          method: "GET",
-          headers: {
-            "Authorization": token,
-          },
-        });
+        console.log("질문 데이터를 가져오는 중...");
+
+        const response = await fetch(
+          "https://bugnyang.shop/api/question-room",
+          {
+            method: "GET",
+            headers: {
+              Authorization: token
+            }
+          }
+        );
 
         const data = await response.json();
-        console.log("Fetched questions data:", data);
+        console.log("가져온 질문 데이터:", data);
 
         if (data.isSuccess) {
           const fetchedQuestions = data.result
@@ -199,7 +173,7 @@ const QuestionPage = () => {
               id: item.id,
               title: item.roomName,
               status: item.state === "PROGRESS" ? "해결중" : "해결완료",
-              questionRoomId: item.id,
+              questionRoomId: item.id
             }))
             .sort((a, b) => b.id - a.id); // id 기준 내림차순 정렬
 
@@ -213,7 +187,7 @@ const QuestionPage = () => {
           alert("에러가 발생했습니다. 다시 시도해주세요.");
         }
       } catch (error) {
-        console.error("Error fetching questions:", error);
+        console.error("질문 데이터를 가져오는 중 에러 발생:", error);
         alert("에러가 발생했습니다. 다시 시도해주세요.");
       }
     };
@@ -228,125 +202,65 @@ const QuestionPage = () => {
       alert("토큰이 없습니다. 로그인을 해주세요.");
       return;
     }
-  
-    console.log("Clicked question:", question);
-  
+
+    console.log("클릭한 질문:", question);
+
     try {
-      const response = await fetch(`https://bugnyang.shop/api/question-room/${question.questionRoomId}`, {
-        method: "GET",
-        headers: {
-          "Authorization": token,
-        },
-      });
-  
+      const response = await fetch(
+        `https://bugnyang.shop/api/question-room/${question.questionRoomId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token
+          }
+        }
+      );
+
       const textResponse = await response.text();
       let data;
       try {
         data = JSON.parse(textResponse);
       } catch (error) {
-        console.error("Error parsing JSON:", error);
-        console.error("Received response:", textResponse);
+        console.error("JSON 파싱 에러:", error);
+        console.error("받은 응답:", textResponse);
         alert("서버에서 잘못된 응답을 받았습니다.");
         return;
       }
-  
-      console.log("Fetched conversation data:", data);
-  
-      // if (data.isSuccess) {
-      //   let questionContent;
-      //   try {
-      //     questionContent = JSON.parse(data.result.questionList[0].content).question;
-      //   } catch (error) {
-      //     console.error("Error parsing question content JSON:", error);
-      //     console.error("Received question content:", data.result.questionList[0].content);
-      //     questionContent = data.result.questionList[0].content;
-      //   }
-  
-      //   const conversationData = {
-      //     question: {
-      //       id: question.questionRoomId,
-      //       title: question.title,
-      //       content: questionContent,
-      //     },
-      //     answers: data.result.answerList || []
-      //   };
-  
-      //   localStorage.setItem('conversationData', JSON.stringify(conversationData));
-      //   setSelectedQuestion(question);
+
+      console.log("가져온 대화 데이터:", data);
+
       if (data.isSuccess) {
-        const questionContentList = data.result.questionList.map(q => q.content);
-        const answerList = data.result.answerList.map(answer => ({
+        const questionContentList = data.result.questionList.map(
+          (q) => q.content
+        );
+        const answerList = data.result.answerList.map((answer) => ({
           id: answer.answerId,
           content: answer.content,
           createdAt: answer.createdAt
         }));
-  
+
         const conversationData = {
           questionList: questionContentList,
           answerList: answerList
         };
-  
-        localStorage.setItem('conversationData', JSON.stringify(conversationData));
+
+        localStorage.setItem(
+          "conversationData",
+          JSON.stringify(conversationData)
+        );
         setSelectedQuestion(question);
       } else {
         alert("대화 내용을 불러오는데 실패했습니다.");
       }
     } catch (error) {
-      console.error("Error fetching conversation details:", error);
+      console.error("대화 내용을 가져오는 중 에러 발생:", error);
       alert("대화 내용을 불러오는데 실패했습니다.");
     }
   };
 
   const handleAdditionalTextClick = () => {
-    navigate('/postCreate');
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSearchSubmit = async (e) => {
-    e.preventDefault();
-    
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("토큰이 없습니다. 로그인을 해주세요.");
-      return;
-    }
-
-    const questionRoomId = localStorage.getItem("questionRoomId"); // 기본값 설정
-
-    const requestData = {
-      questionRoomId,
-      question: searchQuery
-    };
-
-    try {
-      console.log("requestData:", requestData);
-
-      const response = await fetch("https://bugnyang.shop/api/question", {
-        method: "POST",
-        headers: {
-          "Authorization": token,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestData)
-      });
-
-      const data = await response.json();
-      console.log("Search POST response:", data);
-
-      if (data.isSuccess) {
-        // alert("질문이 성공적으로 전송되었습니다.");
-        console.log("질문이 성공적으로 전송되었습니다.");
-        // 원하는 후속 작업을 여기에 추가
-      } else {
-        alert("질문 전송에 실패했습니다. 다시 시도해주세요.");
-      }
-    } catch (error) {
-      console.error("Error submitting question:", error);
-      alert("질문 전송 중 오류가 발생했습니다.");
-    }
+    console.log("추가 텍스트 클릭됨");
+    navigate("/postCreate");
   };
 
   return (
@@ -356,21 +270,25 @@ const QuestionPage = () => {
         <Sidebar>
           <SidebarHeader>
             <SidebarTitleContainer>
-              <img src={Done} alt="Done" style={{ width: '24px', height: '24px' }} />
+              <img
+                src={Done}
+                alt="Done"
+                style={{ width: "24px", height: "24px" }}
+              />
               <SidebarTitle>Trouble</SidebarTitle>
             </SidebarTitleContainer>
           </SidebarHeader>
           <SidebarTagList>
             {questions.map((question, index) => (
-              <SidebarContent 
-                key={index} 
+              <SidebarContent
+                key={index}
                 onClick={() => handleQuestionClick(question)}
               >
                 <SidebarLabel>{question.title}</SidebarLabel>
-                <Tag 
-                  name={question.status} 
-                  color={question.status === '해결중' ? '#6630FF' : '#808080'} 
-                  icon={question.status === '해결중' ? Round : Done}
+                <Tag
+                  name={question.status}
+                  color={question.status === "해결중" ? "#6630FF" : "#808080"}
+                  icon={question.status === "해결중" ? Round : Done}
                 />
               </SidebarContent>
             ))}
@@ -390,18 +308,10 @@ const QuestionPage = () => {
               <p>아무런 버그도 발견되지 않았어요</p>
             </NoBugFound>
           )}
-          <SearchBarContainer>
-          <SearchInput 
-            type="text" 
-            placeholder="어떤 에러가 발생 하였나요?" 
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <SearchButton type="button" onClick={handleSearchSubmit}>
-            <img src={SearchIcon} alt="Search" />
-          </SearchButton>
-        </SearchBarContainer>
-          <AdditionalText onClick={handleAdditionalTextClick}>답변 외 방법으로 해결하였습니다.</AdditionalText>
+          
+          <AdditionalText onClick={handleAdditionalTextClick}>
+            답변 외 방법으로 해결하였습니다.
+          </AdditionalText>
         </ContentArea>
       </MainContent>
     </PageContainer>
