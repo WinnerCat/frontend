@@ -104,8 +104,11 @@ const RankingList = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color:#111111;
   gap: 2vw;
   margin-bottom: 1.5vw;
+  display:flex;
+  justify-content: space-around;
 `;
 
 const RankLanguage = styled.div`
@@ -498,21 +501,20 @@ const Mainpage = () => {
             <BugcatImage src={BugCatImg} alt="오늘 잡은 버그 이미지" />
           </BugBox>
           <RankingBox>
-            <RankingItem>
-              <Title>오늘의 버그 랭킹</Title>
-              {ranking.length > 0 && (
-                <RankingList>
-                  {ranking.map((article, index) => (
-                    <div key={index}>
-                      <RankLanguage>{article.tagName}</RankLanguage>
-                      <RankCount>{article.count}마리</RankCount>
-                    </div>
-                  ))}
-                </RankingList>
-              )}
-            </RankingItem>
-            <Myquestionhistory onClick={handleSavePostClick}>내가 잡은 버그 목록</Myquestionhistory>
-          </RankingBox>
+    <RankingItem>
+      <Title>오늘의 버그 랭킹</Title>
+      {ranking.length > 0 && (
+        <RankingList>
+          {ranking.map((article, index) => (
+            <div key={index} style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+              <RankLanguage>{article.tagName}</RankLanguage>
+              <RankCount>{article.count}마리</RankCount>
+            </div>
+          ))}
+        </RankingList>
+      )}
+    </RankingItem>
+  </RankingBox>
         </Section>
         <PostsBox>
           <PostTitle>
