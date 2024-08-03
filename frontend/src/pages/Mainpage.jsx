@@ -327,7 +327,7 @@ const Mainpage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bugCount, setBugCount] = useState(0);
-  const [top5Articles, setTop5Articles] = useState([]);
+  const [ranking, setranking] = useState([]);
   const [posts, setPosts] = useState([]); // 게시글 데이터 상태 변수
   const [page, setPage] = useState(0); // 현재 페이지 상태 변수
   const [size, setSize] = useState(5); // 한 페이지에 표시할 게시글 수 상태 변수
@@ -343,7 +343,7 @@ const Mainpage = () => {
         const data = await response.json();
         if (data.isSuccess) {
           setBugCount(data.result.totalCount);
-          setTop5Articles(data.result.top5Articles);
+          setranking(data.result.ranking);
         } else {
           console.error("Failed to fetch bug count:", data.message);
         }
@@ -500,9 +500,9 @@ const Mainpage = () => {
           <RankingBox>
             <RankingItem>
               <Title>오늘의 버그 랭킹</Title>
-              {top5Articles.length > 0 && (
+              {ranking.length > 0 && (
                 <RankingList>
-                  {top5Articles.map((article, index) => (
+                  {ranking.map((article, index) => (
                     <div key={index}>
                       <RankLanguage>{article.tagName}</RankLanguage>
                       <RankCount>{article.count}마리</RankCount>
