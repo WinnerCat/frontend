@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Header from "../components/header";
 import Union from "../img/Union2.png";
 import LiveComment from "../components/liveComment";
+import Config from "../config/config";
 
+// 스타일 컴포넌트
 const Title = styled.span`
   color: var(--d-9-d-9-d-9, #000);
   font-family: Pretendard;
@@ -21,12 +23,14 @@ const ColorTitle = styled.span`
   font-weight: 800;
   line-height: 175%; /* 84px */
 `;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
   margin-top: 6.75vw;
   flex-direction: column;
 `;
+
 const Container60 = styled.div`
   width: 60%;
   display: flex;
@@ -39,7 +43,7 @@ const ImgContainer = styled.div`
 `;
 
 const LiveContainer = styled.div`
-  height: 27.2vw;
+  height: 50.2vw;
   width: 100%;
   margin-top: 4vw;
   flex-shrink: 0;
@@ -60,20 +64,20 @@ const InputContainer = styled.div`
 const Input = styled.input`
   width: 87%;
   height: 100%;
-  flex-shrink: 0;
-  border-radius: 1.1vw;
+  padding: 1vw; /* 텍스트와 placeholder에 동일한 padding */
+  font-size: 1.1vw;
+  line-height: 1.5vw; /* placeholder와 입력된 텍스트의 line-height 일치 */
+  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+  border-radius: 1vw;
   border: 0.05vw solid var(--808080, #808080);
   display: flex;
   justify-content: center;
   align-items: center;
+
   &::placeholder {
-    color: var(--d-9-d-9-d-9, #d9d9d9);
-    font-family: Inter;
+    color: #999;
     font-size: 1.1vw;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 220%; /* 48.4px */
-    padding: 1.7vw;
+    line-height: 1.5vw; /* placeholder의 line-height 일치 */
   }
 `;
 
@@ -94,27 +98,84 @@ const F5Button = styled.div`
 `;
 
 function Live() {
-  const lives = [
-    {
-      content: "ios개발 하지마세요. 진지해요.",
-      time: "2분전",
-    },
-    { content: "안자는 사람? ㅋㅋ", time: "5분전" },
-    { content: "진짜 오늘 너무 안된다", time: "11분전" },
-    { content: "지금 비가 너무 많이와", time: "17분전" },
-    { content: "날씨가 오락가락 미친날씨", time: "42분전" },
-    { content: "잠 좀 자고싶다", time: "1시간전" },
-    { content: "님들 개발 원래 이렇게 힘듦?", time: "2시간전" },
-    { content: "너넨 이런거 하지마라..", time: "2시간전" },
-  ];
+  const [data, setData] = useState([]);
+  const [content, setContent] = useState("");
+
+  const handleContentChange = (value) => {
+    setContent(value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleCreate();
+    }
+  };
+
+  // 아우성 조회
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${Config.baseURL}/api/scream`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (response.status === 200) {
+        setData(data.result.screams);
+      } else {
+        alert("데이터를 불러오는데 실패했습니다.");
+      }
+    } catch (error) {
+      alert("에러 발생");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    const intervalId = setInterval(fetchData, 5000); // 5초마다 새 데이터 가져옴
+    return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 타이머 해제
+  }, []);
+
+  // 아우성 등록
+  const handleCreate = async () => {
+    try {
+      const response = await fetch(`${Config.baseURL}/api/scream`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: content,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (response.status === 200) {
+        setContent(""); // 입력 필드 초기화
+        fetchData(); // 새로운 아우성 등록 후 데이터 갱신
+      } else {
+        alert("오류발생");
+      }
+    } catch (error) {
+      alert("에러발생");
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      <Header></Header>
+      <Header />
       <Container>
         <Container60>
           <Title>
-            <ColorTitle>개발자</ColorTitle>들의 <br></br>
+            <ColorTitle>개발자</ColorTitle>들의 <br />
             실시간<ColorTitle>아우성!!!!!!!</ColorTitle>
           </Title>
           <ImgContainer>
@@ -130,19 +191,24 @@ function Live() {
         </Container60>
         <Container60>
           <LiveContainer>
-            {lives.map((live, index) => (
+            {data.map((comment, index) => (
               <LiveComment
                 key={index}
-                content={live.content}
-                time={live.time}
+                content={comment.content}
+                time={comment.updatedAt}
               />
             ))}
           </LiveContainer>
         </Container60>
         <Container60>
           <InputContainer>
-            <Input placeholder="답답한 그 마음 여기에 외쳐보세요!"></Input>
-            <F5Button>F5</F5Button>
+            <Input
+              placeholder="답답한 그 마음 여기에 외쳐보세요!"
+              value={content}
+              onChange={(e) => handleContentChange(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <F5Button onClick={handleCreate}>F5</F5Button>
           </InputContainer>
         </Container60>
       </Container>
