@@ -41,8 +41,11 @@ const DropDownMenu = styled.div`
 const DropDownItem = styled.div`
   padding: 1vw;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
   &:hover {
-    background-color: #f1f1f1;
+    background-color: #6630ff;
+    color: white;
   }
 `;
 
