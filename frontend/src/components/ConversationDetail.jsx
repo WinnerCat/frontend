@@ -39,6 +39,7 @@ const QuestionBox = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   line-height: 1.8;
+  margin-top: 1vw;
   
   &::before {
     content: "";
