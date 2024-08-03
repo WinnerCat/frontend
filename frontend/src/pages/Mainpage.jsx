@@ -98,11 +98,9 @@ const RankingItem = styled.div`
 const RankingList = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   gap: 2vw;
   margin-bottom: 1.5vw;
-  display:flex;
-  justify-content: space-around;
 `;
 
 const RankLanguage = styled.div`
@@ -143,7 +141,7 @@ const PostsContainer = styled.div`
   }
 `;
 
-const PostItem = styled.div`
+const PostItem = styled.button`
   flex: 0 0 24%;
   background-color: #ffffff;
   padding: 20px;
@@ -154,6 +152,14 @@ const PostItem = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
+  background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.7) 90%);
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #6630ff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
 
   @media (max-width: 768px) {
     flex: 0 0 80%;
@@ -169,14 +175,14 @@ const PostTitle = styled.div`
   text-align: start;
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 2vw;
   color: #808080;
 `;
 
 const Myquestionhistory = styled.button`
   background-color: #6630ff;
   color: #fff;
-  font-size: 1.7vw;
+  font-size: 1.3vw;
   font-weight: bold;
   padding: 1.5vw;
   margin-top: 2vw;
@@ -199,12 +205,28 @@ const MorePostsLink = styled.a`
   text-decoration: underline;
   width: 100%;
   cursor: pointer;
+
+  /* 동그라미 아이콘 스타일 */
+  &::after {
+    content: '>';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1vw;
+    height: 1vw;
+    border-radius: 50%;
+    background-color: #808080;
+    color: #fff;
+    font-size: 1vw;
+    margin-left: 0.2vw; 
+    text-align: center;
+  }
 `;
 
 const Title = styled.h2`
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
-  font-size: 2vw;
+  font-size: 1.5vw;
   color: #808080;
 `;
 
@@ -312,11 +334,11 @@ const ScrollButton = styled.button`
 `;
 
 const LeftButton = styled(ScrollButton)`
-  left: -15px;
+  left: 2vw;
 `;
 
 const RightButton = styled(ScrollButton)`
-  right: -15px;
+  right: 2vw;
 `;
 
 const Mainpage = () => {
@@ -500,7 +522,7 @@ const Mainpage = () => {
       {ranking.length > 0 && (
         <RankingList>
           {ranking.map((article, index) => (
-            <div key={index} style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <div key={index} style={{ width: '55%',display: 'flex', justifyContent: 'space-between' }}>
               <RankLanguage>{article.tagName}</RankLanguage>
               <RankCount>{article.count}마리</RankCount>
             </div>
@@ -508,6 +530,7 @@ const Mainpage = () => {
         </RankingList>
       )}
     </RankingItem>
+    <Myquestionhistory onClick={handleSavePostClick}>내가 잡은 버그 목록</Myquestionhistory>
   </RankingBox>
         </Section>
         <PostsBox>
