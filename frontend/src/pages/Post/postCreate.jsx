@@ -257,7 +257,7 @@ function PostCreate() {
               <Modal
                 isOpen={isModalOpen}
                 closeModal={closeModal}
-                title="(대충 글을 적지않고 떠날건지 물어보는 내용)"
+                title="정말 글을 적지 않고 떠나실건가요?"
               />
             </ButtonContainer>
           </ButtonContainer1>
