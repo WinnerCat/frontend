@@ -225,8 +225,8 @@ function AllPost() {
                 <DropDownItem onClick={() => handleTagChange("전체보기")}>
                   전체보기
                 </DropDownItem>
-                <DropDownItem onClick={() => handleTagChange("ios")}>
-                  ios
+                <DropDownItem onClick={() => handleTagChange("iOS")}>
+                  iOS
                 </DropDownItem>
                 <DropDownItem onClick={() => handleTagChange("Swift")}>
                   Swift

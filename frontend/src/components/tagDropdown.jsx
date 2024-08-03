@@ -34,6 +34,8 @@ const DropDownMenu = styled.div`
   position: absolute;
   left: 24vw;
   top: 1.5vw;
+  max-height: 15vw; /* 드롭다운 최대 높이를 설정 */
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 활성화 */
 `;
 
 const DropDownItem = styled.div`
@@ -53,9 +55,27 @@ const TagList = styled.div`
 function TagDropdown({ tags, setTags }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const availableTags = [
-    { tagName: "swift", color: "#6630ff" },
-    { tagName: "Ios", color: "#FF3F3F" },
-    { tagName: "java", color: "#00A775" },
+    { tagName: "JavaScript", color: "#F7DF1E" },
+    { tagName: "Python", color: "#306998" },
+    { tagName: "Java", color: "#5382A1" },
+    { tagName: "C#", color: "#239120" },
+    { tagName: "C/C++", color: "#00599C" },
+    { tagName: "Swift", color: "#FA7343" },
+    { tagName: "Kotlin", color: "#0095D5" },
+    { tagName: "TypeScript", color: "#3178C6" },
+    { tagName: "React", color: "#61DAFB" },
+    { tagName: "Angular", color: "#DD0031" },
+    { tagName: "Vue.js", color: "#4FC08D" },
+    { tagName: "Django", color: "#092E20" },
+    { tagName: "Flask", color: "#000000" },
+    { tagName: "Spring", color: "#6DB33F" },
+    { tagName: "Express", color: "#000000" },
+    { tagName: "NestJS", color: "#E0234E" },
+    { tagName: "iOS", color: "#A2AAAD" },
+    { tagName: "Android", color: "#3DDC84" },
+    { tagName: "React Native", color: "#137CBD" },
+    { tagName: "Flutter", color: "#02569B" },
+    { tagName: "SQL", color: "#00758F" },
   ];
 
   const handleTagSelect = (tag) => {
