@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Modal from './adoptmodal';
 import MarkdownMessage from './MarkdownMessage';
 import SearchIcon from "../img/search_icon.png";
-import {BeatLoader} from 'react-spinners';
+import { BeatLoader } from 'react-spinners';
+import { useNavigate } from "react-router-dom";
 
 const DetailContainer = styled.div`
   display: flex;
@@ -19,22 +20,20 @@ const ChatContainer = styled.div`
   width: 100%;
   max-height: 65vh;
   overflow-y: auto;
-  padding: 1vw;
+  padding: 2vw;
   display: flex;
   flex-direction: column;
 `;
 
 const SearchBarContainer = styled.form`
-  width: 70%;
+  width: 100%;
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 2vw;
   padding: 0.3vw 2vw;
-  position: absolute;
-  bottom: 3vw;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin-top: 2vw;
 `;
 
 const SearchInput = styled.input`
@@ -51,6 +50,9 @@ const SearchButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 0.5vw;
+  img {
+    width: 1.5vw;
+  }
 `;
 
 const MessageContainer = styled.div`
@@ -70,7 +72,7 @@ const QuestionBox = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   line-height: 1.8;
-  margin-top:2vw;
+  margin-top: 2vw;
 `;
 
 const AcceptButton = styled.button`
@@ -100,17 +102,25 @@ const AnswerBox = styled.div`
   line-height: 1.8;
 `;
 
-
 const LoadingMessage = styled.div`
   border-radius: 1vw;
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #6630ff;
   box-shadow: none;
   position: relative;
   margin-top: 1vw;
   padding: 1vw;
   line-height: 1.8;
   text-align: center;
+`;
+
+const AdditionalText = styled.p`
+  font-size: 0.9vw;
+  text-align: center;
+  border: none;
+  text-decoration: underline;
+  color: #808080;
+  position: relative;
+  cursor: pointer;
 `;
 
 const QuestionMessage = ({ text }) => (
@@ -131,11 +141,13 @@ const AnswerMessage = ({ text, onAccept }) => (
 );
 
 const ConversationDetail = ({ title, articleId, close }) => {
+ const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const chatContainerRef = useRef(null); // ref 추가
 
   useEffect(() => {
     console.log("컴포넌트가 마운트되었습니다.");
@@ -168,6 +180,13 @@ const ConversationDetail = ({ title, articleId, close }) => {
       console.log("컴포넌트가 언마운트되었습니다.");
     };
   }, [title]);
+
+  useEffect(() => {
+    // chatContainerRef가 설정된 후, 자동 스크롤을 하도록 설정
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
 
   const handleAcceptClick = (message) => {
     console.log("답변 채택 클릭:", message);
@@ -251,17 +270,21 @@ const ConversationDetail = ({ title, articleId, close }) => {
     } catch (error) {
       console.error("질문 제출 중 오류 발생:", error);
       alert("질문 전송 중 오류가 발생했습니다.");
-    }finally {
+    } finally {
       // 로딩 상태 해제
       setIsLoading(false);
     }
-  
+  };
+
+  const handleAdditionalTextClick = () => {
+    console.log("추가 텍스트 클릭됨");
+    navigate("/postCreate");
   };
 
   return (
     <DetailContainer>
-      <h1>{title}</h1>
-      <ChatContainer>
+      <h1 style={{ fontSize: '2vw' }}>{title}</h1>
+      <ChatContainer ref={chatContainerRef}>
         {chatMessages.map((message, index) => (
           message.isUser ? 
             <AnswerMessage key={index} text={message.text} onAccept={() => handleAcceptClick(message)} /> : 
@@ -269,9 +292,7 @@ const ConversationDetail = ({ title, articleId, close }) => {
         ))}
         {isLoading && (
           <LoadingMessage>
-            <BeatLoader 
-                color='#6630ff'
-            />
+            <BeatLoader color='#ffffff' />
           </LoadingMessage>
         )}
       </ChatContainer>
@@ -285,7 +306,11 @@ const ConversationDetail = ({ title, articleId, close }) => {
         <SearchButton type="submit">
           <img src={SearchIcon} alt="Search" />
         </SearchButton>
+        
       </SearchBarContainer>
+      <AdditionalText onClick={handleAdditionalTextClick}>
+            답변 외 방법으로 해결하였습니다.
+        </AdditionalText>
       {isModalOpen && (
         <Modal
           message="답변을 채택할까요?"
