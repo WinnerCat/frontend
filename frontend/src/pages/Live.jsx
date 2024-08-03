@@ -43,7 +43,7 @@ const ImgContainer = styled.div`
 `;
 
 const LiveContainer = styled.div`
-  height: 50.2vw;
+  height: 35.2vw;
   width: 100%;
   margin-top: 4vw;
   flex-shrink: 0;
@@ -103,12 +103,6 @@ function Live() {
 
   const handleContentChange = (value) => {
     setContent(value);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleCreate();
-    }
   };
 
   // 아우성 조회
@@ -195,7 +189,7 @@ function Live() {
               <LiveComment
                 key={index}
                 content={comment.content}
-                time={comment.updatedAt}
+                time={comment.timeAgo}
               />
             ))}
           </LiveContainer>
@@ -206,9 +200,8 @@ function Live() {
               placeholder="답답한 그 마음 여기에 외쳐보세요!"
               value={content}
               onChange={(e) => handleContentChange(e.target.value)}
-              onKeyDown={handleKeyDown}
             />
-            <F5Button onClick={handleCreate}>F5</F5Button>
+            <F5Button onClick={handleCreate}>외침</F5Button>
           </InputContainer>
         </Container60>
       </Container>
