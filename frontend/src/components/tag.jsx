@@ -2,8 +2,6 @@ import styled from "styled-components";
 import Round from "../img/Round.png";
 
 const Container = styled.div`
-  width: 3.9vw;
-  height: 1.56vw;
   flex-shrink: 0;
   border-radius: 1.04vw;
   color: #fff;
@@ -16,6 +14,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin-left: 0.5vw;
+  padding: 0.3vw 0.5vw 0.3vw 0.5vw;
 `;
 
 function Tag({ tagName, color }) {

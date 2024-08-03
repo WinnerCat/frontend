@@ -137,7 +137,8 @@ const DropDownContent = styled.div`
   width: 17vw;
   box-shadow: 0 0.4vw 0.8vw rgba(0, 0, 0, 0.2);
   z-index: 1;
-  overflow: hidden;
+  max-height: 15vw;
+  overflow-y: auto;
 `;
 
 function MyPost() {
@@ -222,14 +223,68 @@ function MyPost() {
                 <DropDownItem onClick={() => handleTagChange("전체보기")}>
                   전체보기
                 </DropDownItem>
-                <DropDownItem onClick={() => handleTagChange("ios")}>
-                  ios
+                <DropDownItem onClick={() => handleTagChange("JavaScript")}>
+                  JavaScript
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Python")}>
+                  Python
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Java")}>
+                  Java
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("C#")}>
+                  C#
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("C/C++")}>
+                  C/C++
                 </DropDownItem>
                 <DropDownItem onClick={() => handleTagChange("Swift")}>
                   Swift
                 </DropDownItem>
-                <DropDownItem onClick={() => handleTagChange("Java")}>
-                  Java
+                <DropDownItem onClick={() => handleTagChange("Kotlin")}>
+                  Kotlin
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("TypeScript")}>
+                  TypeScript
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("React")}>
+                  React
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Angular")}>
+                  Angular
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Vue.js")}>
+                  Vue.js
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Django")}>
+                  Django
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Flask")}>
+                  Flask
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Spring")}>
+                  Spring
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Express")}>
+                  Express
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("NestJS")}>
+                  NestJS
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("iOS")}>
+                  iOS
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Android")}>
+                  Android
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("React Native")}>
+                  React Native
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("Flutter")}>
+                  Flutter
+                </DropDownItem>
+                <DropDownItem onClick={() => handleTagChange("SQL")}>
+                  SQL
                 </DropDownItem>
               </DropDownContent>
             </Stack>
