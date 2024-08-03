@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Checkimg from '../img/Check.png';
@@ -27,9 +27,14 @@ const ModalContent = styled.div`
 `;
 
 const ModalIcon = styled.img`
-  src: url(${Checkimg});
   width: 2vw;
   margin-bottom: 1vw;
+`;
+
+const ModalTitle = styled.h2`
+  font-size: 1.5vw;
+  margin: 0;
+  font-weight: bold;
 `;
 
 const ModalText = styled.p`
@@ -49,7 +54,7 @@ const ModalButtonContainer = styled.div`
   justify-content: center;
   width: 100%;
   gap: 2vw;
-  margin-top:1vw;
+  margin-top: 1vw;
 `;
 
 const ModalButton = styled.button`
@@ -66,8 +71,20 @@ const ModalButton = styled.button`
   }
 `;
 
-const AdoptModal = ({ message, description, onClose, onConfirm, articleId }) => {
+const AdoptModal = ({ title, id, question, answer, message, description, onClose, onConfirm, articleId }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 컴포넌트가 렌더링될 때 속성 값 로그 찍기
+    console.log("AdoptModal props:", {
+      title,
+      id,
+      question,
+      answer,
+      message,
+      description,
+    });
+  }, [title, id, question, answer, message, description]);
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -75,9 +92,47 @@ const AdoptModal = ({ message, description, onClose, onConfirm, articleId }) => 
     }
   };
 
-  const handleConfirm = () => {
-    onConfirm();
-    navigate(`/postDetail/${articleId}`);
+  const handleConfirm = async () => {
+    const token = localStorage.getItem("token");
+    localStorage.setItem("title",title);
+    localStorage.setItem("answer",answer);
+    
+    if (!token) {
+      alert("토큰이 없습니다. 로그인을 해주세요.");
+      return;
+    }
+
+    const questionRoomId = localStorage.getItem("questionRoomId");
+
+    const requestData = {
+      questionRoomId,
+      answerId: id // ID 사용
+    };
+
+    try {
+      const response = await fetch("https://bugnyang.shop/api/question-room/adopt", {
+        method: "PATCH",
+        headers: {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      const data = await response.json();
+      console.log("채택 응답:", data);
+
+      if (data.isSuccess) {
+        navigate(`/postUpdate/${articleId}`);
+      } else {
+        alert("답변 채택에 실패했습니다. 다시 시도해 주세요.");
+      }
+    } catch (error) {
+      console.error("답변 채택 중 오류 발생:", error);
+      alert("답변 채택 중 오류가 발생했습니다.");
+    } finally {
+      onConfirm();
+    }
   };
 
   return (

@@ -16,9 +16,9 @@ const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 2vw;
-  background-color: #d9d9d9;
-  height: 20vh;
+  padding: 3vw;
+  background-color: #e8f0ff;
+  height: 12vw;
 `;
 
 const SearchContainer = styled.form`
@@ -31,7 +31,7 @@ const SearchContainer = styled.form`
 const SearchInput = styled.input`
   font-size: 1.3vw;
   border: none;
-  border-radius: 50px;
+  border-radius: 5vw;
   width: 40vw;
   height: 3vh;
   padding: 1vw 3vw;
@@ -41,20 +41,15 @@ const SearchInput = styled.input`
   &::placeholder {
     color: #808080;
   }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 16px;
-  }
 `;
 
 const SearchIcon = styled.img`
   position: absolute;
-  right: 30px;
+  right: 3vw;
   top: 50%;
   transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
+  width: 1.8vw;
+  height: 1.8vw;
   cursor: pointer;
 `;
 
@@ -72,7 +67,7 @@ const Body = styled.div`
 const Section = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 2vw;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -104,7 +99,6 @@ const RankingList = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color:#111111;
   gap: 2vw;
   margin-bottom: 1.5vw;
   display:flex;
@@ -506,7 +500,7 @@ const Mainpage = () => {
       {ranking.length > 0 && (
         <RankingList>
           {ranking.map((article, index) => (
-            <div key={index} style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+            <div key={index} style={{ display: 'flex', justifyContent: 'space-around' }}>
               <RankLanguage>{article.tagName}</RankLanguage>
               <RankCount>{article.count}마리</RankCount>
             </div>
