@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import success from "../img/success.png";
+import success from "../img/Foot.png";
 
 const Container = styled.div`
   width: 100%;

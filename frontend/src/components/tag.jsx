@@ -15,12 +15,13 @@ const Container = styled.div`
   align-items: center;
   margin-left: 0.5vw;
   padding: 0.3vw 0.5vw 0.3vw 0.5vw;
+  cursor: pointer;
 `;
 
-function Tag({ tagName, color }) {
+function Tag({ tagName, color, onClick }) {
   return (
     <>
-      <Container style={{ background: color }}>
+      <Container style={{ background: color }} onClick={onClick}>
         <img
           src={Round}
           style={{

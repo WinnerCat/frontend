@@ -71,7 +71,7 @@ const TagContainer = styled.div`
   position: relative;
   display: flex;
   gap: 0.5vw;
-  bottom: 5.3vw;
+  bottom: 5.52vw;
 `;
 
 const TextArea = styled.textarea`
@@ -176,6 +176,7 @@ function PostUpdate() {
       console.log(tags);
 
       if (response.status === 200) {
+        navigate(`/postDetail/${articleId}`);
         alert("수정이 완료되었습니다.");
       } else {
         alert("오류발생");
@@ -186,39 +187,39 @@ function PostUpdate() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${Config.baseURL}/api/article/detail/${articleId}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: token,
-  //           },
-  //         }
-  //       );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${Config.baseURL}/api/article/detail/${articleId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
 
-  //       const data = await response.json();
-  //       console.log(data);
+        const data = await response.json();
+        console.log(data);
 
-  //       if (response.status === 200) {
-  //         setTitle(data.result.title);
-  //         setTags(data.result.tags);
-  //         setCause(data.result.cause);
-  //         setSolution(data.result.solution);
-  //       } else {
-  //         alert("데이터를 불러오는데 실패했습니다.");
-  //       }
-  //     } catch (error) {
-  //       alert("에러 발생");
-  //       console.log(error);
-  //     }
-  //   };
+        if (response.status === 200) {
+          setTitle(data.result.title);
+          setTags(data.result.tags);
+          setCause(data.result.cause);
+          setSolution(data.result.solution);
+        } else {
+          alert("데이터를 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        alert("에러 발생");
+        console.log(error);
+      }
+    };
 
-  //   fetchData();
-  // }, [token, articleId]);
+    fetchData();
+  }, [token, articleId]);
 
   useEffect(() => {
     // 로컬스토리지에서 제목,해결방안을 읽어오고 상태를 설정한 뒤 로컬스토리지에서 삭제
@@ -259,7 +260,14 @@ function PostUpdate() {
           <TagContainer>
             {tags &&
               tags.map((tag, index) => (
-                <Tag key={index} tagName={tag.tagName} color={tag.colorCode} />
+                <Tag
+                  key={index}
+                  tagName={tag.tagName}
+                  color={tag.colorCode}
+                  onClick={() =>
+                    setTags(tags.filter((t) => t.tagName !== tag.tagName))
+                  }
+                />
               ))}
           </TagContainer>
           <InputContainerTitle>원인</InputContainerTitle>
@@ -271,7 +279,7 @@ function PostUpdate() {
           <InputContainerTitle>해결방법</InputContainerTitle>
           <TextArea
             placeholder="내용을 작성 해주세요."
-            value={answer}
+            value={solution}
             onChange={(e) => handleSolutionChange(e.target.value)}
           />
           <ButtonContainer1>
@@ -297,7 +305,6 @@ function PostUpdate() {
               <SaveButton
                 onClick={() => {
                   handleUpdate();
-                  navigate(`/postDetail/${articleId}`);
                 }}
               >
                 <span

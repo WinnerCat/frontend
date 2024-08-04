@@ -201,7 +201,7 @@ function Live() {
               value={content}
               onChange={(e) => handleContentChange(e.target.value)}
             />
-            <F5Button onClick={handleCreate}>외침</F5Button>
+            <F5Button onClick={handleCreate}>전송</F5Button>
           </InputContainer>
         </Container60>
       </Container>
