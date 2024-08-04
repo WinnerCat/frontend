@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Header from "../components/header";
 import LogoImage from "../img/logo.png";
+import google from "../img/google.png";
 
 const Body = styled.div`
   display: flex;
@@ -89,17 +90,24 @@ const Logo = styled.img`
   width: 25%;
 `;
 
+const Google = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10vw;
+  height: 2vw;
+`;
+
 const OrDivider = styled.div`
+  display: flex;
   margin: 1vw;
   display: flex;
   align-items: center;
-  font-size: 0.8rem;
-  color: #838383;
-  div {
-    flex: 1;
-    height: 0.2vw;
-    background-color: #ccc;
-  }
+  font-size: 1.2vw;
+  border-radius: 0.5vw;
+  border: 0.05vw solid #000;
+  padding: 0.5vw;
+  cursor: pointer;
 `;
 
 const Login = () => {
@@ -114,6 +122,10 @@ const Login = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+
+  const onGoogleLogin = () => {
+    window.location.href = "https://bugnyang.shop/oauth2/authorization/google";
   };
 
   const handleSubmit = async (e) => {
@@ -189,7 +201,11 @@ const Login = () => {
               </SecondaryButton>
             </Footer>
             <OrDivider>
-              <div></div>-----간편로그인-----<div></div>
+              <img
+                src={google}
+                style={{ width: "2vw", height: "2vw", borderRadius: "1.5vw" }}
+              />
+              <Google onClick={onGoogleLogin}>Google로 로그인</Google>
             </OrDivider>
             {/* <QuickLoginText>간편 로그인</QuickLoginText> */}
           </Form>
