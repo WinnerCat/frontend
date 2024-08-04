@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import Union from "../img/Union.png";
 import LogoImage from "../img/logo_main.png";
-import LoginModal from './Loginmodal';  // LoginModal 컴포넌트 import
+import LoginModal from "./Loginmodal"; // LoginModal 컴포넌트 import
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -80,9 +80,9 @@ const Header = () => {
 
   const checkLogin = (e) => {
     e.preventDefault();
-    console.log(localStorage.getItem('isLogined')); 
-    if (localStorage.getItem('isLogined') === 'true') {
-      const href = e.target.getAttribute('href');
+    console.log(localStorage.getItem("isLogined"));
+    if (localStorage.getItem("isLogined") === "true") {
+      const href = e.target.getAttribute("href");
       if (href) {
         navigate(href);
       } else {
@@ -94,7 +94,7 @@ const Header = () => {
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(prevState => !prevState);
+    setIsDropdownOpen((prevState) => !prevState);
   };
 
   const closeModal = () => {
@@ -102,9 +102,9 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('isLogined', 'false');
+    localStorage.setItem("isLogined", "false");
     setIsDropdownOpen(false);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -113,11 +113,17 @@ const Header = () => {
         <Logo src={LogoImage} alt="버그냥이 로고" />
       </LogoLink>
       <Nav>
-        <NavItem href="/" onClick={checkLogin}>홈</NavItem>
-        <NavItem href="/allPost" onClick={checkLogin}>전체 게시판</NavItem>
-        <NavItem href="/savePost" onClick={checkLogin}>저장게시판</NavItem>
-        <NavItem href="/live" onClick={checkLogin}>실시간 아우성</NavItem>
-        <NavItem href="/question" onClick={checkLogin}>질문 내역</NavItem>
+        <NavItem href="/" onClick={checkLogin}>
+          홈
+        </NavItem>
+        <NavItem href="/allPost">전체 게시판</NavItem>
+        <NavItem href="/savePost" onClick={checkLogin}>
+          저장게시판
+        </NavItem>
+        <NavItem href="/live">실시간 아우성</NavItem>
+        <NavItem href="/question" onClick={checkLogin}>
+          질문 내역
+        </NavItem>
       </Nav>
       <CatIcon onClick={checkLogin}>
         <img src={Union} alt="Union" />
