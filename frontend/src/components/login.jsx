@@ -111,6 +111,7 @@ const OrDivider = styled.div`
 `;
 
 const Login = () => {
+  axios.defaults.withCredentials = true; // withCredentials 전역 설정
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
