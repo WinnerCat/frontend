@@ -369,7 +369,7 @@ const Mainpage = () => {
       return null;
     };
 
-    const token = getCookie("Authorization");
+    const token = getCookie("JSESSIONID");
     console.log("Token:", token); // 디버깅 로그 추가
 
     if (token) {
