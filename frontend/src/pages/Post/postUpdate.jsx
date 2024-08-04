@@ -71,7 +71,7 @@ const TagContainer = styled.div`
   position: relative;
   display: flex;
   gap: 0.5vw;
-  bottom: 5.3vw;
+  bottom: 5.52vw;
 `;
 
 const TextArea = styled.textarea`
@@ -260,7 +260,14 @@ function PostUpdate() {
           <TagContainer>
             {tags &&
               tags.map((tag, index) => (
-                <Tag key={index} tagName={tag.tagName} color={tag.colorCode} />
+                <Tag
+                  key={index}
+                  tagName={tag.tagName}
+                  color={tag.colorCode}
+                  onClick={() =>
+                    setTags(tags.filter((t) => t.tagName !== tag.tagName))
+                  }
+                />
               ))}
           </TagContainer>
           <InputContainerTitle>원인</InputContainerTitle>
@@ -272,7 +279,7 @@ function PostUpdate() {
           <InputContainerTitle>해결방법</InputContainerTitle>
           <TextArea
             placeholder="내용을 작성 해주세요."
-            value={answer}
+            value={solution}
             onChange={(e) => handleSolutionChange(e.target.value)}
           />
           <ButtonContainer1>
