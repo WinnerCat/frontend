@@ -29,6 +29,7 @@ const BackButton = styled.div`
   line-height: 200%; /* 40px */
   margin-top: 3.5vw;
   margin-bottom: 3.15vw;
+  cursor: pointer;
 `;
 
 const TitleContainer = styled.div`
@@ -264,7 +265,9 @@ function PostDetail() {
       <Header></Header>
       <Container>
         <Container80>
-          <BackButton onClick={() => navigate(-1)}>&lt; 뒤로가기</BackButton>
+          <BackButton onClick={() => navigate("/allPost")}>
+            &lt; 뒤로가기
+          </BackButton>
           <TitleContainer>
             <TitleLogo>
               <img

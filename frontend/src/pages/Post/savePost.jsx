@@ -161,16 +161,18 @@ function SavePost() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${Config.baseURL}/api/scrap/mine?page=${currentPage}&size=5`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
-        );
+        const url =
+          selectedTag === "전체보기"
+            ? `${Config.baseURL}/api/scrap/mine?page=${currentPage}&size=5`
+            : `${Config.baseURL}/api/scrap/mine/tag?tagName=${selectedTag}&page=${currentPage}&size=5`;
+
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
 
         const data = await response.json();
         console.log(data);
@@ -188,7 +190,7 @@ function SavePost() {
     };
 
     fetchData();
-  }, [token, currentPage]);
+  }, [token, currentPage, selectedTag]);
 
   const handlePreviousPage = () => {
     if (currentPage > 0) {

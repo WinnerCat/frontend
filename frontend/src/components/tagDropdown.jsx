@@ -89,7 +89,6 @@ function TagDropdown({ tags, setTags }) {
     }
   };
   console.log(tags);
-
   return (
     <>
       <DropdownContainer onClick={() => setShowDropdown(!showDropdown)}>
@@ -111,10 +110,9 @@ function TagDropdown({ tags, setTags }) {
             key={index}
             tagName={tag.tagName}
             color={tag.color}
-            onClick={() => {
-              //드롭다운 제거(구현보류)
-              setTags(tags.filter((t) => t.tagName !== tag.tagName));
-            }}
+            onClick={() =>
+              setTags(tags.filter((t) => t.tagName !== tag.tagName))
+            } // 태그 클릭 시 제거
           ></Tag>
         ))}
       </TagList>
