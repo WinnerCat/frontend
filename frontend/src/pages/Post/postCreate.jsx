@@ -155,6 +155,10 @@ function PostCreate() {
   const token = localStorage.getItem("token");
 
   const handleCreate = async () => {
+    if (!title || tags.length === 0 || !cause || !solution) {
+      alert("모든 항목을 채워주세요.");
+      return;
+    }
     try {
       const response = await fetch(`${Config.baseURL}/api/article`, {
         method: "POST",

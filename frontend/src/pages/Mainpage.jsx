@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Header from "../components/header";
 import SearchIconImg from "../img/searchicon.png";
 import BugCatImg from "../img/bugcat.png";
-import LoginModal from '../components/Loginmodal'; 
+import LoginModal from "../components/Loginmodal";
 
 const Container = styled.div`
   display: flex;
@@ -152,7 +152,11 @@ const PostItem = styled.button`
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.7) 90%);
+  background: linear-gradient(
+    to top,
+    transparent,
+    rgba(255, 255, 255, 0.7) 90%
+  );
   border: none;
   cursor: pointer;
 
@@ -208,7 +212,7 @@ const MorePostsLink = styled.a`
 
   /* 동그라미 아이콘 스타일 */
   &::after {
-    content: '>';
+    content: ">";
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -218,7 +222,7 @@ const MorePostsLink = styled.a`
     background-color: #808080;
     color: #fff;
     font-size: 1vw;
-    margin-left: 0.2vw; 
+    margin-left: 0.2vw;
     text-align: center;
   }
 `;
@@ -351,14 +355,36 @@ const Mainpage = () => {
   const [page, setPage] = useState(0); // 현재 페이지 상태 변수
   const [size, setSize] = useState(5); // 한 페이지에 표시할 게시글 수 상태 변수
   const postsRef = useRef(); // 게시글 컨테이너 참조
+  const [jwt, setJwt] = useState("");
 
   // 컴포넌트 마운트 시 API 호출 및 데이터 가져오기
   useEffect(() => {
+    const getCookie = (name) => {
+      const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+      for (const cookie of cookies) {
+        if (cookie.startsWith(`${name}=`)) {
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return null;
+    };
+
+    const token = getCookie("Authorization");
+    console.log("Token:", token); // 디버깅 로그 추가
+
+    if (token) {
+      setJwt("Bearer " + token);
+      localStorage.setItem("token", token);
+      localStorage.setItem("email", token);
+    }
     const fetchBugData = async () => {
       try {
-        const response = await fetch("https://bugnyang.shop/api/article/today-error", {
-          method: "GET",
-        });
+        const response = await fetch(
+          "https://bugnyang.shop/api/article/today-error",
+          {
+            method: "GET",
+          }
+        );
         const data = await response.json();
         if (data.isSuccess) {
           setBugCount(data.result.totalCount);
@@ -376,13 +402,16 @@ const Mainpage = () => {
         const tagName = "Swift"; // 동적으로 처리 가능한 부분
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`https://bugnyang.shop/api/article/recommend?tagName=${tagName}&page=${page}&size=${size}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json", // 요청 데이터 형식
-            "Authorization": `${token}`, // Authorization 헤더에 토큰 추가
-          },
-        });
+        const response = await fetch(
+          `https://bugnyang.shop/api/article/recommend?tagName=${tagName}&page=${page}&size=${size}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json", // 요청 데이터 형식
+              Authorization: `${token}`, // Authorization 헤더에 토큰 추가
+            },
+          }
+        );
         const data = await response.json();
         if (data.isSuccess) {
           setPosts(data.result.articlePreviewList); // 게시글 데이터 업데이트
@@ -400,8 +429,8 @@ const Mainpage = () => {
 
   // 로그인 상태 체크 함수
   const checkLogin = async () => {
-    console.log(localStorage.getItem('isLogined'));
-    if (localStorage.getItem('isLogined') === 'true') {
+    console.log(localStorage.getItem("isLogined"));
+    if (localStorage.getItem("isLogined") === "true") {
       return true;
     } else {
       return false;
@@ -506,7 +535,11 @@ const Mainpage = () => {
             onChange={handleSearchChange}
             onClick={handleSearchClick}
           />
-          <SearchIcon src={SearchIconImg} alt="search icon" onClick={handleSearchSubmit} />
+          <SearchIcon
+            src={SearchIconImg}
+            alt="search icon"
+            onClick={handleSearchSubmit}
+          />
         </SearchContainer>
       </Content>
       <Body>
@@ -517,21 +550,30 @@ const Mainpage = () => {
             <BugcatImage src={BugCatImg} alt="오늘 잡은 버그 이미지" />
           </BugBox>
           <RankingBox>
-    <RankingItem>
-      <Title>오늘의 버그 랭킹</Title>
-      {ranking.length > 0 && (
-        <RankingList>
-          {ranking.map((article, index) => (
-            <div key={index} style={{ width: '55%',display: 'flex', justifyContent: 'space-between' }}>
-              <RankLanguage>{article.tagName}</RankLanguage>
-              <RankCount>{article.count}마리</RankCount>
-            </div>
-          ))}
-        </RankingList>
-      )}
-    </RankingItem>
-    <Myquestionhistory onClick={handleSavePostClick}>내가 잡은 버그 목록</Myquestionhistory>
-  </RankingBox>
+            <RankingItem>
+              <Title>오늘의 버그 랭킹</Title>
+              {ranking.length > 0 && (
+                <RankingList>
+                  {ranking.map((article, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        width: "55%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <RankLanguage>{article.tagName}</RankLanguage>
+                      <RankCount>{article.count}마리</RankCount>
+                    </div>
+                  ))}
+                </RankingList>
+              )}
+            </RankingItem>
+            <Myquestionhistory onClick={handleSavePostClick}>
+              내가 잡은 버그 목록
+            </Myquestionhistory>
+          </RankingBox>
         </Section>
         <PostsBox>
           <PostTitle>
@@ -539,7 +581,7 @@ const Mainpage = () => {
             <HighlightedText>Swift</HighlightedText> 관련 게시글을 모아봤어요!
           </PostTitle>
           <PostsContainer ref={postsRef}>
-            {posts.map(post => (
+            {posts.map((post) => (
               <PostItem key={post.articleId}>
                 <div>
                   <h3>{post.title}</h3>
@@ -551,7 +593,9 @@ const Mainpage = () => {
           <LeftButton onClick={scrollLeft}>{"◁"}</LeftButton>
           <RightButton onClick={scrollRight}>{"▷"}</RightButton>
         </PostsBox>
-        <MorePostsLink href="#" onClick={handleMorePostsClick}>더 많은 게시글들 보고 싶어요</MorePostsLink>
+        <MorePostsLink href="#" onClick={handleMorePostsClick}>
+          더 많은 게시글들 보고 싶어요
+        </MorePostsLink>
         <ChatBox>
           <ChatMessage>
             <UserMessage>
@@ -565,10 +609,15 @@ const Mainpage = () => {
             <BotMessage>프론트개발 하지마세요 진짜에요</BotMessage>
           </ChatMessage2>
         </ChatBox>
-        <MorePostsLink href="#" onClick={handleLiveClick}>개발자들의 아우성 들으러가기</MorePostsLink>
+        <MorePostsLink href="#" onClick={handleLiveClick}>
+          개발자들의 아우성 들으러가기
+        </MorePostsLink>
       </Body>
       {isModalOpen && (
-        <LoginModal isModalOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+        <LoginModal
+          isModalOpen={isModalOpen}
+          closeModal={() => setIsModalOpen(false)}
+        />
       )}
     </Container>
   );

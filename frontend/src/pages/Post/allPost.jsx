@@ -5,6 +5,7 @@ import Header from "../../components/header";
 import { useState, useEffect } from "react";
 import Config from "../../config/config";
 import { useNavigate } from "react-router-dom";
+import LoginModal from "../../components/Loginmodal";
 
 const Title = styled.span`
   color: #000;
@@ -143,11 +144,14 @@ const DropDownContent = styled.div`
 
 function AllPost() {
   const token = localStorage.getItem("token");
+  const isLogined = localStorage.getItem("isLogined") === "true";
+
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedTag, setSelectedTag] = useState("전체보기");
   const [isOpen, setIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
   console.log(data);
@@ -202,6 +206,19 @@ function AllPost() {
   const handleTagChange = (tag) => {
     setSelectedTag(tag);
     setCurrentPage(0);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    navigate("/login"); // 로그인 페이지로 이동
+  };
+
+  const handlePostClick = (articleId) => {
+    if (!isLogined) {
+      setShowModal(true); // 로그인이 안 되어 있을 때 모달을 띄움
+    } else {
+      navigate(`/postDetail/${articleId}`); // 로그인이 되어 있을 때 상세 페이지로 이동
+    }
   };
 
   return (
@@ -294,10 +311,7 @@ function AllPost() {
           </DropDownButton>
         </DropDownContainer>
         {data.map((article, index) => (
-          <Post
-            key={index}
-            onClick={() => navigate(`/postDetail/${article.articleId}`)}
-          >
+          <Post key={index} onClick={() => handlePostClick(article.articleId)}>
             <PostTitle>{article.title}</PostTitle>
             <PostContainer>
               {article.tagList.map((tag, tagIndex) => (
@@ -323,6 +337,10 @@ function AllPost() {
           </PageButton>
         </Page>
       </Container>
+
+      {showModal && (
+        <LoginModal isModalOpen={showModal} closeModal={closeModal} />
+      )}
     </>
   );
 }
