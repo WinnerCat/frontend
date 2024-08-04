@@ -111,6 +111,7 @@ const LoadingMessage = styled.div`
   padding: 1vw;
   line-height: 1.8;
   text-align: center;
+  width: 30%;
 `;
 
 const AdditionalText = styled.p`
