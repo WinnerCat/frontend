@@ -222,7 +222,7 @@ const QuestionPage = () => {
 
           setQuestions(fetchedQuestions);
 
-          // URL의 쿼리 파라미터를 확인하여 자동 선택 로직을 제어합니다.
+          // URL의 쿼리 파라미터를 확인하여 자동 선택 로직을 제어
           const queryParams = new URLSearchParams(location.search);
           if (queryParams.has("query")) {
             // 페이지 렌더링 시 가장 최신 질문 자동 선택
