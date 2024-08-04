@@ -124,9 +124,8 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const onGoogleLogin = async () => {
-    // window.location.href = "https://bugnyang.shop/oauth2/authorization/google";
-    await axios.post("https://bugnyang.shop/oauth2/authorization/google");
+  const onGoogleLogin = () => {
+    window.location.href = "https://bugnyang.shop/oauth2/authorization/google";
   };
 
   const handleSubmit = async (e) => {
