@@ -372,9 +372,11 @@ const Mainpage = () => {
     const token = getCookie("Authorization");
     const token2 = getCookie("email");
     const token3 = getCookie("JSESSIONID");
+    const token4 = getCookie("perf_dv6Tr4n");
     console.log("Token:", token); // 디버깅 로그 추가
     console.log("email:", token2); // 디버깅 로그 추가
     console.log("Js:", token3); // 디버깅 로그 추가
+    console.log("perf:", token4); // 디버깅 로그 추가
 
     if (token) {
       setJwt("Bearer " + token);
