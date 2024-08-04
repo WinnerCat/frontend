@@ -207,7 +207,6 @@ const Login = () => {
               />
               <Google onClick={onGoogleLogin}>Google로 로그인</Google>
             </OrDivider>
-            {/* <QuickLoginText>간편 로그인</QuickLoginText> */}
           </Form>
         </Container>
       </Body>
