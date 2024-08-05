@@ -46,6 +46,9 @@ const NavItem = styled.a`
 const CatIcon = styled.div`
   position: relative;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DropdownMenu = styled.div`
@@ -113,14 +116,29 @@ const Header = () => {
         <Logo src={LogoImage} alt="버그냥이 로고" />
       </LogoLink>
       <Nav>
-        <NavItem href="/" onClick={checkLogin}> 홈 </NavItem>
-        <NavItem href="/allPost" onClick={checkLogin}>전체 게시판</NavItem>
-        <NavItem href="/savePost" onClick={checkLogin}>저장게시판</NavItem>
-        <NavItem href="/live" onClick={checkLogin} >실시간 아우성</NavItem>
-        <NavItem href="/question" onClick={checkLogin}>질문 내역</NavItem>
+        <NavItem href="/" onClick={checkLogin}>
+          {" "}
+          홈{" "}
+        </NavItem>
+        <NavItem href="/allPost" onClick={checkLogin}>
+          전체 게시판
+        </NavItem>
+        <NavItem href="/savePost" onClick={checkLogin}>
+          저장게시판
+        </NavItem>
+        <NavItem href="/live" onClick={checkLogin}>
+          실시간 아우성
+        </NavItem>
+        <NavItem href="/question" onClick={checkLogin}>
+          질문 내역
+        </NavItem>
       </Nav>
       <CatIcon onClick={checkLogin}>
-        <img src={Union} alt="Union" />
+        <img
+          src={Union}
+          style={{ width: "2.5vw", height: "2.5vw" }}
+          alt="Union"
+        />
         {isDropdownOpen && (
           <DropdownMenu>
             <DropdownItem href="/myPost">내 게시판</DropdownItem>
