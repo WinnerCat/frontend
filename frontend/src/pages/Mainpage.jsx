@@ -171,15 +171,19 @@ const PostItem = styled.button`
 `;
 
 const HighlightedText = styled.span`
-  color: #6630ff;
+  color: #e8f0ff;
+  font-size: 1.5vw;
   font-weight: bold;
+  padding: 0.3vw 1vw;
+  border-radius: 2vw;
+  background-color: #6630ff;
 `;
 
 const PostTitle = styled.div`
   text-align: start;
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
-  font-size: 2vw;
+  font-size: 1.8vw;
   color: #808080;
 `;
 
@@ -207,6 +211,7 @@ const MorePostsLink = styled.a`
   justify-content: flex-end;
   margin-top: 1vw;
   text-decoration: underline;
+  text-decoration-color: #d9d9d9;
   width: 100%;
   cursor: pointer;
 
@@ -216,10 +221,10 @@ const MorePostsLink = styled.a`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1vw;
-    height: 1vw;
+    width: 1.5vw;
+    height: 1.5vw;
     border-radius: 50%;
-    background-color: #808080;
+    background-color: #d9d9d9;
     color: #fff;
     font-size: 1vw;
     margin-left: 0.2vw;
@@ -262,6 +267,7 @@ const BugcatImage = styled.img`
 const ChatBox = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.5vw;
   margin-top: 5vw;
 `;
@@ -273,8 +279,8 @@ const ChatMessage = styled.div`
 
 const ChatMessage1 = styled.div`
   position: relative;
-  bottom: 1.5vw;
-  left: 27vw;
+  bottom: 2vw;
+  right: 10vw;
 `;
 
 const ChatMessage2 = styled.div`
@@ -291,11 +297,11 @@ const UserMessage = styled.div`
   align-items: center;
   background-color: #e8f0ff;
   color: #000;
-  padding: 10px;
-  border-radius: 10px;
-  margin-left: 10px;
-  width: 600px;
-  height: 50px;
+  padding: 1vw;
+  border-radius: 1vw;
+  margin-left: 1vw;
+  width: 60vw;
+  height: 5vw;
 `;
 
 const BotMessage = styled.div`
@@ -304,12 +310,12 @@ const BotMessage = styled.div`
   align-items: center;
   background-color: #6630ff;
   color: #fff;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 1vw;
+  border-radius: 1vw;
   align-self: flex-end;
-  margin-right: 10px;
-  width: 600px;
-  height: 50px;
+  margin-right: 1vw;
+  width: 50vw;
+  height: 5vw;
 `;
 
 const BugCount = ({ count }) => (
@@ -373,10 +379,10 @@ const Mainpage = () => {
     const token2 = getCookie("email");
     const token3 = getCookie("JSESSIONID");
     const token4 = getCookie("perf_dv6Tr4n");
-    console.log("Token:", token); // 디버깅 로그 추가
-    console.log("email:", token2); // 디버깅 로그 추가
-    console.log("Js:", token3); // 디버깅 로그 추가
-    console.log("perf:", token4); // 디버깅 로그 추가
+    console.log("Token:", token); 
+    console.log("email:", token2); 
+    console.log("Js:", token3); 
+    console.log("perf:", token4); 
 
     if (token) {
       setJwt("Bearer " + token);
@@ -606,14 +612,14 @@ const Mainpage = () => {
         <ChatBox>
           <ChatMessage>
             <UserMessage>
-              아직도 시작 못하신함??ㅋㅋㅋㅠㅠ 버그 왜이래
+              웨 에러 나??????ㅠㅠㅠㅠㅠ 나랑 버그 잡을래?
             </UserMessage>
           </ChatMessage>
           <ChatMessage1>
-            <BotMessage>하................이거 맞나?</BotMessage>
+            <BotMessage>하............이거 맞냐?ㅠ</BotMessage>
           </ChatMessage1>
           <ChatMessage2>
-            <BotMessage>프론트개발 하지마세요 진짜에요</BotMessage>
+            <BotMessage>재밌네..재밌네..@**으갸갸갸갸갸갹갹..</BotMessage>
           </ChatMessage2>
         </ChatBox>
         <MorePostsLink href="#" onClick={handleLiveClick}>
