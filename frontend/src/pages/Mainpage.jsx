@@ -380,10 +380,10 @@ const Mainpage = () => {
     const token2 = getCookie("email");
     const token3 = getCookie("JSESSIONID");
     const token4 = getCookie("perf_dv6Tr4n");
-    console.log("Token:", token); 
-    console.log("email:", token2); 
-    console.log("Js:", token3); 
-    console.log("perf:", token4); 
+    console.log("Token:", token);
+    console.log("email:", token2);
+    console.log("Js:", token3);
+    console.log("perf:", token4);
 
     if (token) {
       setJwt("Bearer " + token);
@@ -422,13 +422,13 @@ const Mainpage = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json", // 요청 데이터 형식
-              Authorization: `${token}`, // Authorization 헤더에 토큰 추가
             },
           }
         );
         const data = await response.json();
         if (data.isSuccess) {
           setPosts(data.result.articlePreviewList); // 게시글 데이터 업데이트
+          console.log(data);
         } else {
           console.error("Failed to fetch posts:", data.message);
         }
@@ -537,6 +537,16 @@ const Mainpage = () => {
     postsRef.current.scrollBy({ left: 300, behavior: "smooth" });
   };
 
+  const handleDetail = async (post) => {
+    const isLoggedIn = await checkLogin();
+    console.log("postDetail Clicked. Logged In:", isLoggedIn);
+    if (isLoggedIn) {
+      navigate(`/postDetail/${post.articleId}`);
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
   return (
     <Container>
       <Header />
@@ -596,7 +606,7 @@ const Mainpage = () => {
           </PostTitle>
           <PostsContainer ref={postsRef}>
             {posts.map((post) => (
-              <PostItem key={post.articleId}>
+              <PostItem key={post.articleId} onClick={() => handleDetail(post)}>
                 <div>
                   <h3>{post.title}</h3>
                   <p>{post.cause}</p>
