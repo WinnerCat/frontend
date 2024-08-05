@@ -12,7 +12,7 @@ const DetailContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 70%;
-  max-width: 1200px;
+  max-width: 120vw;
   margin: 0 auto;
 `;
 
@@ -29,9 +29,9 @@ const SearchBarContainer = styled.form`
   width: 100%;
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  border: 0.1vw solid #ccc;
   border-radius: 2vw;
-  padding: 0.3vw 2vw;
+  padding: 0.5vw 2vw;
   position: relative;
   margin-top: 2vw;
 `;
@@ -40,7 +40,7 @@ const SearchInput = styled.input`
   border: none;
   flex: 1;
   padding: 0.5vw;
-  border-radius: 16px;
+  border-radius: 1.5vw;
   outline: none;
   font-size: 1vw;
 `;
@@ -66,10 +66,10 @@ const MessageContainer = styled.div`
 const QuestionBox = styled.div`
   max-width: 70%;
   padding: 0.5vw 1vw;
-  border-radius: 10px;
+  border-radius: 1vw;
   background-color: #e8f0ff;
   color: #000000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.2vw 0.4vw rgba(0, 0, 0, 0.1);
   position: relative;
   line-height: 1.8;
   margin-top: 2vw;
@@ -77,8 +77,8 @@ const QuestionBox = styled.div`
 
 const AcceptButton = styled.button`
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 1vw;
+  bottom: 1vw;
   padding: 0.5vw 1.5vw;
   color: white;
   background-color: #6630ff;
@@ -120,6 +120,7 @@ const AdditionalText = styled.p`
   text-align: center;
   border: none;
   text-decoration: underline;
+  text-decoration-color: #d9d9d9;
   color: #808080;
   position: relative;
   cursor: pointer;

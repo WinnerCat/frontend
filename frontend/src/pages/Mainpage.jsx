@@ -26,15 +26,16 @@ const SearchContainer = styled.form`
   flex-direction: column;
   align-items: center;
   position: relative;
+  width: 50vw;
 `;
 
 const SearchInput = styled.input`
   font-size: 1.3vw;
   border: none;
   border-radius: 5vw;
-  width: 40vw;
-  height: 3vh;
-  padding: 1vw 3vw;
+  width: 100%;
+  height: 3vw;
+  padding: 1vw 5vw 1vw 3vw;
   color: black;
   background-color: white;
 
@@ -45,7 +46,7 @@ const SearchInput = styled.input`
 
 const SearchIcon = styled.img`
   position: absolute;
-  right: 3vw;
+  right: -1vw;
   top: 50%;
   transform: translateY(-50%);
   width: 1.8vw;
@@ -90,7 +91,7 @@ const RankingBox = styled(Box)`
 `;
 
 const RankingItem = styled.div`
-  border: 2px solid #808080;
+  border: 0.2vw solid #808080;
   border-radius: 1vw;
   width: 70%;
 `;
@@ -247,7 +248,7 @@ const BugCountText = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 10px;
+  gap: 1vw;
 `;
 
 const Count = styled.span`

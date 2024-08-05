@@ -12,7 +12,7 @@ const Body = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 80vh;
-  padding: 20px;
+  padding: 2vw;
 `;
 
 const Container = styled.div`
@@ -24,10 +24,10 @@ const Container = styled.div`
 
 const Form = styled.form`
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 1.5vw;
+  box-shadow: 0 0.2vw 1vw rgba(0, 0, 0, 0.3);
   padding: 2vw;
-  width: 700px;
+  width: 70vw;
   max-width: 100%;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,8 @@ const FormGroup = styled.div`
 const Input = styled.input`
   width: 90%;
   padding: 1.5vw;
-  border: 1px solid #ccc;
+  border: 0.1vw solid #ccc;
+  font-size: 1.3vw;
 `;
 
 const Button = styled.button`
@@ -53,9 +54,9 @@ const Button = styled.button`
   color: white;
   border: none;
   padding: 1.3vw;
-  border-radius: 10px;
+  border-radius: 1vw;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1.5vw;
   width: 87%;
 
   &:hover {
@@ -67,16 +68,16 @@ const SecondaryButton = styled.button`
   background: none;
   border: none;
   color: #6c757d;
-  font-size: 14px;
+  font-size: 1.3vw;
   cursor: pointer;
-  margin: 0 10px;
+  margin: 0 1vw;
   text-decoration: underline;
 `;
 
 const Error = styled.p`
   color: #d9534f;
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 1vw;
+  font-size: 1.2vw;
 `;
 
 const Footer = styled.div`

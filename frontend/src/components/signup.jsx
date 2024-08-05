@@ -13,7 +13,7 @@ const Body = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 80vh;
-  padding: 20px;
+  padding: 2vw;
 `;
 
 const Container = styled.div`
@@ -25,10 +25,10 @@ const Container = styled.div`
 
 const Form = styled.form`
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 1.5vw;
+  box-shadow: 0 0.2vw 1vw rgba(0, 0, 0, 0.3);
   padding: 2vw;
-  width: 700px;
+  width: 70vw;
   max-width: 100%;
   display: flex;
   flex-direction: column;
@@ -36,7 +36,7 @@ const Form = styled.form`
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 2vw;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -46,7 +46,7 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 14px;
+  font-size:2vw;
   color: #333;
   position: relative;
   width: 30%;
@@ -56,15 +56,16 @@ const RequiredAsterisk = styled.span`
   color: #d9534f;
   position: absolute;
   top: 0;
-  font-size: 18px;
+  font-size: 2vw;
   line-height: 1;
 `;
 
 const Input = styled.input`
   width: 100%;
   padding: 1vw 1.5vw;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 0.1vw solid #ccc;
+  border-radius: 1vw;
+  font-size: 2vw;
   box-sizing: border-box;
 `;
 
@@ -74,9 +75,9 @@ const Button = styled.button`
   border: none;
   padding: 1.3vw;
   margin: 3vw 0 2vw 0;
-  border-radius: 15px;
+  border-radius: 2vw;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 2vw;
   width: 80%;
 
   &:hover {
@@ -86,21 +87,20 @@ const Button = styled.button`
 
 const Error = styled.p`
   color: #d9534f;
-  margin-top: 5px;
-  font-size: 14px;
+  margin-top: 0.7vw;
+  font-size: 1.6vw;
 `;
 
 const Logo = styled.img`
   width: 25%;
-  margin-bottom: 20px;
+  margin-bottom: 2vw;
 `;
 
 const FieldGroup = styled.div`
   display: flex;
   flex-direction: row;
   width: 70%;
-  align-items: center;
-  gap: 2vw;
+  align-items: flex-start;
 `;
 
 const InputGroup = styled.div`
@@ -126,10 +126,10 @@ const ModalContent = styled.div`
   padding: 3vw;
   border-radius: 10%;
   text-align: center;
-  width: 500px;
+  width: 50vw;
   max-width: 80%;
   color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.4vw 0.8vw rgba(0, 0, 0, 0.2);
 `;
 
 const ModalButton = styled.button`
@@ -138,9 +138,9 @@ const ModalButton = styled.button`
   border: none;
   width: 80%;
   padding: 1.3vw 3vw;
-  border-radius: 20px;
+  border-radius: 2vw;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 2vw;
   margin-top: 2vw;
 
   &:hover {
@@ -150,12 +150,24 @@ const ModalButton = styled.button`
 
 const CheckIconImage = styled.img`
   width: 15%;
-  margin-bottom: 20px;
+  margin-bottom: 2vw;
 `;
 
 const CharacterImageStyled = styled.img`
   width: 70%;
-  margin-top: 20px;
+  margin-top: 2vw;
+`;
+
+const Title = styled.div`
+  font-size: 2.5vw;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1vw;
+`;
+
+const Message = styled.div`
+  font-size: 1.5vw;
+  text-align: center;
 `;
 
 const Signup = () => {
@@ -357,8 +369,8 @@ const Signup = () => {
         <Modal>
           <ModalContent>
             <CheckIconImage src={CheckIcon} alt="체크 아이콘" />
-            <h2>회원가입 완료!</h2>
-            <p>버그냥이와 함께 지금부터 개발을 시작해보세요!</p>
+            <Title>회원가입 완료!</Title>
+            <Message>버그냥이와 함께 지금부터 개발을 시작해보세요!</Message>
             <CharacterImageStyled src={CharacterImage} alt="캐릭터 이미지" />
             <ModalButton onClick={closeModal}>버그 찾아보러 가기</ModalButton>
           </ModalContent>
