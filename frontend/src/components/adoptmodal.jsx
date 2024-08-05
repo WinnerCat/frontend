@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Checkimg from '../img/Check.png';
 
+// 공통 스타일
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -20,33 +21,54 @@ const ModalContent = styled.div`
   padding: 3vw 6vw;
   border-radius: 1vw;
   text-align: center;
-  width: 300px;
+  width: 30vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 768px) {
+    width: 80vw;
+    padding: 5vw 8vw;
+  }
 `;
 
 const ModalIcon = styled.img`
   width: 2vw;
   margin-bottom: 1vw;
+
+  @media (max-width: 768px) {
+    width: 10vw;
+  }
 `;
 
 const ModalTitle = styled.h2`
   font-size: 1.5vw;
   margin: 0;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 4vw;
+  }
 `;
 
 const ModalText = styled.p`
   font-size: 1.2vw;
   font-weight: bold;
   margin: 0.5vw 0;
+
+  @media (max-width: 768px) {
+    font-size: 3.5vw;
+  }
 `;
 
 const ModalDescription = styled.p`
   font-size: 1vw;
   margin: 0.5vw 0 2vw 0;
   color: #808080;
+
+  @media (max-width: 768px) {
+    font-size: 3vw;
+  }
 `;
 
 const ModalButtonContainer = styled.div`
@@ -55,6 +77,11 @@ const ModalButtonContainer = styled.div`
   width: 100%;
   gap: 2vw;
   margin-top: 1vw;
+
+  @media (max-width: 768px) {
+    gap: 5vw;
+    margin-top: 2vw;
+  }
 `;
 
 const ModalButton = styled.button`
@@ -69,13 +96,17 @@ const ModalButton = styled.button`
   &:hover {
     background-color: ${props => (props.primary ? '#551fcc' : '#f0f0f0')};
   }
+
+  @media (max-width: 768px) {
+    padding: 2vw 5vw;
+    font-size: 4vw;
+  }
 `;
 
 const AdoptModal = ({ title, id, question, answer, message, description, onClose, onConfirm, articleId }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 컴포넌트가 렌더링될 때 속성 값 로그 찍기
     console.log("AdoptModal props:", {
       title,
       id,

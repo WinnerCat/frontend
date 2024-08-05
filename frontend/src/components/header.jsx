@@ -56,20 +56,21 @@ const DropdownMenu = styled.div`
   top: 100%;
   right: 0;
   background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 1vw;
+  border: 0.1vw solid #ccc;
+  border-radius: 1.5vw;
   overflow: hidden;
   z-index: 1;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.2vw 1vw rgba(0, 0, 0, 0.1);
 `;
 
 const DropdownItem = styled.a`
   display: block;
-  padding: 10px 20px;
+  padding: 1vw 1.5vw;
   color: #333;
+  font-size: 1.2vw;
   text-decoration: none;
   white-space: nowrap;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 0.1vw solid #e0e0e0;
 
   &:hover {
     background-color: #f0f0f0;

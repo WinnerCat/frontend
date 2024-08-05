@@ -27,7 +27,7 @@ const ColorTitle = styled.span`
 const Container = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 6.75vw;
+  margin-top: 6vw;
   flex-direction: column;
 `;
 
@@ -53,7 +53,7 @@ const LiveContainer = styled.div`
   color: transparent;
 `;
 
-const InputContainer = styled.div`
+const InputContainer = styled.form`
   width: 100%;
   height: 3.3vw;
   display: flex;
@@ -81,7 +81,7 @@ const Input = styled.input`
   }
 `;
 
-const F5Button = styled.div`
+const F5Button = styled.button`
   width: 4vw;
   height: 100%;
   display: flex;
@@ -95,6 +95,7 @@ const F5Button = styled.div`
   font-style: normal;
   font-weight: 800;
   line-height: normal;
+  border: none; /* 추가: 버튼 기본 테두리 제거 */
 `;
 
 function Live() {
@@ -136,7 +137,8 @@ function Live() {
   }, []);
 
   // 아우성 등록
-  const handleCreate = async () => {
+  const handleCreate = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch(`${Config.baseURL}/api/scream`, {
         method: "POST",
@@ -195,13 +197,13 @@ function Live() {
           </LiveContainer>
         </Container60>
         <Container60>
-          <InputContainer>
+          <InputContainer onSubmit={handleCreate}>
             <Input
               placeholder="답답한 그 마음 여기에 외쳐보세요!"
               value={content}
               onChange={(e) => handleContentChange(e.target.value)}
             />
-            <F5Button onClick={handleCreate}>전송</F5Button>
+            <F5Button type="submit">전송</F5Button>
           </InputContainer>
         </Container60>
       </Container>

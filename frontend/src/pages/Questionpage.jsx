@@ -16,7 +16,7 @@ const PageContainer = styled.div`
   overflow: hidden;
 `;
 
-const MainContent = styled.main`
+const MainContent = styled.div`
   flex: 1;
   display: flex;
 `;
@@ -73,7 +73,7 @@ const SidebarTagList = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 85vh;
+  max-height: 80vh;
   overflow-y: auto;
 `;
 
@@ -101,12 +101,13 @@ const NoBugFound = styled.div`
   }
 `;
 
-const SearchContainer = styled.form`
+const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin-top: 20vw;
+  margin-top: 15vw;
+  margin-bottom: 2vw;
 `;
 
 const SearchInput = styled.input`
@@ -114,7 +115,7 @@ const SearchInput = styled.input`
   border: 1px solid #ccc;
   border-radius: 50px;
   width: 50vw;
-  height: 3vh;
+  height: 2vw;
   padding: 1vw 3vw;
   color: black;
   background-color: white;
@@ -124,8 +125,7 @@ const SearchInput = styled.input`
   }
 
   @media (max-width: 768px) {
-    width: 100%;
-    font-size: 16px;
+    font-size: 1.3vw;
   }
 `;
 
@@ -134,8 +134,8 @@ const SearchIcon = styled.img`
   top: 50%;
   transform: translateY(-50%);
   right: 15vw;
-  width: 20px;
-  height: 20px;
+  width: 2vw;
+  height: 2vw;
   cursor: pointer;
 `;
 
