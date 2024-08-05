@@ -141,7 +141,7 @@ function PostDetail() {
     setMenuVisible(!menuVisible);
   };
 
-  // 스크랩
+  // 스크랩하기
   const handleScrap = async () => {
     try {
       const response = await fetch(`${Config.baseURL}/api/scrap/${articleId}`, {
