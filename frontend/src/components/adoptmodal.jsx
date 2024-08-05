@@ -123,7 +123,7 @@ const AdoptModal = ({ title, id, question, answer, message, description, onClose
       console.log("채택 응답:", data);
 
       if (data.isSuccess) {
-        navigate(`/postUpdate/${articleId}`);
+        navigate(`/postCreate`);
       } else {
         alert("답변 채택에 실패했습니다. 다시 시도해 주세요.");
       }

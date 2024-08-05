@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/header";
 import Rectangle from "../../img/Rectangle.png";
@@ -89,7 +89,7 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-const CancleButton = styled.div`
+const CancelButton = styled.div`
   width: 5.7vw;
   height: 3.15vw;
   flex-shrink: 0;
@@ -139,6 +139,26 @@ function PostCreate() {
   const [cause, setCause] = useState("");
   const [solution, setSolution] = useState("");
 
+  // useEffect를 사용하여 로컬스토리지에서 값을 불러와 초기 상태 설정
+  useEffect(() => {
+    const storedTitle = localStorage.getItem("title");
+    const storedAnswer = localStorage.getItem("answer");
+
+    if (storedTitle) {
+      setTitle(storedTitle);
+    }
+
+    if (storedAnswer) {
+      setSolution(storedAnswer);
+    }
+
+    // 컴포넌트가 마운트되고 나면 로컬스토리지에서 값을 지움
+    return () => {
+      localStorage.removeItem("title");
+      localStorage.removeItem("answer");
+    };
+  }, []);
+
   const handleTitleChange = (value) => {
     setTitle(value);
   };
@@ -146,12 +166,12 @@ function PostCreate() {
   const handleCauseChange = (value) => {
     setCause(value);
   };
+
   const handleSolutionChange = (value) => {
     setSolution(value);
   };
 
-  //통신코드
-
+  // 통신코드
   const token = localStorage.getItem("token");
 
   const handleCreate = async () => {
@@ -225,7 +245,7 @@ function PostCreate() {
           />
           <ButtonContainer1>
             <ButtonContainer>
-              <CancleButton onClick={openModal}>
+              <CancelButton onClick={openModal}>
                 <span
                   style={{
                     color: "#000",
@@ -238,7 +258,7 @@ function PostCreate() {
                 >
                   취소
                 </span>
-              </CancleButton>
+              </CancelButton>
               <SaveButton
                 onClick={() => {
                   handleCreate();

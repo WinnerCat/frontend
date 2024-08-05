@@ -109,20 +109,22 @@ const RankLanguage = styled.div`
   background-color: #d9d9d9;
   border-radius: 0.5vw;
   padding: 0.2vw 1vw;
+  font-size: 1.2vw;
 `;
 
 const RankCount = styled.span`
   color: #808080;
+  font-size: 1.2vw;
 `;
 
 const PostsBox = styled.div`
   background-color: #e8f0ff;
   padding: 5vw 8vw;
-  margin-top: 50px;
+  margin-top: 5vw;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  border-radius: 16px;
+  gap: 2vw;
+  border-radius: 1.5vw;
   position: relative;
 
   @media (max-width: 768px) {
@@ -132,7 +134,8 @@ const PostsBox = styled.div`
 
 const PostsContainer = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 2vw;
+  padding:1vw;
   overflow-x: hidden;
   position: relative;
 
@@ -142,12 +145,12 @@ const PostsContainer = styled.div`
 `;
 
 const PostItem = styled.button`
-  flex: 0 0 24%;
+width: 100%;
   background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 2vw;
+  border-radius: 1vw;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 230px;
+  height: 20vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,10 +166,6 @@ const PostItem = styled.button`
   &:hover {
     background-color: #6630ff;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  @media (max-width: 768px) {
-    flex: 0 0 80%;
   }
 `;
 
@@ -206,7 +205,7 @@ const Myquestionhistory = styled.button`
 
 const MorePostsLink = styled.a`
   color: #808080;
-  font-size: 14px;
+  font-size: 1.1vw;
   display: flex;
   justify-content: flex-end;
   margin-top: 1vw;
@@ -300,8 +299,9 @@ const UserMessage = styled.div`
   padding: 1vw;
   border-radius: 1vw;
   margin-left: 1vw;
-  width: 60vw;
-  height: 5vw;
+  width: 50vw;
+  height: 3vw;
+  font-size:1.2vw;
 `;
 
 const BotMessage = styled.div`
@@ -314,8 +314,9 @@ const BotMessage = styled.div`
   border-radius: 1vw;
   align-self: flex-end;
   margin-right: 1vw;
-  width: 50vw;
-  height: 5vw;
+  width: 40vw;
+  height: 3vw;
+  font-size:1.2vw;
 `;
 
 const BugCount = ({ count }) => (
@@ -359,7 +360,7 @@ const Mainpage = () => {
   const [ranking, setranking] = useState([]);
   const [posts, setPosts] = useState([]); // 게시글 데이터 상태 변수
   const [page, setPage] = useState(0); // 현재 페이지 상태 변수
-  const [size, setSize] = useState(5); // 한 페이지에 표시할 게시글 수 상태 변수
+  const [size, setSize] = useState(4); // 한 페이지에 표시할 게시글 수 상태 변수
   const postsRef = useRef(); // 게시글 컨테이너 참조
   const [jwt, setJwt] = useState("");
 
