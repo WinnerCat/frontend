@@ -100,6 +100,7 @@ const AnswerBox = styled.div`
   position: relative;
   margin-top: 2vw;
   line-height: 1.8;
+   width: 80%;
 `;
 
 const LoadingMessage = styled.div`
