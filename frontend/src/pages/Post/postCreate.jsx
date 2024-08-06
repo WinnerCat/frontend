@@ -200,6 +200,9 @@ function PostCreate() {
 
       if (response.status === 200) {
         openModal1();
+        setTimeout(() => {
+          navigate("/myPost");
+        }, 2000); // 2000ms = 2초
       } else {
         alert("오류발생");
       }
