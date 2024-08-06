@@ -711,11 +711,12 @@ const Mainpage = () => {
         </Section>
         <PostsBox>
           <PostTitle>
-            <HighlightedName bgColor={languages[currentLanguageIndex].color}>
+            {/* <HighlightedName bgColor={languages[currentLanguageIndex].color}>
               {userEmail}
             </HighlightedName>
             {"님을 위해 "}
-            {/* <HighlightedText>weon</HighlightedText>님을 위해{" "} */}
+            <HighlightedName>weon</HighlightedName>님을 위해{" "} */}
+            회원님을 위해{" "}
             <HighlightedText bgColor={languages[currentLanguageIndex].color}>
               {languages[currentLanguageIndex].tagName}
             </HighlightedText>
