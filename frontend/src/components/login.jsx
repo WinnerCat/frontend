@@ -201,13 +201,13 @@ const Login = () => {
                 회원가입
               </SecondaryButton>
             </Footer>
-            <OrDivider>
+            {/* <OrDivider>
               <img
                 src={google}
                 style={{ width: "2vw", height: "2vw", borderRadius: "1.5vw" }}
               />
               <Google onClick={onGoogleLogin}>Google로 로그인</Google>
-            </OrDivider>
+            </OrDivider> */}
           </Form>
         </Container>
       </Body>
