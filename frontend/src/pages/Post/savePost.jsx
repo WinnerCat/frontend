@@ -33,6 +33,7 @@ const Container = styled.div`
 const Container80 = styled.div`
   width: 80%;
   display: flex;
+  flex-direction: column;
 `;
 
 const DropDownContainer = styled.div`
@@ -89,6 +90,7 @@ const Page = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  margin-bottom: 2vw;
 `;
 
 const PageButton = styled.button`
@@ -154,6 +156,17 @@ const NoPostTitle = styled.div`
   margin-top: 5vw;
   font-weight: 800;
   font-size: 3vw;
+  margin-bottom: 2vw;
+`;
+
+const MainTitle = styled.div`
+  color: var(--d-9-d-9-d-9, #000);
+  font-family: Pretendard;
+  font-size: 2vw;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 175%; /* 70px */
+  margin-bottom: 2vw;
 `;
 
 function SavePost() {
@@ -223,6 +236,7 @@ function SavePost() {
       <Header></Header>
       <Container>
         <Container80>
+          <MainTitle>저장 게시판</MainTitle>
           <Title>
             <ColorTitle>버그퇴치 방법</ColorTitle>을 <br></br>
             한번 더 보고싶어요!
@@ -332,7 +346,7 @@ function SavePost() {
               src={noPost}
               alt="No Data Available"
             />
-            <NoPostTitle>해당하는 게시글이 없어요!</NoPostTitle>
+            <NoPostTitle>아직 게시글이 없어요!</NoPostTitle>
           </NoPost>
         )}
         {data.length > 0 ? (

@@ -67,7 +67,7 @@ function TagDropdown({ tags, setTags }) {
     { tagName: "Kotlin", color: "#0095D5" },
     { tagName: "TypeScript", color: "#3178C6" },
     { tagName: "React", color: "#61DAFB" },
-    { tagName: "Angular", color: "#DD0031" },
+    { tagName: "Git", color: "#DD0031" },
     { tagName: "Vue.js", color: "#4FC08D" },
     { tagName: "Django", color: "#092E20" },
     { tagName: "Flask", color: "#000000" },
