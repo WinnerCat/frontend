@@ -106,10 +106,12 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+    localStorage.clear(); // 로컬 스토리지의 모든 내용을 지ㅇ워
     localStorage.setItem("isLogined", "false");
     setIsDropdownOpen(false);
     navigate("/");
   };
+  
 
   return (
     <HeaderContainer>
