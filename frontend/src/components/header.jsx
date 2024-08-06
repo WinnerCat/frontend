@@ -111,7 +111,6 @@ const Header = () => {
     setIsDropdownOpen(false);
     navigate("/");
   };
-  
 
   return (
     <HeaderContainer>
@@ -129,9 +128,7 @@ const Header = () => {
         <NavItem href="/savePost" onClick={checkLogin}>
           저장게시판
         </NavItem>
-        <NavItem href="/live" onClick={checkLogin}>
-          실시간 아우성
-        </NavItem>
+        <NavItem href="/live">실시간 아우성</NavItem>
         <NavItem href="/question" onClick={checkLogin}>
           질문 내역
         </NavItem>
