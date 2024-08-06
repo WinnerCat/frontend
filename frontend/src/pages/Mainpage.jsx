@@ -142,13 +142,11 @@ const PostsContainer = styled.div`
   justify-content: flex-start;
 `;
 
-const PostItem = styled.button`
-  flex-grow: 1;
-  flex-basis: 0;
-  max-width: calc(25% - 1.5vw);
+const PostItem = styled.div`
   padding: 2vw;
+  width: 9vw;
   border-radius: 1vw;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.02vw 0.04vw rgba(0, 0, 0, 0.1);
   height: 20vw;
   display: flex;
   flex-direction: column; /* 수직 정렬 */
@@ -156,7 +154,7 @@ const PostItem = styled.button`
   justify-content: center;
   text-align: center;
   background: linear-gradient(
-    to top,
+    to bottom,
     transparent,
     rgba(255, 255, 255, 0.7) 90%
   );
@@ -165,21 +163,36 @@ const PostItem = styled.button`
 
   &:hover {
     background-color: #6630ff;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.03vw 0.6vw rgba(0, 0, 0, 0.2);
   }
+`;
+
+const TextContainer = styled.div`
+  width: 100%;
+  /* background-image: linear-gradient(to bottom, black, white);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent; */
 `;
 
 const PTitle = styled.div`
   font-size: 1.5vw;
+  width: 100%;
   font-weight: bold;
   margin-bottom: 1vw;
+  text-overflow: ellipsis; /* 너무 긴 텍스트를 '...'으로 표시 */
+  /* white-space: nowrap; 텍스트를 한 줄로 유지 */
+  overflow: hidden; /* 텍스트가 넘칠 때 숨김 처리 */
+  width: 100%; /* 부모 요소에 맞게 확장 */
 `;
 
 const PCause = styled.div`
   font-size: 1.2vw;
   text-align: center;
-  padding: 1vw;
-  flex: 1;
+  text-overflow: ellipsis; /* 너무 긴 텍스트를 '...'으로 표시 */
+  /* white-space: nowrap; 텍스트를 한 줄로 유지 */
+  overflow: hidden; /* 텍스트가 넘칠 때 숨김 처리 */
+  width: 100%; /* 부모 요소에 맞게 확장 */
 `;
 
 const HighlightedName = styled.span`
@@ -273,7 +286,6 @@ const BugCountText = styled.div`
   justify-content: center;
   gap: 10px;
 `;
-
 const Count = styled.span`
   color: #6630ff;
 `;
@@ -712,10 +724,10 @@ const Mainpage = () => {
           <PostsContainer ref={postsRef}>
             {posts.map((post) => (
               <PostItem key={post.articleId} onClick={() => handleDetail(post)}>
-                <div>
+                <TextContainer>
                   <PTitle>{post.title}</PTitle>
                   <PCause>{post.cause}</PCause>
-                </div>
+                </TextContainer>
               </PostItem>
             ))}
           </PostsContainer>
