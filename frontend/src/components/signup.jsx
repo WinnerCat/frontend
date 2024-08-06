@@ -28,8 +28,7 @@ const Form = styled.form`
   border-radius: 1.5vw;
   box-shadow: 0 0.2vw 1vw rgba(0, 0, 0, 0.3);
   padding: 2vw;
-  width: 70vw;
-  max-width: 100%;
+  width: 60vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,7 +45,7 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  font-size:2vw;
+  font-size: 1.5vw;
   color: #333;
   position: relative;
   width: 30%;
@@ -65,7 +64,7 @@ const Input = styled.input`
   padding: 1vw 1.5vw;
   border: 0.1vw solid #ccc;
   border-radius: 1vw;
-  font-size: 2vw;
+  font-size: 1.5vw;
   box-sizing: border-box;
 `;
 
@@ -88,7 +87,7 @@ const Button = styled.button`
 const Error = styled.p`
   color: #d9534f;
   margin-top: 0.7vw;
-  font-size: 1.6vw;
+  font-size: 1.2vw;
 `;
 
 const Logo = styled.img`
@@ -318,7 +317,7 @@ const Signup = () => {
                     id="email"
                     value={email}
                     onChange={handleEmailChange}
-                    placeholder="이메일을 입력하세요."
+                    placeholder="예시) test@naver.com"
                     required
                   />
                   {emailError && <Error>{emailError}</Error>}
