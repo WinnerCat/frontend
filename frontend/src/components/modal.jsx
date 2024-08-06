@@ -77,6 +77,7 @@ const NoButton = styled.div`
   height: 2.2vw;
   border: 0.05vw solid var(--6630FF, #6630ff);
   cursor: pointer;
+  background-color: #e8f0ff;
   color: var(--6630FF, #6630ff);
   font-family: Pretendard;
   font-size: 1vw;
