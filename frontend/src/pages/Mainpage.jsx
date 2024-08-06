@@ -138,20 +138,20 @@ const PostsContainer = styled.div`
   padding: 1vw;
   overflow-x: hidden;
   position: relative;
-
-  @media (max-width: 768px) {
-    overflow-x: scroll;
-  }
+  width: 100%;
+ justify-content: flex-start;
 `;
 
 const PostItem = styled.button`
-  width: 100%;
-  background-color: #ffffff;
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: calc(25% - 1.5vw);
   padding: 2vw;
   border-radius: 1vw;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 20vw;
   display: flex;
+  flex-direction: column; /* 수직 정렬 */
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -168,6 +168,20 @@ const PostItem = styled.button`
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   }
 `;
+
+const PTitle = styled.div`
+  font-size: 1.5vw;
+  font-weight: bold;
+  margin-bottom: 1vw;
+`;
+
+const PCause = styled.div`
+  font-size: 1.2vw;
+  text-align: center;
+  padding: 1vw;
+  flex: 1;
+`;
+
 
 
 const HighlightedName = styled.span`
@@ -696,8 +710,8 @@ const Mainpage = () => {
             {posts.map((post) => (
               <PostItem key={post.articleId} onClick={() => handleDetail(post)}>
                 <div>
-                  <h3>{post.title}</h3>
-                  <p>{post.cause}</p>
+                  <PTitle>{post.title}</PTitle>
+                  <PCause>{post.cause}</PCause>
                 </div>
               </PostItem>
             ))}
