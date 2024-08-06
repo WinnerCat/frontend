@@ -82,8 +82,8 @@ const AcceptButton = styled.button`
   right: 1vw;
   bottom: 1vw;
   padding: 0.5vw 1.5vw;
-  color: white;
-  background-color: #6630ff;
+  color: black;
+  background-color: #e8f0ff;
   border: 0.1vw solid #ffffff;
   border-radius: 0.8vw;
   cursor: pointer;
