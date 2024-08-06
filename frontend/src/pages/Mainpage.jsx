@@ -184,6 +184,7 @@ const PTitle = styled.div`
   /* white-space: nowrap; 텍스트를 한 줄로 유지 */
   overflow: hidden; /* 텍스트가 넘칠 때 숨김 처리 */
   width: 100%; /* 부모 요소에 맞게 확장 */
+  max-height: 5vw;
 `;
 
 const PCause = styled.div`
@@ -193,6 +194,7 @@ const PCause = styled.div`
   /* white-space: nowrap; 텍스트를 한 줄로 유지 */
   overflow: hidden; /* 텍스트가 넘칠 때 숨김 처리 */
   width: 100%; /* 부모 요소에 맞게 확장 */
+  max-height: 7.5vw;
 `;
 
 const HighlightedName = styled.span`
