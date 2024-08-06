@@ -139,7 +139,7 @@ const PostsContainer = styled.div`
   overflow-x: hidden;
   position: relative;
   width: 100%;
- justify-content: flex-start;
+  justify-content: flex-start;
 `;
 
 const PostItem = styled.button`
@@ -182,8 +182,6 @@ const PCause = styled.div`
   flex: 1;
 `;
 
-
-
 const HighlightedName = styled.span`
   color: #6630ff;
   font-size: 1.5vw;
@@ -198,6 +196,8 @@ const HighlightedText = styled.span`
   padding: 0.3vw 1vw;
   border-radius: 2vw;
   background-color: ${({ bgColor }) => bgColor || "#6630ff"};
+  margin-right: 1vw;
+  margin-left: 1vw;
 `;
 
 const PostTitle = styled.div`
@@ -206,6 +206,8 @@ const PostTitle = styled.div`
   font-weight: 400;
   font-size: 1.8vw;
   color: #808080;
+  display: flex;
+  align-items: center;
 `;
 
 const Myquestionhistory = styled.button`
@@ -409,7 +411,7 @@ const Mainpage = () => {
     { tagName: "Android", color: "#3DDC84" },
     { tagName: "React Native", color: "#137CBD" },
     { tagName: "Flutter", color: "#02569B" },
-    { tagName: "SQL", color: "#00758F" }
+    { tagName: "SQL", color: "#00758F" },
   ];
 
   useEffect(() => {
@@ -462,7 +464,7 @@ const Mainpage = () => {
         const response = await fetch(
           "https://bugnyang.shop/api/article/today-error",
           {
-            method: "GET"
+            method: "GET",
           }
         );
         const data = await response.json();
@@ -515,8 +517,8 @@ const Mainpage = () => {
         {
           method: "GET",
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
       const data = await response.json();
@@ -558,9 +560,9 @@ const Mainpage = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token")
+        Authorization: localStorage.getItem("token"),
       },
-      body: searchQuery
+      body: searchQuery,
     });
 
     if (response.ok) {
@@ -680,7 +682,7 @@ const Mainpage = () => {
                       style={{
                         width: "55%",
                         display: "flex",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
                       }}
                     >
                       <RankLanguage>{article.tagName}</RankLanguage>
@@ -699,12 +701,13 @@ const Mainpage = () => {
           <PostTitle>
             <HighlightedName bgColor={languages[currentLanguageIndex].color}>
               {userEmail}
-            </HighlightedName>{"님을 위해 "}
+            </HighlightedName>
+            {"님을 위해 "}
             {/* <HighlightedText>weon</HighlightedText>님을 위해{" "} */}
             <HighlightedText bgColor={languages[currentLanguageIndex].color}>
               {languages[currentLanguageIndex].tagName}
-            </HighlightedText>{" 관련 게시글을 모아봤어요! "}
-
+            </HighlightedText>
+            {" 관련 게시글을 모아봤어요! "}
           </PostTitle>
           <PostsContainer ref={postsRef}>
             {posts.map((post) => (
