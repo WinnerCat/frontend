@@ -110,7 +110,7 @@ const SearchContainer = styled.div`
   margin-bottom: 2vw;
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled.textarea`
   font-size: 1.3vw;
   border: 1px solid #ccc;
   border-radius: 50px;

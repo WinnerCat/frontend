@@ -36,7 +36,7 @@ const SearchBarContainer = styled.form`
   margin-top: 2vw;
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled.textarea`
   border: none;
   flex: 1;
   padding: 0.5vw;
