@@ -8,7 +8,9 @@ import Tag from "../../components/tag";
 import { useParams, useNavigate } from "react-router-dom";
 import Config from "../../config/config";
 import SaveTrue from "../../img/Frame1.png";
-import ReactMarkdown from "react-markdown"; // react-markdown import 추가
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dark } from "react-syntax-highlighter/dist/esm/styles/prism"; // dark 테마 사용
 
 const Container = styled.div`
   display: flex;
@@ -331,7 +333,29 @@ function PostDetail() {
           <InputContainer>{data.cause}</InputContainer>
           <InputContainerTitle>해결방법</InputContainerTitle>
           <InputContainer style={{ marginBottom: "5.3vw" }}>
-            <ReactMarkdown>{data.solution}</ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                code({ node, inline, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || "");
+                  return !inline && match ? (
+                    <SyntaxHighlighter
+                      style={dark}
+                      language={match[1]}
+                      PreTag="div"
+                      {...props}
+                    >
+                      {String(children).replace(/\n$/, "")}
+                    </SyntaxHighlighter>
+                  ) : (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+              }}
+            >
+              {data.solution}
+            </ReactMarkdown>
           </InputContainer>
         </Container80>
       </Container>
