@@ -140,6 +140,11 @@ const PostsContainer = styled.div`
   position: relative;
   width: 100%;
   justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const PostItem = styled.div`
@@ -184,7 +189,7 @@ const PTitle = styled.div`
   /* white-space: nowrap; 텍스트를 한 줄로 유지 */
   overflow: hidden; /* 텍스트가 넘칠 때 숨김 처리 */
   width: 100%; /* 부모 요소에 맞게 확장 */
-  max-height: 5vw;
+  max-height: 5.5vw;
 `;
 
 const PCause = styled.div`
@@ -222,7 +227,7 @@ const PostTitle = styled.div`
   font-size: 1.8vw;
   color: #808080;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const Myquestionhistory = styled.button`
@@ -368,7 +373,7 @@ const ScrollButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #ffffff;
+  background-color: #e8f0ff;
   color: #6630ff;
   border: none;
   border-radius: 50%;
@@ -377,17 +382,25 @@ const ScrollButton = styled.button`
   cursor: pointer;
   z-index: 1;
 
-  &:hover {
+  /* &:hover {
     background-color: #4a25c1;
-  }
+  } */
 `;
 
 const LeftButton = styled(ScrollButton)`
   left: 2vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5vw;
 `;
 
 const RightButton = styled(ScrollButton)`
   right: 2vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5vw;
 `;
 
 const Mainpage = () => {
@@ -712,13 +725,14 @@ const Mainpage = () => {
           </RankingBox>
         </Section>
         <PostsBox>
+          <LeftButton onClick={scrollLeftButton}>{"◁"}</LeftButton>
           <PostTitle>
             {/* <HighlightedName bgColor={languages[currentLanguageIndex].color}>
               {userEmail}
             </HighlightedName>
             {"님을 위해 "}
             <HighlightedName>weon</HighlightedName>님을 위해{" "} */}
-            회원님을 위해{" "}
+            회원님을 위해{" "}
             <HighlightedText bgColor={languages[currentLanguageIndex].color}>
               {languages[currentLanguageIndex].tagName}
             </HighlightedText>
@@ -734,7 +748,7 @@ const Mainpage = () => {
               </PostItem>
             ))}
           </PostsContainer>
-          <LeftButton onClick={scrollLeftButton}>{"◁"}</LeftButton>
+
           <RightButton onClick={scrollRightButton}>{"▷"}</RightButton>
         </PostsBox>
         <MorePostsLink href="#" onClick={handleMorePostsClick}>
