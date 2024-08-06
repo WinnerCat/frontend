@@ -9,9 +9,9 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.7vw 3vw;s
-  color: white;
-  background-color: #6630FF;
+  padding: 0.7vw 3vw;
+  color: #ffffff;
+  background-color: #6630ff;
 `;
 
 const LogoLink = styled.a`
