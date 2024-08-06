@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import Modal from './adoptmodal';
-import MarkdownMessage from './MarkdownMessage';
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import Modal from "./adoptmodal";
+import MarkdownMessage from "./MarkdownMessage";
 import SearchIcon from "../img/search_icon.png";
-import { BeatLoader } from 'react-spinners';
+import { BeatLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 
 const DetailContainer = styled.div`
@@ -57,7 +57,8 @@ const SearchButton = styled.button`
 
 const MessageContainer = styled.div`
   display: flex;
-  flex-direction: ${props => (props.direction === 'row' ? 'row' : 'row-reverse')};
+  flex-direction: ${(props) =>
+    props.direction === "row" ? "row" : "row-reverse"};
   align-items: flex-start;
   font-size: 1vw;
   max-width: 100%;
@@ -73,6 +74,7 @@ const QuestionBox = styled.div`
   position: relative;
   line-height: 1.8;
   margin-top: 2vw;
+  white-space: pre-wrap;
 `;
 
 const AcceptButton = styled.button`
@@ -100,7 +102,8 @@ const AnswerBox = styled.div`
   position: relative;
   margin-top: 2vw;
   line-height: 1.8;
-   width: 80%;
+  width: 80%;
+  white-space: pre-wrap;
 `;
 
 const LoadingMessage = styled.div`
@@ -128,9 +131,7 @@ const AdditionalText = styled.p`
 
 const QuestionMessage = ({ text }) => (
   <MessageContainer direction="row-reverse">
-    <QuestionBox>
-      {text}
-    </QuestionBox>
+    <QuestionBox>{text}</QuestionBox>
   </MessageContainer>
 );
 
@@ -150,12 +151,16 @@ const ConversationDetail = ({ title, articleId, close }) => {
   const [chatMessages, setChatMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [modalData, setModalData] = useState({ id: null, question: '', answer: '' }); // 추가된 상태 변수
+  const [modalData, setModalData] = useState({
+    id: null,
+    question: "",
+    answer: "",
+  }); // 추가된 상태 변수
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 대화 데이터 로드
-    const savedData = localStorage.getItem('conversationData');
+    const savedData = localStorage.getItem("conversationData");
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
@@ -167,53 +172,61 @@ const ConversationDetail = ({ title, articleId, close }) => {
             messages.push({
               text: parsedData.answerList[index].content,
               isUser: true,
-              id: parsedData.answerList[index].id // 답변 ID 추가
+              id: parsedData.answerList[index].id, // 답변 ID 추가
             });
           }
         });
 
         setChatMessages(messages);
       } catch (error) {
-        console.error("로컬 스토리지에서 대화 데이터를 파싱하는 데 실패했습니다:", error);
+        console.error(
+          "로컬 스토리지에서 대화 데이터를 파싱하는 데 실패했습니다:",
+          error
+        );
       }
     }
   }, [title]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [chatMessages]);
 
   const handleAcceptClick = (message) => {
     console.log("답변 채택 클릭:", message);
-    
+
     // 로컬 스토리지에서 대화 데이터 가져오기
-    const savedData = localStorage.getItem('conversationData');
+    const savedData = localStorage.getItem("conversationData");
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
         const { questionList, answerList } = parsedData;
-  
+
         // 선택된 답변의 ID를 찾기
-        const answer = answerList.find(answer => answer.content === message.text);
-        
+        const answer = answerList.find(
+          (answer) => answer.content === message.text
+        );
+
         if (answer) {
           // 선택된 답변의 질문 인덱스 찾기
           const index = answerList.indexOf(answer);
           const question = questionList[index];
-          
+
           setModalData({
             id: answer.id,
             question: question,
-            answer: answer.content
+            answer: answer.content,
           });
         } else {
           console.log("답변을 찾을 수 없습니다.");
         }
-        
       } catch (error) {
-        console.error("로컬 스토리지에서 대화 데이터를 파싱하는 데 실패했습니다:", error);
+        console.error(
+          "로컬 스토리지에서 대화 데이터를 파싱하는 데 실패했습니다:",
+          error
+        );
       }
     } else {
       console.log("로컬 스토리지에 대화 데이터가 없습니다.");
@@ -237,22 +250,24 @@ const ConversationDetail = ({ title, articleId, close }) => {
 
     const requestData = {
       questionRoomId,
-      answerId
+      answerId,
     };
 
     try {
-      const response = await fetch("https://bugnyang.shop/api/question-room/adopt", {
-        method: "PATCH",
-        headers: {
-          "Authorization": token,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestData)
-      });
+      const response = await fetch(
+        "https://bugnyang.shop/api/question-room/adopt",
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
 
       const data = await response.json();
       console.log("채택 응답:", data);
-      
     } catch (error) {
       console.error("답변 채택 중 오류 발생:", error);
       alert("답변 채택 중 오류가 발생했습니다.");
@@ -271,20 +286,20 @@ const ConversationDetail = ({ title, articleId, close }) => {
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("토큰이 없습니다. 로그인을 해주세요.");
       return;
     }
-  
+
     const questionRoomId = localStorage.getItem("questionRoomId");
-  
+
     const requestData = {
       questionRoomId,
-      question: searchQuery
+      question: searchQuery,
     };
-  
+
     setChatMessages([...chatMessages, { text: searchQuery, isUser: false }]);
     setSearchQuery("");
     setIsLoading(true);
@@ -293,25 +308,32 @@ const ConversationDetail = ({ title, articleId, close }) => {
       const response = await fetch("https://bugnyang.shop/api/question", {
         method: "POST",
         headers: {
-          "Authorization": token,
-          "Content-Type": "application/json"
+          Authorization: token,
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestData)
+        body: JSON.stringify(requestData),
       });
-  
+
       const data = await response.json();
-  
+
       if (data.isSuccess && data.result && data.result.answer) {
-        const savedData = localStorage.getItem('conversationData');
+        const savedData = localStorage.getItem("conversationData");
         let updatedData = { questionList: [], answerList: [] };
         if (savedData) {
           updatedData = JSON.parse(savedData);
         }
         updatedData.questionList.push(searchQuery);
-        updatedData.answerList.push({ id: data.result.id, content: data.result.answer });
-        localStorage.setItem('conversationData', JSON.stringify(updatedData));
-  
-        setChatMessages([...chatMessages, { text: searchQuery, isUser: false }, { text: data.result.answer, isUser: true, id: data.result.id }]);
+        updatedData.answerList.push({
+          id: data.result.id,
+          content: data.result.answer,
+        });
+        localStorage.setItem("conversationData", JSON.stringify(updatedData));
+
+        setChatMessages([
+          ...chatMessages,
+          { text: searchQuery, isUser: false },
+          { text: data.result.answer, isUser: true, id: data.result.id },
+        ]);
       } else {
         alert("질문 전송에 실패했습니다. 다시 시도해주세요.");
       }
@@ -329,16 +351,22 @@ const ConversationDetail = ({ title, articleId, close }) => {
 
   return (
     <DetailContainer>
-      <h1 style={{ fontSize: '2vw' }}>{title}</h1>
+      <h1 style={{ fontSize: "2vw" }}>{title}</h1>
       <ChatContainer ref={chatContainerRef}>
-        {chatMessages.map((message, index) => (
-          message.isUser ? 
-            <AnswerMessage key={index} text={message.text} onAccept={() => handleAcceptClick(message)} /> : 
+        {chatMessages.map((message, index) =>
+          message.isUser ? (
+            <AnswerMessage
+              key={index}
+              text={message.text}
+              onAccept={() => handleAcceptClick(message)}
+            />
+          ) : (
             <QuestionMessage key={index} text={message.text} />
-        ))}
+          )
+        )}
         {isLoading && (
           <LoadingMessage>
-            <BeatLoader color='#ffffff' />
+            <BeatLoader color="#ffffff" />
           </LoadingMessage>
         )}
       </ChatContainer>
@@ -358,11 +386,11 @@ const ConversationDetail = ({ title, articleId, close }) => {
       </AdditionalText>
       {isModalOpen && selectedMessage && (
         <Modal
-          title={title}        // 제목 추가
-          id={modalData.id}            // ID
+          title={title} // 제목 추가
+          id={modalData.id} // ID
           question={modalData.question} // 질문
-          answer={modalData.answer}     // 답변
-          message="답변을 채택할까요?"   // 메시지
+          answer={modalData.answer} // 답변
+          message="답변을 채택할까요?" // 메시지
           description={`버그냥이 덕분에 골치 아픈 버그를 해결했어요!`} // 설명
           onClose={handleCloseModal}
           onConfirm={handleConfirm}
