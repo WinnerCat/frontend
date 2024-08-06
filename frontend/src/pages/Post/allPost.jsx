@@ -34,6 +34,7 @@ const Container = styled.div`
 const Container80 = styled.div`
   width: 80%;
   display: flex;
+  flex-direction: column;
 `;
 
 const DropDownContainer = styled.div`
@@ -90,6 +91,7 @@ const Page = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  margin-bottom: 2vw;
 `;
 
 const PageButton = styled.button`
@@ -154,6 +156,16 @@ const NoPostTitle = styled.div`
   margin-top: 5vw;
   font-weight: 800;
   font-size: 3vw;
+  margin-bottom: 2vw;
+`;
+const MainTitle = styled.div`
+  color: var(--d-9-d-9-d-9, #000);
+  font-family: Pretendard;
+  font-size: 2vw;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 175%; /* 70px */
+  margin-bottom: 2vw;
 `;
 
 function AllPost() {
@@ -240,6 +252,8 @@ function AllPost() {
       <Header></Header>
       <Container>
         <Container80>
+          <MainTitle>전체 게시판</MainTitle>
+
           <Title>
             정보 글을 <ColorTitle>작성</ColorTitle>하여 <br></br>
             <ColorTitle>여러 개발자들</ColorTitle>과 소통해보세요!
@@ -349,7 +363,7 @@ function AllPost() {
               src={noPost}
               alt="No Data Available"
             />
-            <NoPostTitle>해당하는 게시글이 없어요!</NoPostTitle>
+            <NoPostTitle>아직 게시글이 없어요!</NoPostTitle>
           </NoPost>
         )}
         {data.length > 0 ? (

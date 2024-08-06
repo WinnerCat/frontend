@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Union from "../img/Union.png";
+import Union from "../img/newlogo.png";
 import LogoImage from "../img/logo_main.png";
 import LoginModal from "./Loginmodal"; // LoginModal 컴포넌트 import
 
