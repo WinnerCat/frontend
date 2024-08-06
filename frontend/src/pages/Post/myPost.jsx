@@ -5,6 +5,7 @@ import Header from "../../components/header";
 import { useState, useEffect } from "react";
 import Config from "../../config/config";
 import { useNavigate } from "react-router-dom";
+import noPost from "../../img/noPost.png";
 
 const Title = styled.span`
   color: #000;
@@ -139,6 +140,19 @@ const DropDownContent = styled.div`
   z-index: 1;
   max-height: 15vw;
   overflow-y: auto;
+`;
+
+const NoPost = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const NoPostTitle = styled.div`
+  color: #28262635;
+  margin-top: 5vw;
+  font-weight: 800;
+  font-size: 3vw;
 `;
 
 function MyPost() {
@@ -293,35 +307,53 @@ function MyPost() {
             </Stack>
           </DropDownButton>
         </DropDownContainer>
-        {data.map((article, index) => (
-          <Post
-            key={index}
-            onClick={() => navigate(`/postDetail/${article.articleId}`)}
-          >
-            <PostTitle>{article.title}</PostTitle>
-            <PostContainer>
-              {article.tagList.map((tag, tagIndex) => (
-                <Tag
-                  key={tagIndex}
-                  tagName={tag.tagName}
-                  color={tag.colorCode}
-                />
-              ))}
-            </PostContainer>
-          </Post>
-        ))}
-        <Page>
-          <PageButton onClick={handlePreviousPage} disabled={currentPage === 0}>
-            &lt;
-          </PageButton>
-          {currentPage + 1}/{totalPages}
-          <PageButton
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages - 1}
-          >
-            &gt;
-          </PageButton>
-        </Page>
+        {data.length > 0 ? (
+          data.map((article, index) => (
+            <Post
+              key={index}
+              onClick={() => navigate(`/postDetail/${article.articleId}`)}
+            >
+              <PostTitle>{article.title}</PostTitle>
+              <PostContainer>
+                {article.tagList.map((tag, tagIndex) => (
+                  <Tag
+                    key={tagIndex}
+                    tagName={tag.tagName}
+                    color={tag.colorCode}
+                  />
+                ))}
+              </PostContainer>
+            </Post>
+          ))
+        ) : (
+          <NoPost>
+            <img
+              style={{ width: "20vw" }}
+              src={noPost}
+              alt="No Data Available"
+            />
+            <NoPostTitle>해당하는 게시글이 없어요!</NoPostTitle>
+          </NoPost>
+        )}
+        {data.length > 0 ? (
+          <Page>
+            <PageButton
+              onClick={handlePreviousPage}
+              disabled={currentPage === 0}
+            >
+              &lt;
+            </PageButton>
+            {currentPage + 1}/{totalPages}
+            <PageButton
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages - 1}
+            >
+              &gt;
+            </PageButton>
+          </Page>
+        ) : (
+          <div></div>
+        )}
       </Container>
     </>
   );
