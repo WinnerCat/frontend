@@ -103,7 +103,6 @@ const AnswerBox = styled.div`
   margin-top: 2vw;
   line-height: 1.8;
   width: 80%;
-  white-space: pre-wrap;
 `;
 
 const LoadingMessage = styled.div`
