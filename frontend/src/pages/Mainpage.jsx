@@ -634,13 +634,14 @@ const Mainpage = () => {
   // 개발자들의 아우성 페이지 클릭
   const handleLiveClick = async (e) => {
     e.preventDefault();
-    const isLoggedIn = await checkLogin();
-    console.log("Live Clicked. Logged In:", isLoggedIn);
-    if (isLoggedIn) {
-      navigate("/live");
-    } else {
-      setIsModalOpen(true);
-    }
+    //const isLoggedIn = await checkLogin();
+    //console.log("Live Clicked. Logged In:", isLoggedIn);
+    // if (isLoggedIn) {
+    //   navigate("/live");
+    // } else {
+    //   setIsModalOpen(true);
+    // }
+    navigate("/live");
   };
 
   // 게시글 왼쪽으로 스크롤
