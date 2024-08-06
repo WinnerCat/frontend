@@ -613,7 +613,7 @@ const Mainpage = () => {
     e.preventDefault();
     const isLoggedIn = await checkLogin();
     if (isLoggedIn) {
-      navigate("/savePost");
+      navigate("/myPost");
     } else {
       setIsModalOpen(true);
     }
