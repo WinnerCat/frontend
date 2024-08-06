@@ -26,16 +26,15 @@ const SearchContainer = styled.form`
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 50vw;
 `;
 
 const SearchInput = styled.input`
   font-size: 1.3vw;
   border: none;
   border-radius: 5vw;
-  width: 100%;
-  height: 3vw;
-  padding: 1vw 5vw 1vw 3vw;
+  width: 40vw;
+  height: 3vh;
+  padding: 1vw 3vw;
   color: black;
   background-color: white;
 
@@ -46,7 +45,7 @@ const SearchInput = styled.input`
 
 const SearchIcon = styled.img`
   position: absolute;
-  right: -1vw;
+  right: 3vw;
   top: 50%;
   transform: translateY(-50%);
   width: 1.8vw;
@@ -91,7 +90,7 @@ const RankingBox = styled(Box)`
 `;
 
 const RankingItem = styled.div`
-  border: 0.2vw solid #808080;
+  border: 2px solid #808080;
   border-radius: 1vw;
   width: 70%;
 `;
@@ -136,23 +135,23 @@ const PostsBox = styled.div`
 const PostsContainer = styled.div`
   display: flex;
   gap: 2vw;
-  padding:1vw;
+  padding: 1vw;
   overflow-x: hidden;
   position: relative;
-
-  @media (max-width: 768px) {
-    overflow-x: scroll;
-  }
+  width: 100%;
+ justify-content: flex-start;
 `;
 
 const PostItem = styled.button`
-width: 100%;
-  background-color: #ffffff;
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: calc(25% - 1.5vw);
   padding: 2vw;
   border-radius: 1vw;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 20vw;
   display: flex;
+  flex-direction: column; /* 수직 정렬 */
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -170,13 +169,35 @@ width: 100%;
   }
 `;
 
+const PTitle = styled.div`
+  font-size: 1.5vw;
+  font-weight: bold;
+  margin-bottom: 1vw;
+`;
+
+const PCause = styled.div`
+  font-size: 1.2vw;
+  text-align: center;
+  padding: 1vw;
+  flex: 1;
+`;
+
+
+
+const HighlightedName = styled.span`
+  color: #6630ff;
+  font-size: 1.5vw;
+  font-weight: bold;
+  padding: 0.3vw 1vw;
+`;
+
 const HighlightedText = styled.span`
   color: #e8f0ff;
   font-size: 1.5vw;
   font-weight: bold;
   padding: 0.3vw 1vw;
   border-radius: 2vw;
-  background-color: #6630ff;
+  background-color: ${({ bgColor }) => bgColor || "#6630ff"};
 `;
 
 const PostTitle = styled.div`
@@ -248,7 +269,7 @@ const BugCountText = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 1vw;
+  gap: 10px;
 `;
 
 const Count = styled.span`
@@ -302,7 +323,7 @@ const UserMessage = styled.div`
   margin-left: 1vw;
   width: 50vw;
   height: 3vw;
-  font-size:1.2vw;
+  font-size: 1.2vw;
 `;
 
 const BotMessage = styled.div`
@@ -317,7 +338,7 @@ const BotMessage = styled.div`
   margin-right: 1vw;
   width: 40vw;
   height: 3vw;
-  font-size:1.2vw;
+  font-size: 1.2vw;
 `;
 
 const BugCount = ({ count }) => (
@@ -363,7 +384,40 @@ const Mainpage = () => {
   const [page, setPage] = useState(0); // 현재 페이지 상태 변수
   const [size, setSize] = useState(4); // 한 페이지에 표시할 게시글 수 상태 변수
   const postsRef = useRef(); // 게시글 컨테이너 참조
+  const [currentLanguageIndex, setCurrentLanguageIndex] = useState(0);
+  const [userEmail, setUserEmail] = useState("");
   const [jwt, setJwt] = useState("");
+
+  const languages = [
+    { tagName: "JavaScript", color: "#F7DF1E" },
+    { tagName: "Python", color: "#306998" },
+    { tagName: "Java", color: "#5382A1" },
+    { tagName: "C#", color: "#239120" },
+    { tagName: "C/C++", color: "#00599C" },
+    { tagName: "Swift", color: "#FA7343" },
+    { tagName: "Kotlin", color: "#0095D5" },
+    { tagName: "TypeScript", color: "#3178C6" },
+    { tagName: "React", color: "#61DAFB" },
+    { tagName: "Angular", color: "#DD0031" },
+    { tagName: "Vue.js", color: "#4FC08D" },
+    { tagName: "Django", color: "#092E20" },
+    { tagName: "Flask", color: "#000000" },
+    { tagName: "Spring", color: "#6DB33F" },
+    { tagName: "Express", color: "#000000" },
+    { tagName: "NestJS", color: "#E0234E" },
+    { tagName: "iOS", color: "#A2AAAD" },
+    { tagName: "Android", color: "#3DDC84" },
+    { tagName: "React Native", color: "#137CBD" },
+    { tagName: "Flutter", color: "#02569B" },
+    { tagName: "SQL", color: "#00758F" }
+  ];
+
+  useEffect(() => {
+    const fetchInitialPosts = async () => {
+      await fetchPostsByLanguage(languages[currentLanguageIndex].tagName);
+    };
+    fetchInitialPosts();
+  }, [currentLanguageIndex, page, size]);
 
   // 컴포넌트 마운트 시 API 호출 및 데이터 가져오기
   useEffect(() => {
@@ -381,10 +435,10 @@ const Mainpage = () => {
     const token2 = getCookie("email");
     const token3 = getCookie("JSESSIONID");
     const token4 = getCookie("perf_dv6Tr4n");
-    console.log("Token:", token);
-    console.log("email:", token2);
-    console.log("Js:", token3);
-    console.log("perf:", token4);
+    // console.log("Token:", token);
+    // console.log("email:", token2);
+    // console.log("Js:", token3);
+    // console.log("perf:", token4);
 
     if (token) {
       setJwt("Bearer " + token);
@@ -392,12 +446,23 @@ const Mainpage = () => {
       localStorage.setItem("email", token);
       localStorage.setItem("isLogined", "true");
     }
+
+    const getEmailFromLocalStorage = () => {
+      const email = localStorage.getItem("email");
+      if (email) {
+        const emailPrefix = email.split("@")[0];
+        setUserEmail(emailPrefix);
+      }
+    };
+
+    getEmailFromLocalStorage();
+
     const fetchBugData = async () => {
       try {
         const response = await fetch(
           "https://bugnyang.shop/api/article/today-error",
           {
-            method: "GET",
+            method: "GET"
           }
         );
         const data = await response.json();
@@ -412,35 +477,58 @@ const Mainpage = () => {
       }
     };
 
-    const fetchPosts = async () => {
-      try {
-        const tagName = "Swift"; // 동적으로 처리 가능한 부분
-        const token = localStorage.getItem("token");
+    // const fetchPosts = async () => {
+    //   try {
+    //     const token = localStorage.getItem("token");
 
-        const response = await fetch(
-          `https://bugnyang.shop/api/article/recommend?tagName=${tagName}&page=${page}&size=${size}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json", // 요청 데이터 형식
-            },
-          }
-        );
-        const data = await response.json();
-        if (data.isSuccess) {
-          setPosts(data.result.articlePreviewList); // 게시글 데이터 업데이트
-          console.log(data);
-        } else {
-          console.error("Failed to fetch posts:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    };
+    //     const allPosts = [];
+    //     for (const lang of languages) {
+    //       const response = await fetch(
+    //         `https://bugnyang.shop/api/article/recommend?tagName=${lang.tagName}&page=${page}&size=${size}`,
+    //         {
+    //           method: "GET",
+    //           headers: {
+    //             "Content-Type": "application/json",
+    //           },
+    //         }
+    //       );
+    //       const data = await response.json();
+    //       if (data.isSuccess) {
+    //         allPosts.push(...data.result.articlePreviewList);
+    //       } else {
+    //         console.error("Failed to fetch posts:", data.message);
+    //       }
+    //     }
+    //     setPosts(allPosts);
+    //   } catch (error) {
+    //     console.error("Error fetching posts:", error);
+    //   }
+    // };
 
     fetchBugData();
-    fetchPosts(); // 컴포넌트 마운트 시 API 호출
-  }, [page, size]); // 페이지나 사이즈가 변경될 때마다 호출
+    // fetchPosts();
+  }, [page, size]);
+  const fetchPostsByLanguage = async (language) => {
+    try {
+      const response = await fetch(
+        `https://bugnyang.shop/api/article/recommend?tagName=${language}&page=${page}&size=${size}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      const data = await response.json();
+      if (data.isSuccess) {
+        setPosts(data.result.articlePreviewList);
+      } else {
+        console.error("Failed to fetch posts:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
 
   // 로그인 상태 체크 함수
   const checkLogin = async () => {
@@ -470,9 +558,9 @@ const Mainpage = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
+        Authorization: localStorage.getItem("token")
       },
-      body: searchQuery,
+      body: searchQuery
     });
 
     if (response.ok) {
@@ -527,15 +615,22 @@ const Mainpage = () => {
   };
 
   // 게시글 왼쪽으로 스크롤
-  const scrollLeft = () => {
+  const scrollLeftButton = async () => {
     console.log("Scroll Left Clicked");
-    postsRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    // postsRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    const prevIndex =
+      (currentLanguageIndex - 1 + languages.length) % languages.length;
+    setCurrentLanguageIndex(prevIndex);
+    await fetchPostsByLanguage(languages[prevIndex].tagName);
   };
 
   // 게시글 오른쪽으로 스크롤
-  const scrollRight = () => {
+  const scrollRightButton = async () => {
     console.log("Scroll Right Clicked");
-    postsRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    // postsRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    const nextIndex = (currentLanguageIndex + 1) % languages.length;
+    setCurrentLanguageIndex(nextIndex);
+    await fetchPostsByLanguage(languages[nextIndex].tagName);
   };
 
   const handleDetail = async (post) => {
@@ -585,7 +680,7 @@ const Mainpage = () => {
                       style={{
                         width: "55%",
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "space-between"
                       }}
                     >
                       <RankLanguage>{article.tagName}</RankLanguage>
@@ -602,21 +697,27 @@ const Mainpage = () => {
         </Section>
         <PostsBox>
           <PostTitle>
-            <HighlightedText>weon</HighlightedText>님을 위해{" "}
-            <HighlightedText>Swift</HighlightedText> 관련 게시글을 모아봤어요!
+            <HighlightedName bgColor={languages[currentLanguageIndex].color}>
+              {userEmail}
+            </HighlightedName>{"님을 위해 "}
+            {/* <HighlightedText>weon</HighlightedText>님을 위해{" "} */}
+            <HighlightedText bgColor={languages[currentLanguageIndex].color}>
+              {languages[currentLanguageIndex].tagName}
+            </HighlightedText>{" 관련 게시글을 모아봤어요! "}
+
           </PostTitle>
           <PostsContainer ref={postsRef}>
             {posts.map((post) => (
               <PostItem key={post.articleId} onClick={() => handleDetail(post)}>
                 <div>
-                  <h3>{post.title}</h3>
-                  <p>{post.cause}</p>
+                  <PTitle>{post.title}</PTitle>
+                  <PCause>{post.cause}</PCause>
                 </div>
               </PostItem>
             ))}
           </PostsContainer>
-          <LeftButton onClick={scrollLeft}>{"◁"}</LeftButton>
-          <RightButton onClick={scrollRight}>{"▷"}</RightButton>
+          <LeftButton onClick={scrollLeftButton}>{"◁"}</LeftButton>
+          <RightButton onClick={scrollRightButton}>{"▷"}</RightButton>
         </PostsBox>
         <MorePostsLink href="#" onClick={handleMorePostsClick}>
           더 많은 게시글들 보고 싶어요
