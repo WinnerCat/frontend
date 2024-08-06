@@ -82,9 +82,10 @@ const Input = styled.input`
 `;
 
 const F5Button = styled.button`
-  width: 4vw;
+  width: 6vw;
   height: 100%;
   display: flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   border-radius: 0.8vw;
