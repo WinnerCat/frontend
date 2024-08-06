@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import Checkimg from '../img/Check.png';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import Checkimg from "../img/Check.png";
 
 // 공통 스타일
 const ModalOverlay = styled.div`
@@ -90,12 +90,12 @@ const ModalButton = styled.button`
   border-radius: 1vw;
   cursor: pointer;
   font-size: 1vw;
-  background-color: ${props => (props.primary ? '#6630ff' : 'white')};
-  color: ${props => (props.primary ? 'white' : '#6630ff')};
+  background-color: ${(props) => (props.primary ? "#6630ff" : "#e8f0ff")};
+  color: ${(props) => (props.primary ? "white" : "#6630ff")};
 
-  &:hover {
-    background-color: ${props => (props.primary ? '#551fcc' : '#f0f0f0')};
-  }
+  /* &:hover {
+    background-color: ${(props) => (props.primary ? "#551fcc" : "#f0f0f0")};
+  } */
 
   @media (max-width: 768px) {
     padding: 2vw 5vw;
@@ -103,7 +103,17 @@ const ModalButton = styled.button`
   }
 `;
 
-const AdoptModal = ({ title, id, question, answer, message, description, onClose, onConfirm, articleId }) => {
+const AdoptModal = ({
+  title,
+  id,
+  question,
+  answer,
+  message,
+  description,
+  onClose,
+  onConfirm,
+  articleId,
+}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -125,9 +135,9 @@ const AdoptModal = ({ title, id, question, answer, message, description, onClose
 
   const handleConfirm = async () => {
     const token = localStorage.getItem("token");
-    localStorage.setItem("title",title);
-    localStorage.setItem("answer",answer);
-    
+    localStorage.setItem("title", title);
+    localStorage.setItem("answer", answer);
+
     if (!token) {
       alert("토큰이 없습니다. 로그인을 해주세요.");
       return;
@@ -137,18 +147,21 @@ const AdoptModal = ({ title, id, question, answer, message, description, onClose
 
     const requestData = {
       questionRoomId,
-      answerId: id // ID 사용
+      answerId: id, // ID 사용
     };
 
     try {
-      const response = await fetch("https://bugnyang.shop/api/question-room/adopt", {
-        method: "PATCH",
-        headers: {
-          "Authorization": token,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestData)
-      });
+      const response = await fetch(
+        "https://bugnyang.shop/api/question-room/adopt",
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
 
       const data = await response.json();
       console.log("채택 응답:", data);
@@ -174,7 +187,9 @@ const AdoptModal = ({ title, id, question, answer, message, description, onClose
         <ModalDescription>{description}</ModalDescription>
         <ModalButtonContainer>
           <ModalButton onClick={onClose}>취소</ModalButton>
-          <ModalButton primary onClick={handleConfirm}>확인</ModalButton>
+          <ModalButton primary onClick={handleConfirm}>
+            확인
+          </ModalButton>
         </ModalButtonContainer>
       </ModalContent>
     </ModalOverlay>

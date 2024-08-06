@@ -89,9 +89,9 @@ const AcceptButton = styled.button`
   cursor: pointer;
   font-size: 1vw;
 
-  &:hover {
+  /* &:hover {
     background-color: #808080;
-  }
+  } */
 `;
 
 const AnswerBox = styled.div`
