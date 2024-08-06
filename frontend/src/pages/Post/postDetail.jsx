@@ -8,6 +8,7 @@ import Tag from "../../components/tag";
 import { useParams, useNavigate } from "react-router-dom";
 import Config from "../../config/config";
 import SaveTrue from "../../img/Frame1.png";
+import ReactMarkdown from "react-markdown"; // react-markdown import 추가
 
 const Container = styled.div`
   display: flex;
@@ -72,7 +73,7 @@ const InputContainerTitle = styled.div`
 
 const InputContainer = styled.div`
   width: 96.5%;
-  height: 13vw;
+  height: auto;
   flex-shrink: 0;
   border-radius: 0.8vw;
   border: 0.05vw solid #000;
@@ -330,7 +331,7 @@ function PostDetail() {
           <InputContainer>{data.cause}</InputContainer>
           <InputContainerTitle>해결방법</InputContainerTitle>
           <InputContainer style={{ marginBottom: "5.3vw" }}>
-            {data.solution}
+            <ReactMarkdown>{data.solution}</ReactMarkdown>
           </InputContainer>
         </Container80>
       </Container>
