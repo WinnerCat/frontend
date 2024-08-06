@@ -26,16 +26,15 @@ const SearchContainer = styled.form`
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 50vw;
 `;
 
 const SearchInput = styled.input`
   font-size: 1.3vw;
   border: none;
   border-radius: 5vw;
-  width: 100%;
-  height: 3vw;
-  padding: 1vw 5vw 1vw 3vw;
+  width: 40vw;
+  height: 3vh;
+  padding: 1vw 3vw;
   color: black;
   background-color: white;
 
@@ -46,7 +45,7 @@ const SearchInput = styled.input`
 
 const SearchIcon = styled.img`
   position: absolute;
-  right: -1vw;
+  right: 3vw;
   top: 50%;
   transform: translateY(-50%);
   width: 1.8vw;
@@ -91,7 +90,7 @@ const RankingBox = styled(Box)`
 `;
 
 const RankingItem = styled.div`
-  border: 0.2vw solid #808080;
+  border: 2px solid #808080;
   border-radius: 1vw;
   width: 70%;
 `;
@@ -139,20 +138,20 @@ const PostsContainer = styled.div`
   padding: 1vw;
   overflow-x: hidden;
   position: relative;
-  width: 100%;
- justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    overflow-x: scroll;
+  }
 `;
 
 const PostItem = styled.button`
-  flex-grow: 1;
-  flex-basis: 0;
-  max-width: calc(25% - 1.5vw);
+  width: 100%;
+  background-color: #ffffff;
   padding: 2vw;
   border-radius: 1vw;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 20vw;
   display: flex;
-  flex-direction: column; /* 수직 정렬 */
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -170,19 +169,13 @@ const PostItem = styled.button`
   }
 `;
 
-const PTitle = styled.div`
+
+const HighlightedName = styled.span`
+  color: #6630ff;
   font-size: 1.5vw;
   font-weight: bold;
-  margin-bottom: 1vw;
+  padding: 0.3vw 1vw;
 `;
-
-const PCause = styled.div`
-  font-size: 1.2vw;
-  text-align: center;
-  padding: 1vw;
-  flex: 1;
-`;
-
 
 const HighlightedText = styled.span`
   color: #e8f0ff;
@@ -190,7 +183,7 @@ const HighlightedText = styled.span`
   font-weight: bold;
   padding: 0.3vw 1vw;
   border-radius: 2vw;
-  background-color: #6630ff;
+  background-color: ${({ bgColor }) => bgColor || "#6630ff"};
 `;
 
 const PostTitle = styled.div`
@@ -246,12 +239,11 @@ const MorePostsLink = styled.a`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.h2`
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
   font-size: 1.5vw;
   color: #808080;
-  margin: 1vw;
 `;
 
 const BugCountText = styled.div`
@@ -263,7 +255,7 @@ const BugCountText = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 1vw;
+  gap: 10px;
 `;
 
 const Count = styled.span`
@@ -317,7 +309,7 @@ const UserMessage = styled.div`
   margin-left: 1vw;
   width: 50vw;
   height: 3vw;
-  font-size:1.2vw;
+  font-size: 1.2vw;
 `;
 
 const BotMessage = styled.div`
@@ -332,7 +324,7 @@ const BotMessage = styled.div`
   margin-right: 1vw;
   width: 40vw;
   height: 3vw;
-  font-size:1.2vw;
+  font-size: 1.2vw;
 `;
 
 const BugCount = ({ count }) => (
@@ -412,7 +404,6 @@ const Mainpage = () => {
     };
     fetchInitialPosts();
   }, [currentLanguageIndex, page, size]);
-  
 
   // 컴포넌트 마운트 시 API 호출 및 데이터 가져오기
   useEffect(() => {
@@ -457,7 +448,7 @@ const Mainpage = () => {
         const response = await fetch(
           "https://bugnyang.shop/api/article/today-error",
           {
-            method: "GET",
+            method: "GET"
           }
         );
         const data = await response.json();
@@ -471,9 +462,6 @@ const Mainpage = () => {
         console.error("Error fetching bug count:", error);
       }
     };
-    
-    
-    
 
     // const fetchPosts = async () => {
     //   try {
@@ -513,8 +501,8 @@ const Mainpage = () => {
         {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         }
       );
       const data = await response.json();
@@ -556,9 +544,9 @@ const Mainpage = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
+        Authorization: localStorage.getItem("token")
       },
-      body: searchQuery,
+      body: searchQuery
     });
 
     if (response.ok) {
@@ -616,7 +604,8 @@ const Mainpage = () => {
   const scrollLeftButton = async () => {
     console.log("Scroll Left Clicked");
     // postsRef.current.scrollBy({ left: -300, behavior: "smooth" });
-    const prevIndex = (currentLanguageIndex - 1 + languages.length) % languages.length;
+    const prevIndex =
+      (currentLanguageIndex - 1 + languages.length) % languages.length;
     setCurrentLanguageIndex(prevIndex);
     await fetchPostsByLanguage(languages[prevIndex].tagName);
   };
@@ -626,8 +615,8 @@ const Mainpage = () => {
     console.log("Scroll Right Clicked");
     // postsRef.current.scrollBy({ left: 300, behavior: "smooth" });
     const nextIndex = (currentLanguageIndex + 1) % languages.length;
-  setCurrentLanguageIndex(nextIndex);
-  await fetchPostsByLanguage(languages[nextIndex].tagName);
+    setCurrentLanguageIndex(nextIndex);
+    await fetchPostsByLanguage(languages[nextIndex].tagName);
   };
 
   const handleDetail = async (post) => {
@@ -677,7 +666,7 @@ const Mainpage = () => {
                       style={{
                         width: "55%",
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "space-between"
                       }}
                     >
                       <RankLanguage>{article.tagName}</RankLanguage>
@@ -694,16 +683,21 @@ const Mainpage = () => {
         </Section>
         <PostsBox>
           <PostTitle>
-            <HighlightedText>{userEmail}</HighlightedText>님을 위해{" "}
+            <HighlightedName bgColor={languages[currentLanguageIndex].color}>
+              {userEmail}
+            </HighlightedName>{"님을 위해 "}
             {/* <HighlightedText>weon</HighlightedText>님을 위해{" "} */}
-            <HighlightedText>{languages[currentLanguageIndex].tagName}</HighlightedText> 관련 게시글을 모아봤어요!
+            <HighlightedText bgColor={languages[currentLanguageIndex].color}>
+              {languages[currentLanguageIndex].tagName}
+            </HighlightedText>{" 관련 게시글을 모아봤어요! "}
+
           </PostTitle>
           <PostsContainer ref={postsRef}>
             {posts.map((post) => (
               <PostItem key={post.articleId} onClick={() => handleDetail(post)}>
                 <div>
-                  <PTitle>{post.title}</PTitle>
-                  <PCause>{post.cause}</PCause>
+                  <h3>{post.title}</h3>
+                  <p>{post.cause}</p>
                 </div>
               </PostItem>
             ))}
