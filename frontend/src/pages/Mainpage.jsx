@@ -28,7 +28,7 @@ const SearchContainer = styled.form`
   position: relative;
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled.textarea`
   font-size: 1.3vw;
   border: none;
   border-radius: 5vw;
