@@ -207,8 +207,6 @@ function SavePost() {
         if (response.status === 200) {
           setData(data.result.scrapPreviewList);
           setTotalPages(data.result.totalPages);
-        } else {
-          alert("데이터를 불러오는데 실패했습니다.");
         }
       } catch (error) {
         alert("에러 발생");
